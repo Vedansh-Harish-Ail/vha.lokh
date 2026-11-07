@@ -127,7 +127,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="flex flex-wrap items-center justify-between gap-4 pt-6 hairline-t font-mono text-[11px] text-bone/50 uppercase tracking-widest">
           <div className="flex items-center gap-2">
             <Compass className="h-3.5 w-3.5 text-accent-acid" />
-            <span>LAT 28°37' N / LON 77°12' E</span>
+            <span>LAT 12°54' N / LON 74°51' E [MANGALORE]</span>
           </div>
 
           <div className="flex items-center gap-6">
@@ -142,4 +142,3 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     </section>
   );
 };
-

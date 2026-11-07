@@ -60,7 +60,7 @@ export const App: React.FC = () => {
 
   const tickerItemsTwo = [
     'ACCEPTING Q2 / Q3 2025 COMMISSIONS',
-    'NEW DELHI [28.61° N, 77.20° E]',
+    'MANGALORE [12.91° N, 74.86° E]',
     '60FPS PERFORMANCE BUDGET',
     'WCAG AAA ACCESSIBILITY',
     'ENDURING DIGITAL ARTIFACTS',
@@ -144,4 +144,3 @@ export const App: React.FC = () => {
 };
 
 export default App;
-

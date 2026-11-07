@@ -56,7 +56,7 @@ export const LiveTelemetry: React.FC<{ compact?: boolean }> = ({ compact = false
       <div className="flex items-center gap-4">
         <div>
           <span className="text-bone/40">LOC: </span>
-          <span className="text-bone">NEW DELHI [28.61° N, 77.20° E]</span>
+          <span className="text-bone">MANGALORE [12.91° N, 74.86° E]</span>
         </div>
         <span className="text-bone/30">|</span>
         <div>
@@ -68,4 +68,3 @@ export const LiveTelemetry: React.FC<{ compact?: boolean }> = ({ compact = false
     </div>
   );
 };
-

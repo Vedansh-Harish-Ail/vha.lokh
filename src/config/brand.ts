@@ -4,7 +4,7 @@ export const STUDIO_CONFIG: StudioConfig = {
   name: 'vha.lokh',
   identityTagline: 'Independent Digital Creative & Technology Studio',
   metaDescription: 'Engineering high-craft web experiences, bespoke digital brand systems, and creative software architectures with editorial precision and technical rigor.',
-  studioLocation: 'New Delhi / Global Remote',
+  studioLocation: 'Mangalore / Global Remote',
   timeZone: 'Asia/Kolkata',
   established: '2024',
   status: {
@@ -15,7 +15,7 @@ export const STUDIO_CONFIG: StudioConfig = {
   contact: {
     email: 'contact@vhalokh.studio',
     calendly: 'https://cal.com/vhalokh',
-    locationCity: 'New Delhi',
+    locationCity: 'Mangalore',
     country: 'India'
   },
   social: {
@@ -49,13 +49,13 @@ export const DISCIPLINES: Discipline[] = [
     tagline: 'Bridging avant-garde aesthetic vision and performant production code.',
     description: 'We treat code as a physical material. Every animation curve, state machine, and render cycle is measured against 60fps frame budgets and uncompromising accessibility standards.',
     capabilities: [
-      'Component Architecture Systems',
+      'Full-Stack Web Architectures',
+      'Secure REST & GraphQL APIs',
       'Custom Design Systems & Tokens',
-      'Shader & Canvas Visualizations',
-      'Headless CMS & Modular Backends',
-      'Full-Stack Web Applications'
+      'High-Performance Database Systems',
+      'State Caching & Client-Side Persistence'
     ],
-    tools: ['Next.js', 'Vite', 'Node.js', 'PostgreSQL', 'GraphQL', 'Tailwind']
+    tools: ['React', 'Next.js', 'Python', 'FastAPI', 'Flask', 'PostgreSQL', 'Tailwind CSS']
   },
   {
     id: 'digital-brand-identity',
@@ -81,11 +81,11 @@ export const DISCIPLINES: Discipline[] = [
     capabilities: [
       'Generative UI Interfaces',
       'Creative Coding & Visual Tools',
-      'Agentic & AI-assisted Workflows',
       'Interactive Audio-Visual Toys',
-      'Bespoke Micro-APIs & SDKs'
+      'Bespoke Micro-APIs & SDKs',
+      'Real-Time Telemetry & Data Visuals'
     ],
-    tools: ['Web Audio API', 'Canvas 2D', 'LLM Agent Architectures', 'Web Workers']
+    tools: ['Web Audio API', 'Canvas 2D', 'Web Workers', 'Dynamic REST APIs']
   }
 ];
 
