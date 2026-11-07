@@ -12,29 +12,29 @@ export const FAQAccordion: React.FC = () => {
 
   const faqs: FAQItem[] = [
     {
-      question: 'How long does a website take to build?',
+      question: 'How long does a typical website or wedding portal take to build?',
       answer:
-        'Most small business, salon, and portfolio websites take between 4 to 8 business days from kickoff to launch. Because we work directly without bureaucracy, we move fast while maintaining high quality.',
+        'Small business websites and interactive wedding portals typically take between 4 to 7 business days from kickoff to live launch. For urgent wedding cards or promotional posters, turnaround can be as fast as 24 to 48 hours.',
     },
     {
-      question: 'Can I update my prices, services, and photos later?',
+      question: 'Can you design posters, social media flyers, or digital wedding cards standalone?',
       answer:
-        'Yes. We build clean, modular architectures where updating your phone number, service pricing, salon treatments, or adding new photos is quick and painless. We also provide ongoing support whenever you need updates.',
+        'Yes, absolutely. We design standalone visual promotional posters, digital marketing flyers, festival discount graphics, and custom digital wedding cards ready to share via WhatsApp or print.',
     },
     {
-      question: 'Do I need to buy a domain and hosting before contacting you?',
+      question: 'What is included in the Wedding Portal & Digital Card service?',
       answer:
-        'No, you don’t need to buy anything in advance. If you already have a domain, we will connect it. If you don’t, we will guide you through getting your domain (.com / .in) and set up fast, reliable hosting with zero stress.',
+        'You receive an interactive celebration web portal with live online RSVP tracking, ceremony countdowns, interactive Google Maps venue pins, and digital photo archives, alongside customized digital wedding invitation cards.',
     },
     {
-      question: 'How does the WhatsApp booking integration work?',
+      question: 'What kind of Digital Support & IT Services do you provide?',
       answer:
-        'When visitors tap "Book on WhatsApp" or "Inquire" on their phone, it opens their WhatsApp app with a customized, pre-filled message mentioning the specific service they are interested in. You receive the lead directly on your phone.',
+        'We provide hands-on technical support including custom domain registration (.com, .in), DNS configuration, reliable web hosting setup with SSL security, website maintenance, troubleshooting, and technical consultation for students and local businesses.',
     },
     {
-      question: 'What do you need from me to get started?',
+      question: 'How do we communicate and get started?',
       answer:
-        'Just your business name, the services you provide, your pricing (if you want it displayed), any photos of your work or location, and your contact details. If you don’t have professional photos, we can help source high-quality imagery that fits your brand.',
+        'You can chat with us directly on WhatsApp or drop us an email. We discuss your requirements, review any reference styles you have in mind, share a clear quote and timeline, and keep you updated with drafts throughout the process.',
     },
   ];
 
@@ -55,7 +55,7 @@ export const FAQAccordion: React.FC = () => {
             Frequently Asked Questions
           </h2>
           <p className="text-base text-stone-600 font-normal">
-            Everything you need to know about working with us, timelines, and how your website will work.
+            Everything you need to know about our services, turnaround timelines, and working together.
           </p>
         </div>
 

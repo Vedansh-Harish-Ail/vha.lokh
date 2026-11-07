@@ -10,7 +10,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
   const [copied, setCopied] = useState(false);
   const [name, setName] = useState('');
   const [contactInfo, setContactInfo] = useState('');
-  const [selectedService, setSelectedService] = useState(initialService || 'Small Business & Salon Website');
+  const [selectedService, setSelectedService] = useState(initialService || 'Small Business Website');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
@@ -22,7 +22,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Website Inquiry: ${selectedService} (${name})`);
+    const subject = encodeURIComponent(`vha.lokh Inquiry: ${selectedService} (${name})`);
     const body = encodeURIComponent(
       `Name: ${name}\nPhone/Contact: ${contactInfo}\nService: ${selectedService}\n\nProject Details:\n${message}\n\n--- Sent from vha.lokh website`
     );
@@ -46,10 +46,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
                 <span>Start a Project</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-900 leading-tight">
-                Let’s talk about your new website.
+                Let’s talk about your project or digital need.
               </h2>
               <p className="text-base text-stone-600 leading-relaxed font-normal">
-                Whether you have clear requirements or just want to explore what's possible for your business, reach out directly. We will discuss your goals and share a straightforward estimate.
+                Whether you need a new responsive website for your business, an interactive wedding portal, marketing flyers, or IT assistance, reach out directly.
               </p>
             </div>
 
@@ -61,7 +61,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-stone-900">Direct WhatsApp Chat</h4>
-                  <p className="text-xs text-stone-500">Fastest response for quick questions & estimates.</p>
+                  <p className="text-xs text-stone-500">Fastest response for estimates & questions.</p>
                 </div>
               </div>
 
@@ -81,7 +81,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
                   <Mail className="h-5 w-5" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-xs font-bold text-stone-500 uppercase">Studio Email</h4>
+                  <h4 className="text-xs font-bold text-stone-500 uppercase">Direct Email</h4>
                   <p className="text-sm font-semibold text-stone-900 truncate">{STUDIO_CONFIG.email}</p>
                 </div>
                 <button
@@ -104,17 +104,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
             {/* Location Pill */}
             <div className="flex items-center gap-2.5 text-xs text-stone-600 font-medium">
               <MapPin className="h-4 w-4 text-brand-700 shrink-0" />
-              <span>Studio based in <strong>Mangalore, India</strong> • Collaborating with clients everywhere.</span>
+              <span>Independent Freelance Practice based in <strong>Mangalore, India</strong> (2023 – Present).</span>
             </div>
           </div>
 
           {/* Right Column: Contact Form */}
           <div className="lg:col-span-7 bg-white rounded-2xl border border-stone-200 p-8 shadow-sm">
             <h3 className="text-xl font-bold text-stone-900 mb-2">
-              Send a Quick Message
+              Send a Project Message
             </h3>
             <p className="text-xs text-stone-500 mb-6">
-              Fill in your details and we’ll get back to you within 24 hours.
+              Share a few details and we’ll respond within 24 hours.
             </p>
 
             {submitted ? (
@@ -122,7 +122,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
                 <Check className="h-8 w-8 text-emerald-600 mx-auto" />
                 <h4 className="font-bold text-emerald-900">Message Dispatched!</h4>
                 <p className="text-xs text-emerald-800">
-                  Your mail app has opened with your inquiry. We look forward to connecting with you.
+                  Your mail app has opened with your inquiry. We look forward to collaborating with you.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
@@ -163,30 +163,30 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
 
                 <div>
                   <label className="block text-xs font-semibold text-stone-700 mb-1.5">
-                    Type of Website Needed
+                    Service Required
                   </label>
                   <select
                     value={selectedService}
                     onChange={(e) => setSelectedService(e.target.value)}
                     className="w-full rounded-xl border border-stone-300 px-4 py-2.5 text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 bg-white"
                   >
-                    <option value="Small Business & Salon Website">Small Business & Salon Website</option>
-                    <option value="Professional & Personal Portfolio">Professional & Personal Portfolio</option>
-                    <option value="Wedding & Event Website">Wedding & Event Website</option>
-                    <option value="Website Redesign / Speed Optimization">Website Redesign / Speed Optimization</option>
-                    <option value="Other / Not Sure Yet">Other / Not Sure Yet</option>
+                    <option value="Small Business Website">Small Business Website</option>
+                    <option value="Wedding Portals & Cards">Wedding Portals & Cards</option>
+                    <option value="Posters & Digital Marketing">Posters & Digital Marketing</option>
+                    <option value="Digital Support & IT Services">Digital Support & IT Services</option>
+                    <option value="Other / General Consultation">Other / General Consultation</option>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-stone-700 mb-1.5">
-                    Brief Notes or Questions
+                    Project Overview or Questions
                   </label>
                   <textarea
                     rows={4}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Tell us a little about your business, any reference websites you like, or when you would like to launch..."
+                    placeholder="Describe your requirements, any reference links, or target deadlines..."
                     className="w-full rounded-xl border border-stone-300 p-4 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 resize-none"
                   />
                 </div>
@@ -196,7 +196,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
                   className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-brand-800 transition-colors"
                 >
                   <Send className="h-4 w-4" />
-                  <span>Send Message & Get Quote</span>
+                  <span>Send Inquiry & Get Quote</span>
                 </button>
               </form>
             )}
@@ -206,4 +206,3 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
     </section>
   );
 };
-

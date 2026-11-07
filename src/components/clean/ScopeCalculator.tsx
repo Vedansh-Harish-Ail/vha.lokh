@@ -3,27 +3,28 @@ import { Calculator, Check, MessageCircle, ArrowRight } from 'lucide-react';
 import { STUDIO_CONFIG } from '../../config/brand';
 
 export const ScopeCalculator: React.FC = () => {
-  const businessTypes = [
-    { id: 'salon', label: 'Salon / Beauty Parlour', turnaround: '4–6 Days' },
-    { id: 'portfolio', label: 'Creative / Professional Portfolio', turnaround: '5–7 Days' },
-    { id: 'clinic', label: 'Clinic / Local Business', turnaround: '5–8 Days' },
-    { id: 'wedding', label: 'Wedding / Celebration Portal', turnaround: '3–5 Days' },
+  const serviceTypes = [
+    { id: 'business-site', label: 'Small Business Website', turnaround: '4–7 Days' },
+    { id: 'wedding-portal', label: 'Wedding Portal & Digital Cards', turnaround: '3–5 Days' },
+    { id: 'marketing-posters', label: 'Posters & Digital Marketing Collateral', turnaround: '1–3 Days' },
+    { id: 'it-support', label: 'Digital Support & IT Consultation', turnaround: '1–2 Days' },
   ];
 
   const featureOptions = [
-    { id: 'whatsapp', label: '1-Tap WhatsApp Booking & Calls', checkedByDefault: true },
-    { id: 'reviews', label: 'Google 4.6★ Reviews Integration', checkedByDefault: true },
-    { id: 'gallery', label: 'High-Res Photo Gallery (Mobile Optimized)', checkedByDefault: true },
-    { id: 'bilingual', label: 'Bilingual Interface (English + Hindi/Regional)', checkedByDefault: false },
-    { id: 'maps', label: 'Interactive Google Maps & Store Timings', checkedByDefault: true },
+    { id: 'mobile', label: 'Responsive, Mobile-First Web Architecture', checkedByDefault: true },
+    { id: 'whatsapp', label: 'Direct WhatsApp Chat & 1-Tap Call Dispatch', checkedByDefault: true },
+    { id: 'rsvp', label: 'Live Online RSVP Tracking & Ceremony Countdowns', checkedByDefault: false },
+    { id: 'posters', label: 'Custom Promotional Posters & Social Media Flyers', checkedByDefault: false },
+    { id: 'domain-dns', label: 'Domain Registration, DNS & Hosting Setup (.com / .in)', checkedByDefault: true },
+    { id: 'reviews-maps', label: 'Google Maps Location & 4.6★ Reviews Integration', checkedByDefault: true },
   ];
 
-  const [selectedType, setSelectedType] = useState(businessTypes[0]);
+  const [selectedType, setSelectedType] = useState(serviceTypes[0]);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([
+    'mobile',
     'whatsapp',
-    'reviews',
-    'gallery',
-    'maps',
+    'domain-dns',
+    'reviews-maps',
   ]);
 
   const toggleFeature = (id: string) => {
@@ -39,7 +40,7 @@ export const ScopeCalculator: React.FC = () => {
       .join(', ');
 
     const message = encodeURIComponent(
-      `Hi, I checked your website estimator for a ${selectedType.label}.\n\nDesired Features: ${featureLabels}.\n\nCould you provide an estimated quote and timeline?`
+      `Hi vha.lokh, I would like to inquire about: ${selectedType.label}.\n\nDesired Deliverables: ${featureLabels}.\n\nCould we discuss the details and an estimate?`
     );
     window.open(`https://wa.me/${STUDIO_CONFIG.whatsappNumber.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
   };
@@ -54,23 +55,23 @@ export const ScopeCalculator: React.FC = () => {
             <span>Interactive Project Estimator</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-900">
-            Configure What Your Business Needs
+            Configure Your Digital Requirement
           </h2>
           <p className="text-base text-stone-600 font-normal">
-            Select your business type and desired features to see the estimated turnaround time and discuss direct pricing.
+            Select the service you need and desired features to see estimated turnaround times and initiate a direct conversation.
           </p>
         </div>
 
         {/* The Interactive Estimator Card (21st.dev Component) */}
         <div className="bg-white rounded-2xl border border-stone-200 p-6 sm:p-10 shadow-sm">
           <div className="space-y-8">
-            {/* Step 1: Business Type */}
+            {/* Step 1: Service Type */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-3">
-                1. Select Your Business Category
+                1. Select Service Category
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {businessTypes.map((type) => {
+                {serviceTypes.map((type) => {
                   const isSelected = selectedType.id === type.id;
                   return (
                     <button
@@ -94,7 +95,7 @@ export const ScopeCalculator: React.FC = () => {
             {/* Step 2: Features Needed */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-3">
-                2. Key Features Included
+                2. Key Deliverables Required
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {featureOptions.map((feature) => {
@@ -127,10 +128,10 @@ export const ScopeCalculator: React.FC = () => {
             {/* Step 3: Summary Output & Action */}
             <div className="pt-6 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#FAF9F5] p-6 rounded-xl">
               <div>
-                <span className="text-xs text-stone-500 font-medium">Estimated Delivery Time</span>
+                <span className="text-xs text-stone-500 font-medium">Estimated Delivery Turnaround</span>
                 <div className="flex items-baseline gap-2 mt-0.5">
                   <span className="text-2xl font-bold text-stone-900">{selectedType.turnaround}</span>
-                  <span className="text-xs text-stone-500 font-medium">from initial kickoff</span>
+                  <span className="text-xs text-stone-500 font-medium">typical delivery timeline</span>
                 </div>
               </div>
 
@@ -139,7 +140,7 @@ export const ScopeCalculator: React.FC = () => {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 text-sm font-semibold shadow-sm transition-colors"
               >
                 <MessageCircle className="h-4 w-4" />
-                <span>Discuss This Scope on WhatsApp</span>
+                <span>Discuss This on WhatsApp</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>

@@ -89,3 +89,4 @@ export const ComparisonSection: React.FC = () => {
     </section>
   );
 };
+

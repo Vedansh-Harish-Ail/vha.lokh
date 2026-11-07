@@ -2,13 +2,13 @@ import { StudioConfig, Project, Service } from '../types';
 
 export const STUDIO_CONFIG: StudioConfig = {
   name: 'vha.lokh',
-  tagline: 'Clean, High-Impact Web Design for Growing Businesses',
-  subheading: 'Based in Mangalore. We build clean, fast, and mobile-friendly websites for small businesses, salons, clinics, professionals, and personal brands.',
+  tagline: 'Need a Custom Website or Digital Solution?',
+  subheading: 'We collaborate with small businesses, events, and individuals to create responsive websites, bespoke wedding invitation platforms, digital cards, promotional posters, and provide end-to-end IT support.',
   location: 'Mangalore, India',
   email: 'contact@vhalokh.studio',
-  whatsappNumber: '+919999999999', // User can update their business WhatsApp
-  whatsappMessage: 'Hi, I would like to discuss building a website for my business.',
-  availability: 'Available for New Projects',
+  whatsappNumber: '+919999999999',
+  whatsappMessage: 'Hi vha.lokh, I would like to discuss a custom website / digital service.',
+  availability: 'Accepting Client Engagements',
 };
 
 export const PROJECTS: Project[] = [
@@ -16,16 +16,16 @@ export const PROJECTS: Project[] = [
     id: 'dimple-beauty-salon',
     title: 'Dimple Beauty Salon',
     subtitle: 'Luxury ladies salon in Kopar Khairane, Navi Mumbai',
-    category: 'Local Business & Salon',
+    category: 'Small Business Website',
     clientType: 'Beauty & Wellness Flagship',
     description: 'A clean, welcoming website built for an acclaimed women-owned beauty parlour. Designed to showcase their hair, skin, and bridal services while making it effortless for local visitors to book appointments on WhatsApp or phone.',
     whatWeDid: [
-      'Clean, luxury design matching salon interiors',
-      'Direct WhatsApp & phone call booking buttons',
+      'Responsive, mobile-first design matching salon interiors',
+      'Direct WhatsApp & phone call booking integration',
       'Clear service menu with transparent pricing',
-      'Google 4.6★ rating & 258+ reviews integration',
+      'Google 4.6★ rating & 258+ reviews social proof',
       'Bilingual interface (English & Hindi)',
-      'Fast loading on mobile phones'
+      'Sub-2-second loading speed on smartphones'
     ],
     image: '/assets/projects/dimple-beauty-salon.jpg',
     liveUrl: 'https://dimple-beauty-salon.vercel.app/',
@@ -35,14 +35,14 @@ export const PROJECTS: Project[] = [
     id: 'vrinda-makeup-artist',
     title: 'VRINDA Makeup Artistry',
     subtitle: 'Bridal & editorial makeup artist portfolio',
-    category: 'Creative Portfolio',
+    category: 'Small Business Website',
     clientType: 'Bridal & Fashion Artist',
     description: 'A high-contrast luxury portfolio designed for a premier bridal makeup artist. High-resolution photo galleries showcase real bridal transformations, while floating WhatsApp and call buttons ensure prospective brides can initiate consultations instantly.',
     whatWeDid: [
-      'High-resolution visual showcase for bridal looks',
-      'Elegant dark aesthetic with smooth mobile pacing',
-      'Floating 1-tap WhatsApp consultation button',
-      'Fast photo loading optimized for mobile data',
+      'High-resolution visual showcase for bridal makeup collections',
+      'Clean luxury dark aesthetic with smooth mobile pacing',
+      'Floating 1-tap WhatsApp consultation dispatch',
+      'Fast photo loading optimized for mobile networks',
       'Service catalog for bridal, party, and editorial makeup'
     ],
     image: '/assets/projects/vrinda-makeup-artist.jpg',
@@ -52,16 +52,16 @@ export const PROJECTS: Project[] = [
   {
     id: 'lekhak-and-anupallavi',
     title: 'Lekhak & Anupallavi',
-    subtitle: 'Digital wedding invitation & interactive guest portal',
-    category: 'Event & Wedding Experience',
+    subtitle: 'Interactive wedding portal & digital card experience',
+    category: 'Wedding Portal & Card',
     clientType: 'Wedding Celebration',
-    description: 'A modern digital celebration portal created to replace paper invites with an interactive experience. Family and friends can read the couple’s story, check ceremony timings, browse photo archives, and submit their attendance through an online RSVP form.',
+    description: 'A modern digital celebration portal created to replace paper invites with an interactive experience. Family and friends can read the couple’s story, check ceremony countdowns, browse photo archives, and submit their attendance through a live RSVP form.',
     whatWeDid: [
-      'Digital invitation with warm, editorial typography',
-      'Interactive photo gallery archive',
-      'Online guest RSVP form system',
-      'Event schedule and venue directions',
-      'Works seamlessly on all smartphones'
+      'Interactive wedding invitation web experience',
+      'Live online RSVP tracking system',
+      'Interactive location maps and ceremony countdown',
+      'Digital photo album & memory archive',
+      'Works seamlessly across all smartphones'
     ],
     image: '/assets/projects/lekhak-and-anupallavi.jpg',
     liveUrl: 'https://lekhak-and-anupallavi.vercel.app/',
@@ -71,78 +71,78 @@ export const PROJECTS: Project[] = [
 
 export const SERVICES: Service[] = [
   {
-    id: 'business-websites',
-    title: 'Small Business & Salon Websites',
-    tagline: 'Get found on Google and convert visitors into paying clients.',
-    description: 'A complete, professional website tailored for local businesses—salons, clinics, cafes, boutiques, and service providers. Includes WhatsApp chat buttons, Google Maps location, and your full service list.',
+    id: 'small-business-websites',
+    title: 'Small Business Websites',
+    tagline: 'Establish an engaging, credible digital presence.',
+    description: 'Designed and deployed responsive, mobile-first websites enabling local businesses, salons, clinics, and entrepreneurs to showcase their services and convert visitors into paying clients.',
     benefits: [
-      'Direct 1-tap WhatsApp & phone call buttons',
-      'Google Maps & review integration',
-      'Menu / service list with pricing',
-      'Sub-2-second loading on mobile phones'
+      'Responsive, mobile-first layouts',
+      'Direct WhatsApp chat & 1-tap call buttons',
+      'Google Maps location & Google Reviews integration',
+      'Service catalog, pricing list & contact forms'
     ],
-    bestFor: 'Salons, clinics, local shops, restaurants, and service businesses.'
+    bestFor: 'Salons, clinics, local shops, restaurants, and independent entrepreneurs.'
   },
   {
-    id: 'portfolio-websites',
-    title: 'Professional & Personal Portfolios',
-    tagline: 'Showcase your work with credibility and elegance.',
-    description: 'For makeup artists, photographers, architects, designers, doctors, and independent consultants who need to look established, display their past work, and receive high-value client inquiries.',
+    id: 'wedding-portals-cards',
+    title: 'Wedding Portals & Digital Cards',
+    tagline: 'Interactive invitations with live RSVP & ceremony countdowns.',
+    description: 'Bespoke wedding invitation web experiences with live RSVP tracking, ceremony countdowns, interactive location maps, alongside custom digital wedding cards for modern celebrations.',
     benefits: [
-      'High-resolution visual galleries that load fast',
-      'About section telling your experience and story',
-      'Client testimonials and project breakdowns',
-      'Frictionless contact & inquiry form'
+      'Live online RSVP tracking & guest count',
+      'Ceremony countdowns & interactive Google Maps venue pins',
+      'Captured photo archives & digital memory galleries',
+      'Custom digital wedding cards ready to share on WhatsApp'
     ],
-    bestFor: 'Makeup artists, photographers, doctors, consultants, and creators.'
+    bestFor: 'Couples, families, wedding planners, and celebration organizers.'
   },
   {
-    id: 'event-wedding-portals',
-    title: 'Wedding & Event Websites',
-    tagline: 'Replace paper invites with an unforgettable digital experience.',
-    description: 'Custom celebration websites for weddings, milestones, and corporate events. Share ceremonial schedules, venue directions, and collected photo galleries with real-time online guest RSVPs.',
+    id: 'digital-marketing-posters',
+    title: 'Posters & Digital Marketing',
+    tagline: 'Visual promotional flyers and social media creative collateral.',
+    description: 'Eye-catching promotional posters, digital marketing flyers, banner creatives, and social media assets tailored for business marketing campaigns, festive offers, and local events.',
     benefits: [
-      'Interactive online RSVP collection',
-      'Ceremony timeline & venue Google Maps link',
-      'Digital photo album & memory archive',
-      'Accessible to all age groups on any phone'
+      'High-resolution promotional posters & flyers',
+      'Social media creative posts (Instagram, WhatsApp Stories)',
+      'Event announcement & festival discount creatives',
+      'Print-ready and web-ready formats'
     ],
-    bestFor: 'Couples, wedding planners, event organizers, and celebrations.'
+    bestFor: 'Campaign promotions, event launches, seasonal business sales, and branding.'
   },
   {
-    id: 'redesign-speed',
-    title: 'Website Redesign & Upgrades',
-    tagline: 'Turn your slow, outdated website into a modern asset.',
-    description: 'Already have a website that looks dated, loads slowly, or does not work properly on mobile? We rebuild it from the ground up to be lightning-fast, modern, and easy for your customers to use.',
+    id: 'it-support-services',
+    title: 'Digital Support & IT Services',
+    tagline: 'Hands-on domain setup, hosting, and technical consultation.',
+    description: 'End-to-end technical support including domain registration, DNS/hosting configuration, website maintenance, troubleshooting, and consultation for students and local businesses.',
     benefits: [
-      'Full mobile responsiveness overhaul',
-      'Instant loading speed improvements',
-      'Modern, clean visual design',
-      'No messy plugins or security vulnerabilities'
+      'Custom domain registration & DNS configuration (.com, .in)',
+      'Reliable web hosting setup & SSL certificate security',
+      'Website troubleshooting, bug fixes & speed optimization',
+      'Technical consultation for students & local businesses'
     ],
-    bestFor: 'Businesses with existing websites that need a fresh, modern look.'
+    bestFor: 'Businesses needing tech maintenance, domain setup, or technical assistance.'
   }
 ];
 
 export const HOW_IT_WORKS = [
   {
     step: '01',
-    title: 'Quick Chat & Planning',
-    description: 'We talk about your business, the pages you need, your brand colors, and the goals you want to achieve.'
+    title: 'Discussion & Requirements',
+    description: 'Tell us about your business, event, or IT requirement. We discuss the scope, features, and timeline.'
   },
   {
     step: '02',
-    title: 'Design Preview',
-    description: 'We share a visual design preview tailored to your brand. You review it, suggest adjustments, and we refine it.'
+    title: 'Design & Draft Preview',
+    description: 'We share visual drafts or design mockups for your website, digital card, or promotional poster for your review.'
   },
   {
     step: '03',
-    title: 'Build & Mobile Testing',
-    description: 'We develop your website, optimize it for phone screens, hook up your WhatsApp buttons, contact forms, and Google links.'
+    title: 'Development & Setup',
+    description: 'We build the responsive pages, configure interactive elements (WhatsApp, Maps, RSVPs), and test on mobile.'
   },
   {
     step: '04',
-    title: 'Launch & Handoff',
-    description: 'Your website goes live on your custom domain (.com / .in). We hand it over with clear instructions and ongoing support.'
+    title: 'Delivery & Ongoing Support',
+    description: 'We launch on your custom domain, deliver the final creative assets, and provide hands-on technical support.'
   }
 ];
