@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { Navbar } from './components/clean/Navbar';
 import { Hero } from './components/clean/Hero';
 import { WorksShowcase } from './components/clean/WorksShowcase';
+import { BentoFeatures } from './components/clean/BentoFeatures';
 import { ServicesSection } from './components/clean/ServicesSection';
+import { ScopeCalculator } from './components/clean/ScopeCalculator';
+import { ComparisonSection } from './components/clean/ComparisonSection';
 import { HowItWorksSection } from './components/clean/HowItWorksSection';
+import { FAQAccordion } from './components/clean/FAQAccordion';
 import { ContactSection } from './components/clean/ContactSection';
 import { Footer } from './components/clean/Footer';
 
@@ -24,30 +28,42 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#FAF9F5] text-[#18181B] font-sans selection:bg-brand-100 selection:text-brand-900">
-      {/* Clean Light Navigation */}
+      {/* 1. Clean Light Navigation */}
       <Navbar onNavigate={scrollTo} />
 
       <main id="top">
-        {/* 1. Hero: Clear Value Proposition */}
+        {/* 2. Hero Section: Direct Value & Trust */}
         <Hero
           onExploreWork={() => scrollTo('work')}
           onOpenContact={() => scrollTo('contact')}
         />
 
-        {/* 2. Real Client Works Showcase */}
+        {/* 3. Real Client Works Showcase */}
         <WorksShowcase />
 
-        {/* 3. Services: What We Build */}
+        {/* 4. 21st.dev Feature Bento Grid */}
+        <BentoFeatures />
+
+        {/* 5. Services: What We Build */}
         <ServicesSection onSelectService={handleSelectService} />
 
-        {/* 4. Simple 4-Step Process */}
+        {/* 6. 21st.dev Interactive Scope & Turnaround Estimator */}
+        <ScopeCalculator />
+
+        {/* 7. 21st.dev Comparison Table */}
+        <ComparisonSection />
+
+        {/* 8. Simple 4-Step Process */}
         <HowItWorksSection />
 
-        {/* 5. Friendly Contact & WhatsApp Channel */}
+        {/* 9. 21st.dev Interactive Animated FAQ Accordion */}
+        <FAQAccordion />
+
+        {/* 10. Direct Contact & 1-Tap WhatsApp Channel */}
         <ContactSection initialService={selectedServiceForInquiry} />
       </main>
 
-      {/* Clean Footer */}
+      {/* 11. Clean Light Footer */}
       <Footer />
     </div>
   );
