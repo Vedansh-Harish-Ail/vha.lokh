@@ -46,7 +46,7 @@ export const ScopeCalculator: React.FC = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-[#FAF9F5] border-b border-stone-200">
+    <section id="estimator" className="py-20 md:py-28 bg-[#FAF9F5] border-b border-stone-200">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">

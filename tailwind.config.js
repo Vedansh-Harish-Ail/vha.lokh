@@ -8,28 +8,35 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: '#F0FDF4',
-          100: '#DCFCE7',
-          500: '#10B981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065F46',
-          900: '#064E3B',
-          DEFAULT: '#0F766E',
-          dark: '#115E59',
+          primary: '#6366F1',    // Indigo / Iris
+          secondary: '#3B82F6',  // Azure Blue
+          dark: '#0F172A',       // Slate 900
+          light: '#F8FAFC',      // Slate 50
+          50: '#EEF2FF',
+          100: '#E0E7FF',
+          500: '#6366F1',
+          600: '#4F46E5',
+          700: '#4338CA',
+          800: '#3730A3',
+          900: '#312E81',
+          DEFAULT: '#6366F1',
         },
-        stone: {
-          50: '#FAF9F5',
-          100: '#F4F2EC',
-          200: '#E8E5DD',
-          300: '#D5D1C5',
-          800: '#292524',
-          900: '#1C1917',
-        },
+        slate: {
+          950: '#020617',
+          900: '#0F172A',
+          800: '#1E293B',
+          700: '#334155',
+          600: '#475569',
+          500: '#64748B',
+          400: '#94A3B8',
+          300: '#CBD5E1',
+          200: '#E2E8F0',
+          100: '#F1F5F9',
+          50: '#F8FAFC',
+        }
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
-        serif: ['"Playfair Display"', 'Georgia', 'serif'],
       },
     },
   },

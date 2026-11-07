@@ -2,12 +2,12 @@ import { StudioConfig, Project, Service } from '../types';
 
 export const STUDIO_CONFIG: StudioConfig = {
   name: 'vha.lokh',
-  tagline: 'Need a Custom Website or Digital Solution?',
-  subheading: 'We collaborate with small businesses, events, and individuals to create responsive websites, bespoke wedding invitation platforms, digital cards, promotional posters, and provide end-to-end IT support.',
-  location: 'Mangalore, India',
-  email: 'contact@vhalokh.studio',
+  tagline: 'Where Ideas Take Shape.',
+  subheading: 'Web solutions that work for you. Websites, wedding invitation portals, digital marketing posters, and IT support for businesses and individuals.',
+  location: 'Mangaluru, India',
+  email: 'hello@vha.lokh',
   whatsappNumber: '+919999999999',
-  whatsappMessage: 'Hi vha.lokh, I would like to discuss a custom website / digital service.',
+  whatsappMessage: 'Hi vha.lokh, I would like to discuss a custom website / digital solution.',
   availability: 'Accepting Client Engagements',
 };
 

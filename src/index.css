@@ -4,14 +4,14 @@
 
 @layer base {
   html {
-    background-color: #FAF9F5;
-    color: #18181B;
+    background-color: #F8FAFC;
+    color: #0F172A;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 
   ::selection {
-    background-color: #CCFBF1;
-    color: #0F766E;
+    background-color: #E0E7FF;
+    color: #4338CA;
   }
 
   /* Clean subtle scrollbar */
@@ -19,13 +19,13 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #FAF9F5;
+    background: #F8FAFC;
   }
   ::-webkit-scrollbar-thumb {
-    background: #D5D1C5;
+    background: #CBD5E1;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #A8A29E;
+    background: #94A3B8;
   }
 }
