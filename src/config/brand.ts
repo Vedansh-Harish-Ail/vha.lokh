@@ -13,6 +13,25 @@ export const STUDIO_CONFIG: StudioConfig = {
 
 export const PROJECTS: Project[] = [
   {
+    id: 'mata-refrigeration',
+    title: 'Mata Refrigeration',
+    subtitle: 'Refrigerant Gas & HVAC supply experts in Kopar Khairane, Navi Mumbai',
+    category: 'B2B & Industrial Website',
+    clientType: 'HVAC & Industrial Distributor',
+    description: 'A high-credibility B2B web portal engineered for Navi Mumbai’s leading distributor of refrigerant gases, compressor oils, copper pipes, and industrial cooling components. Built with 1-tap WhatsApp RFQs, brand partner showcases (Floron, MPCL, Mafron, Chemours), and direct Google Maps directions.',
+    whatWeDid: [
+      'B2B product catalog & quotation request workflow',
+      'Direct WhatsApp inquiry & phone call dispatch',
+      'Authorized dealer brand partner trust showcase',
+      'Interactive location directions & store contact',
+      'Mobile-first responsive design for on-site HVAC technicians',
+      'Fast loading speed optimized for 4G connections'
+    ],
+    image: '/assets/projects/mata-refrigeration.jpg',
+    liveUrl: 'https://matha-profile.vercel.app/',
+    featured: true,
+  },
+  {
     id: 'dimple-beauty-salon',
     title: 'Dimple Beauty Salon',
     subtitle: 'Luxury ladies salon in Kopar Khairane, Navi Mumbai',
@@ -74,14 +93,14 @@ export const SERVICES: Service[] = [
     id: 'small-business-websites',
     title: 'Small Business Websites',
     tagline: 'Establish an engaging, credible digital presence.',
-    description: 'Designed and deployed responsive, mobile-first websites enabling local businesses, salons, clinics, and entrepreneurs to showcase their services and convert visitors into paying clients.',
+    description: 'Designed and deployed responsive, mobile-first websites enabling local businesses, salons, clinics, B2B distributors, and entrepreneurs to showcase their services and convert visitors into paying clients.',
     benefits: [
       'Responsive, mobile-first layouts',
       'Direct WhatsApp chat & 1-tap call buttons',
       'Google Maps location & Google Reviews integration',
       'Service catalog, pricing list & contact forms'
     ],
-    bestFor: 'Salons, clinics, local shops, restaurants, and independent entrepreneurs.'
+    bestFor: 'Salons, clinics, B2B suppliers, local shops, and independent entrepreneurs.'
   },
   {
     id: 'wedding-portals-cards',
