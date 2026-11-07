@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Eye } from 'lucide-react';
+import { ArrowUpRight, Eye, ExternalLink } from 'lucide-react';
 import { SELECTED_WORKS } from '../../config/brand';
 import { Project } from '../../types';
 import { soundEngine } from '../ui/AudioHaptic';
@@ -16,7 +16,7 @@ export const SelectedWorksSection: React.FC<SelectedWorksSectionProps> = ({
 }) => {
   const [activeFilter, setActiveFilter] = useState<string>('All');
 
-  const categories = ['All', 'Creative Engineering', 'Interactive Systems', 'Editorial Luxury', 'Web Application'];
+  const categories = ['All', 'Editorial Luxury', 'Brand Experience', 'Digital Flagship', 'Creative Engineering'];
 
   const filteredProjects =
     activeFilter === 'All'
@@ -65,7 +65,7 @@ export const SelectedWorksSection: React.FC<SelectedWorksSectionProps> = ({
             Selected Work
           </h2>
           <p className="mt-3 text-base md:text-lg text-bone/60 max-w-2xl">
-            A curated index of production digital systems, experimental web applications, and editorial architectures engineered with zero compromise.
+            A curated index of production digital systems, editorial publications, and luxury digital flagships engineered with zero compromise.
           </p>
         </div>
 
@@ -98,6 +98,10 @@ export const SelectedWorksSection: React.FC<SelectedWorksSectionProps> = ({
                   alt={project.title}
                   className="h-full w-full object-cover grayscale contrast-125 transition-transform duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
                   loading="lazy"
+                  onError={(e) => {
+                    // Fallback to high-contrast monochrome architectural placeholder
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80';
+                  }}
                 />
 
                 {/* Top overlay metadata badge */}
@@ -105,9 +109,17 @@ export const SelectedWorksSection: React.FC<SelectedWorksSectionProps> = ({
                   <span className="bg-obsidian/90 backdrop-blur-sm px-3 py-1 font-mono text-[10px] uppercase tracking-wider text-accent-acid hairline-border">
                     {project.category}
                   </span>
-                  <span className="bg-obsidian/90 backdrop-blur-sm px-2.5 py-1 font-mono text-[10px] text-bone/80 hairline-border">
-                    {project.year}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {project.liveUrl && (
+                      <span className="bg-obsidian/90 backdrop-blur-sm px-2.5 py-1 font-mono text-[10px] text-accent-acid hairline-border flex items-center gap-1">
+                        <span className="h-1.5 w-1.5 rounded-full bg-accent-acid animate-pulse" />
+                        <span>LIVE</span>
+                      </span>
+                    )}
+                    <span className="bg-obsidian/90 backdrop-blur-sm px-2.5 py-1 font-mono text-[10px] text-bone/80 hairline-border">
+                      {project.year}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Hover Action Pill */}
@@ -126,7 +138,21 @@ export const SelectedWorksSection: React.FC<SelectedWorksSectionProps> = ({
                     <h3 className="font-display text-2xl sm:text-3xl font-bold uppercase tracking-tight text-bone group-hover:text-accent-acid transition-colors">
                       {project.title}
                     </h3>
-                    <ArrowUpRight className="h-5 w-5 text-bone/40 group-hover:text-accent-acid group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                    <div className="flex items-center gap-2">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          title="Open live website in new tab"
+                          className="h-8 w-8 flex items-center justify-center hairline-border text-bone/60 hover:text-accent-acid hover:border-accent-acid transition-colors"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" />
+                        </a>
+                      )}
+                      <ArrowUpRight className="h-5 w-5 text-bone/40 group-hover:text-accent-acid group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                    </div>
                   </div>
                   <p className="mt-2 text-sm text-bone/70 line-clamp-2 leading-relaxed">
                     {project.subtitle}
