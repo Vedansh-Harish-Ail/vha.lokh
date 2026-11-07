@@ -481,7 +481,7 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
               const rect = s.gl.domElement.getBoundingClientRect()
               const x = event.clientX - rect.left
               const y = event.clientY - rect.top
-              s.pointer.set((x / s.size.width) * 2 - 1, -(y / s.size.height) * 2 + 1)
+              s.pointer.set((x / (rect.width || 1)) * 2 - 1, -(y / (rect.height || 1)) * 2 + 1)
               s.raycaster.setFromCamera(s.pointer, s.camera)
             }
           })

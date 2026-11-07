@@ -9,6 +9,10 @@
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 
+  body {
+    zoom: 0.85;
+  }
+
   ::selection {
     background-color: #E0E7FF;
     color: #4338CA;
