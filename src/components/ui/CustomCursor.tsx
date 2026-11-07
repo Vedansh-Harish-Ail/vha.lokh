@@ -108,3 +108,4 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ mode, label }) => {
     </div>
   );
 };
+

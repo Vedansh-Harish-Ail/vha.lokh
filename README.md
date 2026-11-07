@@ -68,3 +68,4 @@ npm run preview
 ## Brand Configuration
 All studio content, project data, capabilities, and availability parameters are centrally maintained and editable in:
 `src/config/brand.ts`
+

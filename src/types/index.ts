@@ -68,3 +68,4 @@ export interface StudioConfig {
     readcv?: string;
   };
 }
+

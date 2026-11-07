@@ -68,3 +68,4 @@ export const LiveTelemetry: React.FC<{ compact?: boolean }> = ({ compact = false
     </div>
   );
 };
+

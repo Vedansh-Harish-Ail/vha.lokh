@@ -54,3 +54,4 @@ export const LabSection: React.FC = () => {
     </section>
   );
 };
+

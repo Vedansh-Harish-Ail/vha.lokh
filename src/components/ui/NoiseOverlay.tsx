@@ -12,3 +12,4 @@ export const NoiseOverlay: React.FC = () => {
     />
   );
 };
+

@@ -176,3 +176,4 @@ export const BrandHeader: React.FC<BrandHeaderProps> = ({
     </>
   );
 };
+
