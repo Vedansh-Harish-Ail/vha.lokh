@@ -38,3 +38,4 @@ export const BorderBeam: React.FC<BorderBeamProps> = ({
     />
   );
 };
+

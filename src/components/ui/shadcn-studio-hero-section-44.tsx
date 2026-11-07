@@ -4,13 +4,14 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode, RefObject } from 'react'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { ArrowRightIcon } from 'lucide-react'
+import { ArrowRightIcon, ArrowDown, Globe, HeartHandshake, Image as ImageIcon, Headphones } from 'lucide-react'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
 import { Environment, Lightformer, useTexture } from '@react-three/drei'
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier'
 import type { RapierRigidBody, RigidBodyProps } from '@react-three/rapier'
+import { InfiniteMarquee } from './InfiniteMarquee'
 
 /* -------------------------------------------------------------------------- */
 /*                                   Helpers                                  */
@@ -24,11 +25,6 @@ const focusRing =
 /* -------------------------------------------------------------------------- */
 /*                                  ID card                                   */
 /* -------------------------------------------------------------------------- */
-
-// Physics-driven hanging badge: a card clipped to a cord that swings under gravity and can be dragged.
-// Adapted from React Bits' "Lanyard" example. Every RigidBody uses `colliders: false` so Rapier's
-// auto-collider doesn't fight the manual ones, and angular velocity is counter-rotated instead of
-// locking rotations.
 
 const PIN_IMAGE_URL = 'https://cdn.21st.dev/assets/mirror/ad/ad5d58b0ab86bd893f0ab4792d68136796a8a319061f9a834bbee109941617c0.png'
 
@@ -47,7 +43,7 @@ const PIN_PLANE_Y = CARD_TOP_EDGE_Y + PIN_PLANE_HEIGHT * -PIN_IMAGE_BOTTOM_PAD_F
 const PIN_PLANE_X = 0
 const PIN_PLANE_Z = ROPE_RADIUS + 0.06
 
-// Card face in the group's local space (the group is scaled x4 below).
+// Card face in the group's local space (scaled x4 below).
 const CARD_WIDTH = 0.716
 const CARD_HEIGHT = 1
 const CARD_BOTTOM_Y = 0.023
@@ -55,7 +51,6 @@ const CARD_CORNER_RADIUS = 0.05
 const CARD_CANVAS_SCALE = 1000
 const ACCENT_STRIPE_HEIGHT_RATIO = 0.03
 
-// Rounded-rectangle face with UVs spanning the full texture.
 const buildCardFaceGeometry = () => {
   const x0 = -CARD_WIDTH / 2
   const x1 = CARD_WIDTH / 2
@@ -95,7 +90,6 @@ const getLerped = (body: LanyardRigidBody) => {
   return body.lerped
 }
 
-// TubeGeometry with a per-ring radius that tapers to 0 at t=0, instead of a flat cut.
 const buildTaperedTubeGeometry = (
   curve: THREE.CatmullRomCurve3,
   tubularSegments: number,
@@ -161,23 +155,16 @@ const buildTaperedTubeGeometry = (
   return geometry
 }
 
-// Resolves any CSS colour (including oklch from the theme tokens) to an rgb() string three.js can parse.
 const resolveRgb = (cssColor: string) => {
   const canvas = document.createElement('canvas')
-
   canvas.width = 1
   canvas.height = 1
-
   const ctx = canvas.getContext('2d', { willReadFrequently: true })
-
   if (!ctx) return 'rgb(0 0 0)'
-
   ctx.clearRect(0, 0, 1, 1)
   ctx.fillStyle = cssColor
   ctx.fillRect(0, 0, 1, 1)
-
   const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
-
   return `rgb(${r}, ${g}, ${b})`
 }
 
@@ -219,7 +206,6 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
     const width = Math.round(CARD_WIDTH * CARD_CANVAS_SCALE)
     const height = Math.round(CARD_HEIGHT * CARD_CANVAS_SCALE)
     const canvas = document.createElement('canvas')
-
     canvas.width = width
     canvas.height = height
 
@@ -236,13 +222,13 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
 
       // 2. Draw soft ambient radial glow behind the logo
       const glow = ctx.createRadialGradient(width / 2, height * 0.38, 10, width / 2, height * 0.38, 280)
-      glow.addColorStop(0, 'rgba(99, 102, 241, 0.35)')
+      glow.addColorStop(0, 'rgba(99, 102, 241, 0.4)')
       glow.addColorStop(1, 'rgba(99, 102, 241, 0)')
       ctx.fillStyle = glow
       ctx.fillRect(0, 0, width, height)
 
       // 3. Draw the brand logo ribbon mark
-      const maxLogoW = width * 0.62
+      const maxLogoW = width * 0.65
       const logoScale = Math.min(maxLogoW / (image.width || 1), 320 / (image.height || 1))
       const dw = image.width * logoScale
       const dh = image.height * logoScale
@@ -282,7 +268,6 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
     }
 
     const texture = new THREE.CanvasTexture(canvas)
-
     texture.colorSpace = THREE.SRGBColorSpace
     texture.anisotropy = 16
     texture.needsUpdate = true
@@ -297,9 +282,7 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
       new THREE.Vector3(),
       new THREE.Vector3()
     ])
-
     ropeCurve.curveType = 'chordal'
-
     return ropeCurve
   })
 
@@ -326,11 +309,9 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
       ;[j1, j2].forEach(ref => {
         const lerped = getLerped(ref.current)
         const clampedDistance = Math.max(0.1, Math.min(1, lerped.distanceTo(ref.current.translation())))
-
         lerped.lerp(ref.current.translation(), delta * 50 * clampedDistance)
       })
 
-      // Keeps the rope glued to the pin at any card orientation.
       const cardPos = card.current.translation()
       const cardRot = card.current.rotation()
 
@@ -404,7 +385,6 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
         </RigidBody>
       </group>
 
-      {/* Geometry is swapped imperatively each frame, so there is no JSX tubeGeometry child. */}
       <mesh ref={rope} frustumCulled={false}>
         <meshStandardMaterial color={colors.rope} roughness={0.55} metalness={0.15} />
       </mesh>
@@ -429,36 +409,12 @@ const StudioLighting = () => (
   </Environment>
 )
 
-const REFERENCE_HEIGHT_PX = 520
-const CAMERA_Z = 20
-const CAMERA_FOV_DEG = 20
-const WORLD_UNITS_PER_PX = (2 * CAMERA_Z * Math.tan((CAMERA_FOV_DEG / 2) * (Math.PI / 180))) ** -1
-const PX_PER_WORLD_UNIT = REFERENCE_HEIGHT_PX * WORLD_UNITS_PER_PX
-const TARGET_FROM_RIGHT_FRACTION = 0.3
-const TARGET_FROM_RIGHT_FRACTION_AT_LG = 0.15
-const LG_BREAKPOINT_PX = 1024
-const XL_BREAKPOINT_PX = 1280
-
 const CameraAlign = () => {
   useFrame(state => {
-    const widthT = THREE.MathUtils.clamp(
-      (state.size.width - LG_BREAKPOINT_PX) / (XL_BREAKPOINT_PX - LG_BREAKPOINT_PX),
-      0,
-      1
-    )
-
-    const targetFromRightFraction = THREE.MathUtils.lerp(
-      TARGET_FROM_RIGHT_FRACTION_AT_LG,
-      TARGET_FROM_RIGHT_FRACTION,
-      widthT
-    )
-
-    const targetFromRightPx = targetFromRightFraction * state.size.width
-
-    state.camera.position.x = (targetFromRightPx - state.size.width / 2) / PX_PER_WORLD_UNIT
-    state.camera.position.z = CAMERA_Z * (state.size.height / REFERENCE_HEIGHT_PX)
+    state.camera.position.x = 0
+    state.camera.position.y = 1.3
+    state.camera.position.z = 18.5
   })
-
   return null
 }
 
@@ -467,37 +423,29 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
   const [contextLossKey, setContextLossKey] = useState(0)
   const eventSourceRef = useRef<HTMLElement | null>(typeof document !== 'undefined' ? document.body : null)
 
-  // Hidden elements that bridge resolved Tailwind theme colours into canvas / three.js.
   const primaryProbeRef = useRef<HTMLSpanElement>(null)
   const foregroundProbeRef = useRef<HTMLSpanElement>(null)
   const [colors, setColors] = useState<CardColors>({ accent: '#6366F1', rope: '#0F172A' })
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768)
-
     window.addEventListener('resize', handleResize)
-
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   useEffect(() => {
     const updateColors = () => {
       if (!primaryProbeRef.current || !foregroundProbeRef.current) return
-
       const accent = resolveRgb(getComputedStyle(primaryProbeRef.current).fill || '#6366F1')
       const rope = resolveRgb(getComputedStyle(foregroundProbeRef.current).fill || '#0F172A')
-
       setColors(prev => (prev.accent === accent && prev.rope === rope ? prev : { accent, rope }))
     }
 
     updateColors()
 
-    // Watches ancestors' class/style so light/dark switches re-colour the card and rope.
     const observers: MutationObserver[] = []
-
     for (let node: HTMLElement | null = primaryProbeRef.current; node; node = node.parentElement) {
       const observer = new MutationObserver(updateColors)
-
       observer.observe(node, { attributes: true, attributeFilter: ['class', 'style'] })
       observers.push(observer)
     }
@@ -506,13 +454,13 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
   }, [])
 
   return (
-    <div aria-hidden='true' className={cn('pointer-events-none drop-shadow-xl', className)}>
+    <div className={cn('relative w-full h-full overflow-hidden select-none drop-shadow-xl cursor-grab active:cursor-grabbing', className)}>
       <span ref={primaryProbeRef} className='fill-indigo-600 hidden' />
       <span ref={foregroundProbeRef} className='fill-slate-900 hidden' />
       <Canvas
         key={contextLossKey}
         eventSource={eventSourceRef as RefObject<HTMLElement>}
-        camera={{ position: [0, 0, 20], fov: 20 }}
+        camera={{ position: [0, 1.3, 18.5], fov: 24 }}
         dpr={[1, isMobile ? 1.25 : 1.5]}
         gl={{ alpha: true, antialias: true, powerPreference: 'default' }}
         onCreated={state => {
@@ -523,13 +471,11 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
             setContextLossKey(key => key + 1)
           })
 
-          // Pointer NDC from the canvas's own rect, since eventSource is document.body.
           state.setEvents({
             compute: (event, s) => {
               const rect = s.gl.domElement.getBoundingClientRect()
               const x = event.clientX - rect.left
               const y = event.clientY - rect.top
-
               s.pointer.set((x / s.size.width) * 2 - 1, -(y / s.size.height) * 2 + 1)
               s.raycaster.setFromCamera(s.pointer, s.camera)
             }
@@ -551,94 +497,37 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
 /*                               Greeting rotator                             */
 /* -------------------------------------------------------------------------- */
 
-export const GreetingWord = ({ greetings, intervalMs = 2200 }: { greetings: string[]; intervalMs?: number }) => {
+export const GreetingWord = ({ greetings, intervalMs = 2400 }: { greetings: string[]; intervalMs?: number }) => {
   const [index, setIndex] = useState(0)
   const reduceMotion = useReducedMotion()
 
   useEffect(() => {
     if (reduceMotion || greetings.length < 2) return
-
     const timer = setInterval(() => setIndex(prev => (prev + 1) % greetings.length), intervalMs)
-
     return () => clearInterval(timer)
   }, [greetings.length, intervalMs, reduceMotion])
 
   return (
-    <>
-      <span className='sr-only'>{greetings[0]}</span>
-      <span aria-hidden='true' className='mr-2 inline-grid overflow-hidden align-bottom'>
-        {/* Invisible sizers reserve space for the widest greeting so surrounding text doesn't shift */}
-        {greetings.map(word => (
-          <span key={word} className='invisible col-start-1 row-start-1 whitespace-nowrap'>
-            {word}
-          </span>
-        ))}
-
-        <AnimatePresence mode='popLayout' initial={false}>
-          <motion.span
-            key={greetings[index]}
-            initial={{ y: '100%', opacity: 0 }}
-            animate={{ y: '0%', opacity: 1 }}
-            exit={{ y: '-100%', opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeInOut' }}
-            className='col-start-1 row-start-1 inline-block whitespace-nowrap'
-          >
-            {greetings[index]}
-          </motion.span>
-        </AnimatePresence>
-      </span>
-    </>
+    <span className="inline-block relative">
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={greetings[index]}
+          initial={{ y: 8, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -8, opacity: 0 }}
+          transition={{ duration: 0.25, ease: 'easeInOut' }}
+          className="inline-block"
+        >
+          {greetings[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
   )
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                  Marquee                                   */
-/* -------------------------------------------------------------------------- */
-
-const MARQUEE_REPEAT = 4
-const MARQUEE_GAP_REM = 2
-
-export const LogoMarquee = ({ logos, durationSeconds = 25 }: { logos: BrandLogo[]; durationSeconds?: number }) => (
-  <div
-    className='group flex overflow-hidden p-3'
-    style={{ gap: `${MARQUEE_GAP_REM}rem` }}
-    role='group'
-    aria-label='Technology stack'
-  >
-    <style>{`@keyframes hero-section-44-marquee{from{transform:translateX(0)}to{transform:translateX(calc(-100% - ${MARQUEE_GAP_REM}rem))}}@media (prefers-reduced-motion:reduce){.hero-section-44-marquee{animation:none!important}}`}</style>
-    {Array.from({ length: MARQUEE_REPEAT }, (_, copy) => (
-      <div
-        key={copy}
-        aria-hidden={copy > 0 || undefined}
-        className='hero-section-44-marquee flex shrink-0 justify-around group-hover:[animation-play-state:paused]'
-        style={{
-          gap: `${MARQUEE_GAP_REM}rem`,
-          animation: `hero-section-44-marquee ${durationSeconds}s linear infinite`
-        }}
-      >
-        {logos.map((logo, index) => (
-          <div key={`${logo.image}-${index}`} className='bg-slate-100 flex size-16 shrink-0 items-center justify-center rounded-xl border border-slate-200/80 shadow-2xs'>
-            <img
-              src={logo.image}
-              alt={copy === 0 ? logo.name : ''}
-              loading='lazy'
-              className='size-10 object-contain'
-            />
-          </div>
-        ))}
-      </div>
-    ))}
-  </div>
-)
-
-/* -------------------------------------------------------------------------- */
 /*                                 Hero section                               */
 /* -------------------------------------------------------------------------- */
-
-export type BrandLogo = {
-  image: string
-  name: string
-}
 
 export type ActionLink = {
   label: string
@@ -654,56 +543,63 @@ export type HeroSection44Props = {
   profileImage?: string
   downloadAction?: ActionLink
   connectAction?: ActionLink
-  brandLogos?: BrandLogo[]
   className?: string
 }
 
-const CDN_BASE = 'https://cdn.shadcnstudio.com/ss-assets/template/landing-page/zolt'
-
-const DEFAULT_BRAND_LOGOS: BrandLogo[] = Array.from({ length: 20 }, (_, index) => {
-  const position = String(index + 1).padStart(2, '0')
-
-  return { image: `${CDN_BASE}/logo-${position}.png`, name: `Tech stack logo ${position}` }
-})
-
 export const HeroSection44 = ({
-  greetings = ['Hello', 'नमस्ते', 'Hey', 'Welcome'],
-  name = 'vha.lokh',
+  greetings = ['Namaskara', 'Hello', 'नमस्ते', 'Hey'],
   role = 'Where Ideas Take Shape.',
   description = "Need a custom website or digital solution? Alongside software engineering, I undertake select freelance engagements under my independent brand vha.lokh. I collaborate with small businesses, events, and individuals to create responsive websites, bespoke wedding portals, promotional posters, and provide end-to-end IT support.",
-  availabilityLabel = 'Accepting Projects • Mangaluru, IN',
+  availabilityLabel = 'Accepting Engagements • Mangaluru, IN',
   profileImage = '/assets/brand/vha-lokh-symbol-transparent.png',
-  downloadAction = { label: 'Explore Works', href: '#work' },
-  connectAction = { label: "Let's Connect", href: '#contact' },
-  brandLogos = DEFAULT_BRAND_LOGOS,
+  downloadAction = { label: 'See Selected Work', href: '#work' },
+  connectAction = { label: 'Discuss a Project', href: '#contact' },
   className
 }: HeroSection44Props) => {
   return (
-    <section className={cn('bg-[#F8FAFC] text-slate-900 overflow-x-clip lg:relative border-b border-slate-200', className)}>
-      <div className='max-sm:pt-16 sm:py-14 lg:pt-24 lg:pb-20'>
-        <div className='mx-auto max-w-6xl px-4 sm:px-6 lg:px-8'>
-          <div className='space-y-6 lg:max-w-xl'>
-            <span className='bg-white text-indigo-900 border-indigo-100 shadow-2xs inline-flex h-7 w-fit items-center gap-1.5 rounded-full border px-3 text-xs font-semibold'>
-              <span className='relative inline-flex size-2' aria-hidden='true'>
-                <span className='bg-indigo-400 absolute -inset-0.5 rounded-full opacity-75 motion-safe:animate-[ping_1.8s_cubic-bezier(0,0,0.2,1)_infinite]' />
-                <span className='bg-indigo-600 relative inline-flex size-2 rounded-full' />
+    <section className={cn('bg-[#F8FAFC] text-slate-900 overflow-hidden border-b border-slate-200 relative pt-10 pb-0 md:pt-14 md:pb-0', className)}>
+      {/* Background subtle ambient glows */}
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-indigo-100/60 blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 right-1/4 w-80 h-80 rounded-full bg-blue-100/50 blur-3xl pointer-events-none" />
+
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 relative z-10 pb-16 md:pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          {/* Left Column: Heading, Role, Badges, CTAs */}
+          <div className="lg:col-span-7 space-y-6">
+            {/* Status Badge */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50/90 border border-indigo-100 px-4 py-1.5 text-xs font-semibold text-indigo-900 shadow-2xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600" />
               </span>
-              {availabilityLabel}
-            </span>
+              <span className="font-bold">vha.lokh</span>
+              <span className="text-indigo-300">•</span>
+              <span>{role}</span>
+              <span className="text-indigo-300">•</span>
+              <span className="text-indigo-700 font-normal">{availabilityLabel}</span>
+            </div>
 
-            <h1 className='text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-slate-900 leading-[1.12]'>
-              <GreetingWord greetings={greetings} />
-              <span className='bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent'>
-                {name}
-              </span>
-            </h1>
+            {/* Clear Headline with Greeting */}
+            <div className="space-y-1">
+              <div className="text-base font-bold text-indigo-600 flex items-center gap-1.5">
+                <GreetingWord greetings={greetings} />
+                <span>👋🏻 Welcome to vha.lokh</span>
+              </div>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+                Web Solutions That{' '}
+                <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Work for You.
+                </span>
+              </h1>
+            </div>
 
-            <p className='text-slate-700 text-xl font-bold sm:text-2xl'>{role}</p>
-
-            <p className='text-slate-600 mb-4 max-w-2xl text-base leading-relaxed'>{description}</p>
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl">
+              {description}
+            </p>
 
             {/* 4 Core Offerings Pills */}
-            <div className="flex flex-wrap gap-2 pt-1 pb-2">
+            <div className="flex flex-wrap gap-2 pt-1">
               <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-indigo-600" />
                 Small Business Websites
@@ -722,61 +618,112 @@ export const HeroSection44 = ({
               </span>
             </div>
 
-            <div className='flex items-center gap-3 pt-2'>
+            {/* Action Buttons */}
+            <div className="flex items-center gap-3 pt-2">
               <a
                 href={downloadAction.href}
                 onClick={(e) => {
                   if (downloadAction.href.startsWith('#')) {
-                    e.preventDefault();
-                    document.getElementById(downloadAction.href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+                    e.preventDefault()
+                    document.getElementById(downloadAction.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
                   }
                 }}
                 className={cn(
-                  'border-slate-300 bg-white hover:bg-slate-50 text-slate-800 inline-flex h-12 items-center justify-center rounded-xl border px-6 text-sm font-bold whitespace-nowrap transition-colors shadow-2xs',
+                  'bg-slate-900 text-white hover:bg-indigo-600 group inline-flex h-12 items-center justify-center gap-2 rounded-xl px-6 text-sm font-bold whitespace-nowrap shadow-md transition-colors',
                   focusRing
                 )}
               >
-                {downloadAction.label}
+                <span>{downloadAction.label}</span>
+                <ArrowDown className="size-4" />
               </a>
 
               <a
                 href={connectAction.href}
                 onClick={(e) => {
                   if (connectAction.href.startsWith('#')) {
-                    e.preventDefault();
-                    document.getElementById(connectAction.href.slice(1))?.scrollIntoView({ behavior: 'smooth' });
+                    e.preventDefault()
+                    document.getElementById(connectAction.href.slice(1))?.scrollIntoView({ behavior: 'smooth' })
                   }
                 }}
                 className={cn(
-                  'bg-slate-900 text-white hover:bg-indigo-600 group inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-transparent px-6 text-sm font-bold whitespace-nowrap shadow-md transition-all duration-300',
+                  'border-slate-300 bg-white hover:bg-slate-50 text-slate-800 inline-flex h-12 items-center justify-center gap-2 rounded-xl border px-6 text-sm font-bold whitespace-nowrap transition-colors shadow-2xs',
                   focusRing
                 )}
               >
                 <span>{connectAction.label}</span>
-                <ArrowRightIcon
-                  aria-hidden='true'
-                  className='size-4 transition-transform duration-300 group-hover:translate-x-1'
-                />
+                <ArrowRightIcon className="size-4" />
               </a>
             </div>
           </div>
+
+          {/* Right Column: 3D Physics Lanyard Card */}
+          <div className="lg:col-span-5 flex justify-center">
+            <div className="w-full max-w-sm sm:max-w-md h-[440px] sm:h-[480px] rounded-3xl bg-white border border-slate-200/90 shadow-xl p-3 relative overflow-hidden flex flex-col">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-100 px-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span>3D Studio ID Badge</span>
+                </div>
+                <span className="text-[11px] font-medium text-slate-400">Click & Drag to Swing</span>
+              </div>
+              <div className="flex-1 w-full relative">
+                <IdCard
+                  frontImage={profileImage}
+                  className="w-full h-full"
+                />
+              </div>
+            </div>
+          </div>
+
         </div>
-      </div>
 
-      <IdCard
-        frontImage={profileImage}
-        className='mx-auto mt-8 aspect-4/5 w-full max-w-80 max-lg:hidden lg:absolute lg:-top-31 lg:right-0 lg:left-0 lg:z-10 lg:mt-0 lg:aspect-auto lg:h-182 lg:max-w-none'
-      />
+        {/* 4 Pillars Trust Bar */}
+        <div className="mt-16 pt-10 border-t border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <div className="flex items-start gap-3 group">
+            <div className="h-9 w-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs text-indigo-600">
+              <Globe className="h-4 w-4" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-slate-900">Small Business Websites</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Mobile-first, fast, with WhatsApp booking.</p>
+            </div>
+          </div>
 
-      {brandLogos && brandLogos.length > 0 && (
-        <div className='relative mx-auto mt-6 mb-10 w-full max-w-6xl px-4 sm:px-6 lg:px-8'>
-          <div className='from-[#F8FAFC] pointer-events-none absolute inset-y-0 left-0 z-1 w-16 bg-gradient-to-r to-transparent sm:w-28' />
-          <div className='from-[#F8FAFC] pointer-events-none absolute inset-y-0 right-0 z-1 w-16 bg-gradient-to-l to-transparent sm:w-28' />
-          <div className='mx-auto w-full overflow-hidden'>
-            <LogoMarquee logos={brandLogos} />
+          <div className="flex items-start gap-3 group">
+            <div className="h-9 w-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs text-blue-600">
+              <HeartHandshake className="h-4 w-4" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-slate-900">Wedding Portals & Cards</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Live RSVP tracking & countdowns.</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3 group">
+            <div className="h-9 w-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs text-indigo-600">
+              <ImageIcon className="h-4 w-4" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-slate-900">Posters & Marketing</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Promotional flyers & social graphics.</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-3 group">
+            <div className="h-9 w-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs text-blue-600">
+              <Headphones className="h-4 w-4" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-slate-900">Digital & IT Support</h4>
+              <p className="text-xs text-slate-500 mt-0.5">Domains, hosting & tech consulting.</p>
+            </div>
           </div>
         </div>
-      )}
+
+      </div>
+
+      {/* Infinite Scrolling Trust Marquee Ribbon */}
+      <InfiniteMarquee />
     </section>
   )
 }

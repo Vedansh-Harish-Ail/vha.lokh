@@ -67,3 +67,4 @@ export const SpotlightCard: React.FC<SpotlightCardProps> = ({
     </motion.div>
   );
 };
+
