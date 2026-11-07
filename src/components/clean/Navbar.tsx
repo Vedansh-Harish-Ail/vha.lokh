@@ -25,7 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 backdrop-blur-md border-b border-slate-200/80 transition-shadow">
-      <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8 py-3.5">
+      <div className="mx-auto flex h-18 max-w-[1440px] items-center justify-between px-4 sm:px-8 lg:px-12 xl:px-16 py-3.5">
         {/* Official Brand Logo with Pure Transparent Emblem (No Flat Background Box) */}
         <a
           href="#top"

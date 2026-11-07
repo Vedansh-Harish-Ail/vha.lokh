@@ -6,7 +6,7 @@ import { SpotlightCard } from '../ui/SpotlightCard';
 export const BentoFeatures: React.FC = () => {
   return (
     <section className="py-20 md:py-28 bg-[#F8FAFC] border-b border-slate-200">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}

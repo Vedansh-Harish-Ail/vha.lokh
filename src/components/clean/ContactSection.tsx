@@ -38,7 +38,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
 
   return (
     <section id="contact" className="py-20 md:py-28 bg-[#F8FAFC]">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           
           {/* Left Column: Direct Outreach & Info */}

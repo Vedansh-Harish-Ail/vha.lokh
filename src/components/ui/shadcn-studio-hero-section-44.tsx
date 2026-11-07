@@ -1,12 +1,12 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { ReactNode, RefObject } from 'react'
+import type { ReactNode } from 'react'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowRightIcon, ArrowDown, Globe, HeartHandshake, Image as ImageIcon, Headphones } from 'lucide-react'
 import * as THREE from 'three'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import type { ThreeEvent } from '@react-three/fiber'
 import { Environment, Lightformer, useTexture } from '@react-three/drei'
 import { BallCollider, CuboidCollider, Physics, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier'
@@ -28,7 +28,7 @@ const focusRing =
 
 const PIN_IMAGE_URL = 'https://cdn.21st.dev/assets/mirror/ad/ad5d58b0ab86bd893f0ab4792d68136796a8a319061f9a834bbee109941617c0.png'
 
-const ROPE_RADIUS = 0.1
+const ROPE_RADIUS = 0.08
 const ROPE_RADIAL_SEGMENTS = 24
 const ROPE_TAPER_FRACTION = 0.06
 const CARD_ROPE_ANCHOR_Y = 1.1
@@ -43,7 +43,6 @@ const PIN_PLANE_Y = CARD_TOP_EDGE_Y + PIN_PLANE_HEIGHT * -PIN_IMAGE_BOTTOM_PAD_F
 const PIN_PLANE_X = 0
 const PIN_PLANE_Z = ROPE_RADIUS + 0.06
 
-// Card face in the group's local space (scaled x4 below).
 const CARD_WIDTH = 0.716
 const CARD_HEIGHT = 1
 const CARD_BOTTOM_Y = 0.023
@@ -86,7 +85,6 @@ const getLerped = (body: LanyardRigidBody) => {
   if (!body.lerped) {
     body.lerped = new THREE.Vector3().copy(body.translation())
   }
-
   return body.lerped
 }
 
@@ -146,7 +144,6 @@ const buildTaperedTubeGeometry = (
   }
 
   const geometry = new THREE.BufferGeometry()
-
   geometry.setIndex(indices)
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
   geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
@@ -172,11 +169,19 @@ type CardColors = { accent: string; rope: string }
 
 type BandProps = {
   frontImage: string
-  isMobile: boolean
   colors: CardColors
+  onHover: (hovered: boolean) => void
+  onDrag: (dragging: boolean) => void
 }
 
-const Band = ({ frontImage, isMobile, colors }: BandProps) => {
+const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
+  const { viewport } = useThree()
+  const isMobile = viewport.width < 10
+
+  // Position anchor in top-right area (around 72% across the screen)
+  const anchorX = isMobile ? 0 : Math.min(viewport.width * 0.23, 4.6)
+  const anchorY = viewport.height / 2 + 0.8
+
   const rope = useRef<THREE.Mesh>(null!)
   const fixed = useRef<RapierRigidBody>(null!)
   const j1 = useRef<LanyardRigidBody>(null!)
@@ -222,7 +227,7 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
 
       // 2. Draw soft ambient radial glow behind the logo
       const glow = ctx.createRadialGradient(width / 2, height * 0.38, 10, width / 2, height * 0.38, 280)
-      glow.addColorStop(0, 'rgba(99, 102, 241, 0.4)')
+      glow.addColorStop(0, 'rgba(99, 102, 241, 0.45)')
       glow.addColorStop(1, 'rgba(99, 102, 241, 0)')
       ctx.fillStyle = glow
       ctx.fillRect(0, 0, width, height)
@@ -343,7 +348,7 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[anchorX, anchorY, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type='fixed' />
         <RigidBody position={[0.425, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
@@ -359,14 +364,21 @@ const Band = ({ frontImage, isMobile, colors }: BandProps) => {
           <group
             scale={4}
             position={[0, -3.16, -0.09]}
+            onPointerOver={() => onHover(true)}
+            onPointerOut={() => {
+              if (!dragged) onHover(false)
+            }}
             onPointerUp={(e: ThreeEvent<PointerEvent>) => {
               ;(e.target as Element).releasePointerCapture(e.pointerId)
               drag(false)
+              onDrag(false)
+              onHover(false)
               document.body.style.userSelect = ''
             }}
             onPointerDown={(e: ThreeEvent<PointerEvent>) => {
               ;(e.target as Element).setPointerCapture(e.pointerId)
               drag(new THREE.Vector3().copy(e.point).sub(vec.copy(card.current!.translation())))
+              onDrag(true)
               document.body.style.userSelect = 'none'
             }}
           >
@@ -409,29 +421,15 @@ const StudioLighting = () => (
   </Environment>
 )
 
-const CameraAlign = () => {
-  useFrame(state => {
-    state.camera.position.x = 0
-    state.camera.position.y = 1.3
-    state.camera.position.z = 18.5
-  })
-  return null
-}
-
 export const IdCard = ({ frontImage, className }: { frontImage: string; className?: string }) => {
-  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768)
   const [contextLossKey, setContextLossKey] = useState(0)
-  const eventSourceRef = useRef<HTMLElement | null>(typeof document !== 'undefined' ? document.body : null)
+  const [isHovered, setIsHovered] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const primaryProbeRef = useRef<HTMLSpanElement>(null)
   const foregroundProbeRef = useRef<HTMLSpanElement>(null)
   const [colors, setColors] = useState<CardColors>({ accent: '#6366F1', rope: '#0F172A' })
-
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768)
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
 
   useEffect(() => {
     const updateColors = () => {
@@ -454,15 +452,22 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
   }, [])
 
   return (
-    <div className={cn('relative w-full h-full overflow-hidden select-none drop-shadow-xl cursor-grab active:cursor-grabbing', className)}>
+    <div
+      ref={containerRef}
+      className={cn('absolute inset-0 w-full h-full select-none z-20 pointer-events-none', className)}
+    >
       <span ref={primaryProbeRef} className='fill-indigo-600 hidden' />
       <span ref={foregroundProbeRef} className='fill-slate-900 hidden' />
       <Canvas
         key={contextLossKey}
-        eventSource={eventSourceRef as RefObject<HTMLElement>}
-        camera={{ position: [0, 1.3, 18.5], fov: 24 }}
-        dpr={[1, isMobile ? 1.25 : 1.5]}
+        eventSource={typeof document !== 'undefined' ? document.body : undefined}
+        camera={{ position: [0, 0, 20], fov: 24 }}
+        dpr={[1, 1.5]}
         gl={{ alpha: true, antialias: true, powerPreference: 'default' }}
+        style={{
+          pointerEvents: isHovered || isDragging ? 'auto' : 'none',
+          cursor: isDragging ? 'grabbing' : isHovered ? 'grab' : 'default',
+        }}
         onCreated={state => {
           state.gl.setClearAlpha(0)
 
@@ -482,10 +487,14 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
           })
         }}
       >
-        <CameraAlign />
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={[0, -40, 0]} timeStep={isMobile ? 1 / 30 : 1 / 60}>
-          <Band frontImage={frontImage} isMobile={isMobile} colors={colors} />
+        <Physics gravity={[0, -36, 0]} timeStep={1 / 60}>
+          <Band
+            frontImage={frontImage}
+            colors={colors}
+            onHover={setIsHovered}
+            onDrag={setIsDragging}
+          />
         </Physics>
         <StudioLighting />
       </Canvas>
@@ -557,18 +566,25 @@ export const HeroSection44 = ({
   className
 }: HeroSection44Props) => {
   return (
-    <section className={cn('bg-[#F8FAFC] text-slate-900 overflow-hidden border-b border-slate-200 relative pt-10 pb-0 md:pt-14 md:pb-0', className)}>
+    <section className={cn('bg-[#F8FAFC] text-slate-900 overflow-hidden border-b border-slate-200 relative pt-12 pb-0 md:pt-16 md:pb-0 min-h-[580px] lg:min-h-[660px]', className)}>
       {/* Background subtle ambient glows */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-indigo-100/60 blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 w-80 h-80 rounded-full bg-blue-100/50 blur-3xl pointer-events-none" />
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 relative z-10 pb-16 md:pb-20">
+      {/* Free 3D Physics Lanyard Card (NO container box, stretches over whole screen) */}
+      <IdCard
+        frontImage={profileImage}
+        className="absolute inset-0 w-full h-full z-20"
+      />
+
+      {/* Widen container: max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16 */}
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 pb-16 md:pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
-          {/* Left Column: Heading, Role, Badges, CTAs */}
-          <div className="lg:col-span-7 space-y-6">
+          {/* Left Column: Heading, Role, Badges, CTAs (z-30 pointer-events-auto) */}
+          <div className="lg:col-span-7 space-y-6 relative z-30 pointer-events-auto">
             {/* Status Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50/90 border border-indigo-100 px-4 py-1.5 text-xs font-semibold text-indigo-900 shadow-2xs">
+            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50/90 border border-indigo-100 px-4 py-1.5 text-xs font-semibold text-indigo-900 shadow-2xs backdrop-blur-xs">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-600" />
@@ -600,19 +616,19 @@ export const HeroSection44 = ({
 
             {/* 4 Core Offerings Pills */}
             <div className="flex flex-wrap gap-2 pt-1">
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-indigo-600" />
                 Small Business Websites
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-blue-600" />
                 Wedding Portals & Cards
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-indigo-600" />
                 Posters & Marketing
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 rounded-xl bg-white border border-slate-200 px-3.5 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs">
                 <span className="h-2 w-2 rounded-full bg-blue-600" />
                 Digital & IT Support
               </span>
@@ -656,29 +672,19 @@ export const HeroSection44 = ({
             </div>
           </div>
 
-          {/* Right Column: 3D Physics Lanyard Card */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="w-full max-w-sm sm:max-w-md h-[440px] sm:h-[480px] rounded-3xl bg-white border border-slate-200/90 shadow-xl p-3 relative overflow-hidden flex flex-col">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-100 px-2">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>3D Studio ID Badge</span>
-                </div>
-                <span className="text-[11px] font-medium text-slate-400">Click & Drag to Swing</span>
-              </div>
-              <div className="flex-1 w-full relative">
-                <IdCard
-                  frontImage={profileImage}
-                  className="w-full h-full"
-                />
-              </div>
+          {/* Right Column: Open canvas area reserved for the 3D free badge hanging */}
+          <div className="lg:col-span-5 h-[340px] sm:h-[400px] lg:h-[460px] pointer-events-none relative flex items-center justify-center">
+            {/* Subtle floating hint */}
+            <div className="hidden lg:flex items-center gap-2 absolute top-4 right-4 text-[11px] font-semibold text-slate-400 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-full border border-slate-200/80 shadow-2xs pointer-events-auto">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Interactive 3D Lanyard • Drag anywhere</span>
             </div>
           </div>
 
         </div>
 
         {/* 4 Pillars Trust Bar */}
-        <div className="mt-16 pt-10 border-t border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-6">
+        <div className="mt-16 pt-10 border-t border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-6 relative z-10">
           <div className="flex items-start gap-3 group">
             <div className="h-9 w-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs text-indigo-600">
               <Globe className="h-4 w-4" />
