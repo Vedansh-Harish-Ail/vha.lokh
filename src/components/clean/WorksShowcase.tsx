@@ -5,26 +5,60 @@ import { Project } from '../../types';
 
 export const WorksShowcase: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  const categories = ['All', 'Small Business Website', 'B2B & Industrial Website', 'Wedding Portal & Card'];
+
+  const filteredProjects =
+    activeCategory === 'All'
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.category === activeCategory);
 
   return (
     <section id="work" className="py-20 md:py-28 bg-white border-b border-stone-200">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="max-w-2xl mb-16 space-y-3">
-          <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-700">
-            <span>Portfolio & Real Work</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-2xl space-y-3">
+            <div className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-700">
+              <span>Portfolio & Real Work</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-900">
+              Real Websites Built for Real Businesses
+            </h2>
+            <p className="text-base sm:text-lg text-stone-600 leading-relaxed font-normal">
+              Take a look at actual live websites we've engineered. Every project is built to make the client look professional, trustworthy, and easy to contact.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-900">
-            Real Websites Built for Real Businesses
-          </h2>
-          <p className="text-base sm:text-lg text-stone-600 leading-relaxed font-normal">
-            Take a look at actual live websites we've engineered. Every project is built to make the client look professional, trustworthy, and easy to contact.
-          </p>
+
+          {/* 21st.dev Category Filter Pills */}
+          <div className="flex flex-wrap gap-2">
+            {categories.map((cat) => {
+              const count = cat === 'All' ? PROJECTS.length : PROJECTS.filter((p) => p.category === cat).length;
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                    isActive
+                      ? 'bg-brand-700 text-white shadow-sm'
+                      : 'bg-stone-100 text-stone-600 hover:bg-stone-200 hover:text-stone-900'
+                  }`}
+                >
+                  <span>{cat === 'All' ? 'All Projects' : cat.replace(' Website', 's')}</span>
+                  <span className={`ml-1.5 px-1.5 py-0.5 rounded text-[10px] ${isActive ? 'bg-brand-800 text-brand-100' : 'bg-stone-200 text-stone-600'}`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Project Cards List */}
         <div className="space-y-16">
-          {PROJECTS.map((project, idx) => (
+          {filteredProjects.map((project, idx) => (
             <div
               key={project.id}
               className="bg-[#FAF9F5] border border-stone-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
@@ -199,4 +233,3 @@ export const WorksShowcase: React.FC = () => {
     </section>
   );
 };
-
