@@ -43,33 +43,43 @@ export const FAQAccordion: React.FC = () => {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-white border-b border-stone-200">
+    <section className="py-20 md:py-28 bg-[#F8FAFC] border-b border-slate-200">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full bg-stone-100 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-stone-700">
-            <HelpCircle className="h-3.5 w-3.5 text-brand-700" />
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="text-center max-w-2xl mx-auto mb-14 space-y-3"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-indigo-700 shadow-2xs">
+            <HelpCircle className="h-3.5 w-3.5 text-indigo-600" />
             <span>Common Questions</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-900">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Frequently Asked Questions
           </h2>
-          <p className="text-base text-stone-600 font-normal">
+          <p className="text-base text-slate-600 font-normal">
             Everything you need to know about our services, turnaround timelines, and working together.
           </p>
-        </div>
+        </motion.div>
 
         {/* 21st.dev Style Smooth Accordion List */}
         <div className="space-y-3.5">
           {faqs.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.05, duration: 0.3 }}
                 className={`rounded-2xl border transition-all ${
                   isOpen
-                    ? 'bg-[#FAF9F5] border-stone-300 shadow-sm'
-                    : 'bg-white border-stone-200 hover:border-stone-300'
+                    ? 'bg-white border-slate-300 shadow-md'
+                    : 'bg-white/80 border-slate-200 hover:border-slate-300'
                 }`}
               >
                 <button
@@ -77,14 +87,14 @@ export const FAQAccordion: React.FC = () => {
                   onClick={() => toggle(idx)}
                   className="w-full flex items-center justify-between p-6 text-left group"
                 >
-                  <span className="text-base sm:text-lg font-bold text-stone-900 group-hover:text-brand-700 transition-colors">
+                  <span className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
                     {faq.question}
                   </span>
                   <div
                     className={`h-8 w-8 rounded-full border flex items-center justify-center shrink-0 ml-4 transition-transform duration-200 ${
                       isOpen
-                        ? 'rotate-180 bg-brand-700 border-brand-700 text-white'
-                        : 'border-stone-200 text-stone-500 bg-white group-hover:border-stone-400'
+                        ? 'rotate-180 bg-indigo-600 border-indigo-600 text-white'
+                        : 'border-slate-200 text-slate-500 bg-white group-hover:border-slate-400'
                     }`}
                   >
                     <ChevronDown className="h-4 w-4" />
@@ -100,13 +110,13 @@ export const FAQAccordion: React.FC = () => {
                       transition={{ duration: 0.25, ease: 'easeInOut' }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-6 pt-1 text-sm text-stone-600 leading-relaxed border-t border-stone-200/60">
+                      <div className="px-6 pb-6 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100">
                         {faq.answer}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>

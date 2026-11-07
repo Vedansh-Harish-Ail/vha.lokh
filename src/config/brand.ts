@@ -28,6 +28,7 @@ export const PROJECTS: Project[] = [
       'Fast loading speed optimized for 4G connections'
     ],
     image: '/assets/projects/mata-refrigeration.jpg',
+    mobileImage: '/assets/projects/mata-refrigeration-mobile.png',
     liveUrl: 'https://matha-profile.vercel.app/',
     featured: true,
   },
@@ -47,6 +48,7 @@ export const PROJECTS: Project[] = [
       'Sub-2-second loading speed on smartphones'
     ],
     image: '/assets/projects/dimple-beauty-salon.jpg',
+    mobileImage: '/assets/projects/dimple-beauty-salon-mobile.jpg',
     liveUrl: 'https://dimple-beauty-salon.vercel.app/',
     featured: true,
   },
@@ -65,6 +67,7 @@ export const PROJECTS: Project[] = [
       'Service catalog for bridal, party, and editorial makeup'
     ],
     image: '/assets/projects/vrinda-makeup-artist.jpg',
+    mobileImage: '/assets/projects/vrinda-makeup-artist.jpg',
     liveUrl: 'https://vrinda-make-up-artist.vercel.app/',
     featured: true,
   },
@@ -83,6 +86,7 @@ export const PROJECTS: Project[] = [
       'Works seamlessly across all smartphones'
     ],
     image: '/assets/projects/lekhak-and-anupallavi.jpg',
+    mobileImage: '/assets/projects/lekhak-and-anupallavi-mobile.png',
     liveUrl: 'https://lekhak-and-anupallavi.vercel.app/',
     featured: true,
   },

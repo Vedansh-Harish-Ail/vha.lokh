@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, Menu, X, ArrowUpRight } from 'lucide-react';
 import { STUDIO_CONFIG } from '../../config/brand';
 
@@ -23,7 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 backdrop-blur-md border-b border-slate-200/80">
+    <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 backdrop-blur-md border-b border-slate-200/80 transition-shadow">
       <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8 py-3.5">
         {/* Official Brand Logo with Pure Transparent Emblem (No Flat Background Box) */}
         <a
@@ -35,10 +36,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
           className="flex items-center gap-3 group"
         >
           {/* Pure transparent ribbon emblem without flat background box */}
-          <img
+          <motion.img
             src="/assets/brand/vha-lokh-symbol-transparent.png"
             alt="vha.lokh emblem"
-            className="h-8 md:h-9 w-auto object-contain transition-transform group-hover:scale-105"
+            whileHover={{ scale: 1.08 }}
+            transition={{ type: 'spring', damping: 15, stiffness: 350 }}
+            className="h-8 md:h-9 w-auto object-contain cursor-pointer"
           />
 
           <div className="flex flex-col">
@@ -54,30 +57,38 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
         {/* Desktop Links */}
         <nav className="hidden md:flex items-center gap-7">
           {navLinks.map((link) => (
-            <button
+            <motion.button
               key={link.id}
               onClick={() => handleNavClick(link.id)}
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.96 }}
               className="text-xs font-semibold uppercase tracking-wider text-slate-600 hover:text-indigo-600 transition-colors"
             >
               {link.label}
-            </button>
+            </motion.button>
           ))}
         </nav>
 
         {/* Action Button & Location Badge */}
         <div className="hidden sm:flex items-center gap-4">
           <span className="hidden lg:inline-flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
             <span>Mangaluru, IN</span>
           </span>
 
-          <button
+          <motion.button
             onClick={() => handleNavClick('contact')}
-            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4.5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-600 transition-colors"
+            whileHover={{ y: -1.5, scale: 1.02 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', damping: 15, stiffness: 400 }}
+            className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4.5 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-indigo-600 transition-colors"
           >
             <span>Get in Touch</span>
             <ArrowUpRight className="h-3.5 w-3.5" />
-          </button>
+          </motion.button>
         </div>
 
         {/* Mobile menu button */}
@@ -91,30 +102,38 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
       </div>
 
       {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 bg-white px-6 py-6 shadow-lg animate-in fade-in duration-150">
-          <nav className="flex flex-col space-y-4">
-            {navLinks.map((link) => (
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden border-b border-slate-200 bg-white px-6 py-6 shadow-lg overflow-hidden"
+          >
+            <nav className="flex flex-col space-y-4">
+              {navLinks.map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => handleNavClick(link.id)}
+                  className="text-left text-sm font-bold uppercase tracking-wider text-slate-800 hover:text-indigo-600"
+                >
+                  {link.label}
+                </button>
+              ))}
+            </nav>
+            <div className="mt-6 pt-6 border-t border-slate-100">
               <button
-                key={link.id}
-                onClick={() => handleNavClick(link.id)}
-                className="text-left text-sm font-bold uppercase tracking-wider text-slate-800 hover:text-indigo-600"
+                onClick={() => handleNavClick('contact')}
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 transition-colors"
               >
-                {link.label}
+                <MessageSquare className="h-4 w-4" />
+                <span>Discuss Your Requirement</span>
               </button>
-            ))}
-          </nav>
-          <div className="mt-6 pt-6 border-t border-slate-100">
-            <button
-              onClick={() => handleNavClick('contact')}
-              className="w-full flex items-center justify-center gap-2 rounded-xl bg-slate-900 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 transition-colors"
-            >
-              <MessageSquare className="h-4 w-4" />
-              <span>Discuss Your Requirement</span>
-            </button>
-          </div>
-        </div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

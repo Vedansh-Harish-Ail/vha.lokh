@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Calculator, Check, MessageCircle, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Calculator, Check, MessageCircle, ArrowRight, Clock } from 'lucide-react';
 import { STUDIO_CONFIG } from '../../config/brand';
 
 export const ScopeCalculator: React.FC = () => {
@@ -46,47 +47,66 @@ export const ScopeCalculator: React.FC = () => {
   };
 
   return (
-    <section id="estimator" className="py-20 md:py-28 bg-[#FAF9F5] border-b border-stone-200">
+    <section id="estimator" className="py-20 md:py-28 bg-[#F8FAFC] border-b border-slate-200">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
-          <div className="inline-flex items-center gap-2 rounded-full bg-white border border-stone-200 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-brand-700 shadow-sm">
-            <Calculator className="h-3.5 w-3.5" />
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="text-center max-w-2xl mx-auto mb-14 space-y-3"
+        >
+          <div className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-indigo-700 shadow-2xs">
+            <Calculator className="h-3.5 w-3.5 text-indigo-600" />
             <span>Interactive Project Estimator</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-900">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             Configure Your Digital Requirement
           </h2>
-          <p className="text-base text-stone-600 font-normal">
+          <p className="text-base text-slate-600 font-normal">
             Select the service you need and desired features to see estimated turnaround times and initiate a direct conversation.
           </p>
-        </div>
+        </motion.div>
 
         {/* The Interactive Estimator Card (21st.dev Component) */}
-        <div className="bg-white rounded-2xl border border-stone-200 p-6 sm:p-10 shadow-sm">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm"
+        >
           <div className="space-y-8">
             {/* Step 1: Service Type */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-3">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
                 1. Select Service Category
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {serviceTypes.map((type) => {
                   const isSelected = selectedType.id === type.id;
                   return (
-                    <button
+                    <motion.button
                       key={type.id}
                       type="button"
                       onClick={() => setSelectedType(type)}
-                      className={`p-4 rounded-xl text-left border transition-all flex items-center justify-between ${
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ type: 'spring', damping: 20, stiffness: 350 }}
+                      className={`p-4 rounded-2xl text-left border transition-all flex items-center justify-between ${
                         isSelected
-                          ? 'bg-brand-50/70 border-brand-700 text-brand-900 shadow-sm font-semibold'
-                          : 'bg-stone-50/50 border-stone-200 text-stone-700 hover:border-stone-300'
+                          ? 'bg-indigo-50/80 border-indigo-600 text-indigo-950 shadow-xs font-semibold'
+                          : 'bg-slate-50/60 border-slate-200 text-slate-700 hover:border-slate-300'
                       }`}
                     >
-                      <span className="text-sm">{type.label}</span>
-                      {isSelected && <Check className="h-4 w-4 text-brand-700" />}
-                    </button>
+                      <span className="text-sm font-medium">{type.label}</span>
+                      {isSelected && (
+                        <div className="h-5 w-5 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0">
+                          <Check className="h-3.5 w-3.5" />
+                        </div>
+                      )}
+                    </motion.button>
                   );
                 })}
               </div>
@@ -94,58 +114,76 @@ export const ScopeCalculator: React.FC = () => {
 
             {/* Step 2: Features Needed */}
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-3">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
                 2. Key Deliverables Required
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 {featureOptions.map((feature) => {
                   const isChecked = selectedFeatures.includes(feature.id);
                   return (
-                    <button
+                    <motion.button
                       key={feature.id}
                       type="button"
                       onClick={() => toggleFeature(feature.id)}
-                      className={`p-3.5 rounded-xl text-left border text-xs font-medium transition-all flex items-center gap-3 ${
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ type: 'spring', damping: 20, stiffness: 350 }}
+                      className={`p-3.5 rounded-2xl text-left border text-xs font-medium transition-all flex items-center gap-3 ${
                         isChecked
                           ? 'bg-emerald-50/70 border-emerald-600 text-emerald-950 font-semibold'
-                          : 'bg-white border-stone-200 text-stone-600 hover:bg-stone-50'
+                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
                       }`}
                     >
                       <div
-                        className={`h-4 w-4 rounded flex items-center justify-center shrink-0 border ${
-                          isChecked ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-stone-300'
+                        className={`h-4.5 w-4.5 rounded-md flex items-center justify-center shrink-0 border transition-colors ${
+                          isChecked ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300'
                         }`}
                       >
                         {isChecked && <Check className="h-3 w-3" />}
                       </div>
                       <span>{feature.label}</span>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
             </div>
 
             {/* Step 3: Summary Output & Action */}
-            <div className="pt-6 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#FAF9F5] p-6 rounded-xl">
+            <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200/80">
               <div>
-                <span className="text-xs text-stone-500 font-medium">Estimated Delivery Turnaround</span>
-                <div className="flex items-baseline gap-2 mt-0.5">
-                  <span className="text-2xl font-bold text-stone-900">{selectedType.turnaround}</span>
-                  <span className="text-xs text-stone-500 font-medium">typical delivery timeline</span>
-                </div>
+                <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-indigo-600" />
+                  <span>Estimated Delivery Turnaround</span>
+                </span>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={selectedType.turnaround}
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex items-baseline gap-2 mt-0.5"
+                  >
+                    <span className="text-2xl font-extrabold text-slate-900">{selectedType.turnaround}</span>
+                    <span className="text-xs text-slate-500 font-medium">typical delivery timeline</span>
+                  </motion.div>
+                </AnimatePresence>
               </div>
 
-              <button
+              <motion.button
                 onClick={handleWhatsAppInquiry}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 text-sm font-semibold shadow-sm transition-colors"
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', damping: 15, stiffness: 400 }}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 text-sm font-bold shadow-md hover:shadow-emerald-600/20 transition-colors"
               >
                 <MessageCircle className="h-4 w-4" />
                 <span>Discuss This on WhatsApp</span>
                 <ArrowRight className="h-4 w-4" />
-              </button>
+              </motion.button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

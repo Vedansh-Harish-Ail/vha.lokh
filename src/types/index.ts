@@ -7,6 +7,7 @@ export interface Project {
   description: string;
   whatWeDid: string[];
   image: string;
+  mobileImage?: string;
   liveUrl: string;
   featured: boolean;
 }
