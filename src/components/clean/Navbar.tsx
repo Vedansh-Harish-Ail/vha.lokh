@@ -23,9 +23,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 backdrop-blur-md border-b border-slate-200">
+    <header className="sticky top-0 z-40 w-full bg-[#F8FAFC]/90 backdrop-blur-md border-b border-slate-200/80">
       <div className="mx-auto flex h-18 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8 py-3.5">
-        {/* Official Brand Logo */}
+        {/* Official Brand Logo with Pure Transparent Emblem (No Flat Background Box) */}
         <a
           href="#top"
           onClick={(e) => {
@@ -34,14 +34,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
           }}
           className="flex items-center gap-3 group"
         >
-          {/* Official Emblem Logo */}
-          <div className="h-9 w-9 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center p-1.5 shadow-sm group-hover:border-indigo-500 transition-colors">
-            <img
-              src="/assets/brand/vha-lokh-symbol.jpg"
-              alt="vha.lokh logo mark"
-              className="h-full w-full object-contain rounded-lg"
-            />
-          </div>
+          {/* Pure transparent ribbon emblem without flat background box */}
+          <img
+            src="/assets/brand/vha-lokh-symbol-transparent.png"
+            alt="vha.lokh emblem"
+            className="h-8 md:h-9 w-auto object-contain transition-transform group-hover:scale-105"
+          />
 
           <div className="flex flex-col">
             <span className="font-extrabold text-lg tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">

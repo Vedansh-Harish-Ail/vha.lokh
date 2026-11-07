@@ -13,13 +13,12 @@ export const Footer: React.FC = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center p-1 shadow-sm">
-                <img
-                  src="/assets/brand/vha-lokh-symbol.jpg"
-                  alt="vha.lokh logo mark"
-                  className="h-full w-full object-contain rounded"
-                />
-              </div>
+              {/* Pure transparent ribbon mark without flat background box */}
+              <img
+                src="/assets/brand/vha-lokh-symbol-transparent.png"
+                alt="vha.lokh logo mark"
+                className="h-8 w-auto object-contain"
+              />
               <div className="flex flex-col">
                 <span className="font-extrabold text-lg text-slate-900 tracking-tight">
                   {STUDIO_CONFIG.name}
