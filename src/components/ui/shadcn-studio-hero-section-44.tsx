@@ -172,15 +172,16 @@ type BandProps = {
   colors: CardColors
   onHover: (hovered: boolean) => void
   onDrag: (dragging: boolean) => void
+  targetNormalizedX?: number
 }
 
-const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
+const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.38 }: BandProps) => {
   const { viewport } = useThree()
   const isMobile = viewport.width < 10
 
-  // Position anchor in top-right area (around 72% across the screen)
-  const anchorX = isMobile ? 0 : Math.min(viewport.width * 0.23, 4.6)
-  const anchorY = viewport.height / 2 + 0.8
+  // Position anchor directly above the designated right-hand hero slot
+  const anchorX = isMobile ? 0 : targetNormalizedX * (viewport.width / 2)
+  const anchorY = viewport.height / 2 + 0.5
 
   const rope = useRef<THREE.Mesh>(null!)
   const fixed = useRef<RapierRigidBody>(null!)
@@ -191,7 +192,6 @@ const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
 
   const vec = new THREE.Vector3()
   const ang = new THREE.Vector3()
-  const rot = new THREE.Vector3()
   const dir = new THREE.Vector3()
   const cardQuat = new THREE.Quaternion()
 
@@ -199,7 +199,7 @@ const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
     type: 'dynamic',
     canSleep: true,
     colliders: false,
-    angularDamping: 1.5,
+    angularDamping: 2.0,
     linearDamping: 1.5
   }
 
@@ -293,9 +293,9 @@ const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
 
   const [dragged, drag] = useState<THREE.Vector3 | false>(false)
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 0.85])
-  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 0.85])
-  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 0.85])
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 0.75])
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 0.75])
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 0.75])
   useSphericalJoint(j3, card, [
     [0, 0, 0],
     [0, CARD_ROPE_ANCHOR_Y, 0]
@@ -311,6 +311,8 @@ const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
     }
 
     if (fixed.current) {
+      fixed.current.setTranslation({ x: anchorX, y: anchorY, z: 0 }, true)
+
       ;[j1, j2].forEach(ref => {
         const lerped = getLerped(ref.current)
         const clampedDistance = Math.max(0.1, Math.min(1, lerped.distanceTo(ref.current.translation())))
@@ -341,8 +343,15 @@ const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
       oldRopeGeometry.dispose()
 
       ang.copy(card.current.angvel())
-      rot.copy(card.current.rotation() as unknown as THREE.Vector3)
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, true)
+      // Restoring torques to keep card facing forward and upright
+      card.current.setAngvel(
+        {
+          x: ang.x - cardRot.x * 2.0,
+          y: ang.y - cardRot.y * 1.5,
+          z: ang.z - cardRot.z * 2.0
+        },
+        true
+      )
     }
   })
 
@@ -350,20 +359,20 @@ const Band = ({ frontImage, colors, onHover, onDrag }: BandProps) => {
     <>
       <group position={[anchorX, anchorY, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type='fixed' />
-        <RigidBody position={[0.425, 0, 0]} ref={j1} {...segmentProps}>
-          <BallCollider args={[0.1]} />
+        <RigidBody position={[0, -0.6, 0]} ref={j1} {...segmentProps}>
+          <BallCollider args={[0.08]} />
         </RigidBody>
-        <RigidBody position={[0.85, 0, 0]} ref={j2} {...segmentProps}>
-          <BallCollider args={[0.1]} />
+        <RigidBody position={[0, -1.2, 0]} ref={j2} {...segmentProps}>
+          <BallCollider args={[0.08]} />
         </RigidBody>
-        <RigidBody position={[1.275, 0, 0]} ref={j3} {...segmentProps}>
-          <BallCollider args={[0.1]} />
+        <RigidBody position={[0, -1.8, 0]} ref={j3} {...segmentProps}>
+          <BallCollider args={[0.08]} />
         </RigidBody>
-        <RigidBody position={[1.7, 0, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
-          <CuboidCollider args={[1.42, 2.0, 0.018]} />
+        <RigidBody position={[0, -2.5, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
+          <CuboidCollider args={[1.35, 1.9, 0.018]} />
           <group
-            scale={4}
-            position={[0, -3.16, -0.09]}
+            scale={3.6}
+            position={[0, -2.85, -0.09]}
             onPointerOver={() => onHover(true)}
             onPointerOut={() => {
               if (!dragged) onHover(false)
@@ -421,7 +430,15 @@ const StudioLighting = () => (
   </Environment>
 )
 
-export const IdCard = ({ frontImage, className }: { frontImage: string; className?: string }) => {
+export const IdCard = ({
+  frontImage,
+  className,
+  targetNormalizedX
+}: {
+  frontImage: string
+  className?: string
+  targetNormalizedX?: number
+}) => {
   const [contextLossKey, setContextLossKey] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
@@ -494,6 +511,7 @@ export const IdCard = ({ frontImage, className }: { frontImage: string; classNam
             colors={colors}
             onHover={setIsHovered}
             onDrag={setIsDragging}
+            targetNormalizedX={targetNormalizedX}
           />
         </Physics>
         <StudioLighting />
@@ -565,8 +583,30 @@ export const HeroSection44 = ({
   connectAction = { label: 'Discuss a Project', href: '#contact' },
   className
 }: HeroSection44Props) => {
+  const heroRef = useRef<HTMLElement>(null)
+  const slotRef = useRef<HTMLDivElement>(null)
+  const [normalizedAnchorX, setNormalizedAnchorX] = useState<number>(0.38)
+
+  useEffect(() => {
+    const updateAnchor = () => {
+      if (!heroRef.current || !slotRef.current) return
+      const heroRect = heroRef.current.getBoundingClientRect()
+      const slotRect = slotRef.current.getBoundingClientRect()
+      if (heroRect.width > 0 && slotRect.width > 0) {
+        // Calculate center of slot relative to hero container
+        const slotCenterX = (slotRect.left + slotRect.width / 2) - heroRect.left
+        const norm = (slotCenterX / heroRect.width) * 2 - 1
+        setNormalizedAnchorX(norm)
+      }
+    }
+
+    updateAnchor()
+    window.addEventListener('resize', updateAnchor)
+    return () => window.removeEventListener('resize', updateAnchor)
+  }, [])
+
   return (
-    <section className={cn('bg-[#F8FAFC] text-slate-900 overflow-hidden border-b border-slate-200 relative pt-12 pb-0 md:pt-16 md:pb-0 min-h-[580px] lg:min-h-[660px]', className)}>
+    <section ref={heroRef} className={cn('bg-[#F8FAFC] text-slate-900 overflow-hidden border-b border-slate-200 relative pt-12 pb-0 md:pt-16 md:pb-0 min-h-[580px] lg:min-h-[660px]', className)}>
       {/* Background subtle ambient glows */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-indigo-100/60 blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 w-80 h-80 rounded-full bg-blue-100/50 blur-3xl pointer-events-none" />
@@ -575,6 +615,7 @@ export const HeroSection44 = ({
       <IdCard
         frontImage={profileImage}
         className="absolute inset-0 w-full h-full z-20"
+        targetNormalizedX={normalizedAnchorX}
       />
 
       {/* Widen container: max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16 */}
@@ -672,14 +713,8 @@ export const HeroSection44 = ({
             </div>
           </div>
 
-          {/* Right Column: Open canvas area reserved for the 3D free badge hanging */}
-          <div className="lg:col-span-5 h-[340px] sm:h-[400px] lg:h-[460px] pointer-events-none relative flex items-center justify-center">
-            {/* Subtle floating hint */}
-            <div className="hidden lg:flex items-center gap-2 absolute top-4 right-4 text-[11px] font-semibold text-slate-400 bg-white/80 backdrop-blur-xs px-3 py-1 rounded-full border border-slate-200/80 shadow-2xs pointer-events-auto">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Interactive 3D Lanyard • Drag anywhere</span>
-            </div>
-          </div>
+          {/* Right Column: Open area reserved for the 3D free badge hanging directly in slot */}
+          <div ref={slotRef} className="lg:col-span-5 h-[340px] sm:h-[400px] lg:h-[460px] pointer-events-none relative flex items-center justify-center" />
 
         </div>
 
