@@ -1,50 +1,44 @@
 # vha.lokh ®
-### Independent Digital Creative & Technology Studio
+### Web Design & Digital Studio | Mangalore, India
 
-> A bespoke brand website engineered at the intersection of **Experimental Brutalism** and **Editorial Luxury**. Built to communicate a high-craft creative identity, modern digital craftsmanship, and technical excellence.
+> Clean, modern, high-impact websites designed and engineered for small businesses, salons, clinics, independent professionals, and personal brands.
 
 ---
 
-## Brand Architecture & Positioning
-- **Studio Name**: `vha.lokh`
-- **Category**: Independent Digital Creative / Technology Studio
-- **Design Doctrine**: Restraint over novelty, code as physical material, enduring spatial architecture.
-- **Palette**: Obsidian (`#080808`), Warm Bone (`#f4f2ec`), Acid Lime (`#d4ff3f`), Hairline Borders (`rgba(244, 242, 236, 0.08)`).
-- **Typography**: 
-  - Display: `Syne`
-  - Editorial: `Instrument Serif`
-  - Body: `Plus Jakarta Sans`
-  - Monospace: `JetBrains Mono`
+## Brand Positioning & Approach
+* **Brand Name**: `vha.lokh`
+* **Studio Tagline**: Clean, High-Impact Web Design for Growing Businesses
+* **Location**: Mangalore, Karnataka, India (Serving clients worldwide)
+* **Design Philosophy**: Approachable, decent, warm, and professional. Zero confusing tech jargon. Every element is built to establish trust, showcase real work, and turn visitors into paying clients.
+* **Aesthetic**: Warm porcelain linen (`#FAF9F5`), deep charcoal typography (`#18181B`), forest emerald accents (`#0F766E`), and clean stone borders (`#E8E5DD`).
 
 ---
 
 ## Core Sections & Features
-1. **Dynamic Custom Cursor** (`CustomCursor.tsx`) — Spring-interpolated cursor with adaptive contextual modes (`VIEW`, `CLICK`). Auto-disabled on touch devices.
-2. **Analog Film Grain Simulation** (`NoiseOverlay.tsx`) — Zero-cost SVG fractal noise texture for editorial tactility.
-3. **Studio Live Telemetry** (`LiveTelemetry.tsx`) — Real-time clock (Delhi IST / UTC+05:30), live millisecond ticks, active commission status badge.
-4. **Interactive Hero Experience** (`HeroSection.tsx`) — Kinetic interactive letters `vha.lokh` with spring physics on hover, studio thesis, magnetic CTA buttons.
-5. **Continuous Kinetic Marquees** (`Marquee.tsx`) — Infinite velocity ticker with hover pause.
-6. **The Studio Manifesto** (`ManifestoSection.tsx`) — Asymmetric editorial storytelling and primary directives.
-7. **Disciplines & Practices** (`DisciplinesSection.tsx`) — Interactive accordion showcase of studio practices, scope rationale, deliverables, and tech tools.
-8. **Selected Works** (`SelectedWorksSection.tsx`) — Asymmetric project cards with filter pills, hover zoom, and deep-dive drawer.
-9. **Architectural Spec Drawer** (`ProjectModal.tsx`) — Comprehensive case study breakdown with challenge, solution, metrics, tech stack, and live links.
-10. **The Doctrine of Restraint** (`PhilosophySection.tsx`) — 4-quadrant brutalist manifesto grid.
-11. **The Production Protocol** (`ProcessSection.tsx`) — 5-phase interactive execution lifecycle.
-12. **Studio Interactive Lab** (`LabSection.tsx`, `InteractiveLab.tsx`) — 60fps hardware-accelerated Canvas 2D deflection matrix with wave, gravity, and matrix modes.
-13. **Audio Haptic System** (`AudioHaptic.tsx`) — Native Web Audio API procedural sound engine with click, hover, and frequency pulses (muted by default with header toggle).
-14. **Commissioning Portal** (`ContactSection.tsx`) — Interactive brief transmitter with scope selector and one-click email clipboard.
-15. **Closing Brand Stamp** (`BrandFooter.tsx`) — Monumental typographic stamp `VHA.LOKH ©`, timezone monitor, and channel index.
-
----
-
-## Technical Stack
-- **Framework**: React 19 + TypeScript
-- **Bundler**: Vite
-- **Styling**: Tailwind CSS
-- **Animation**: Framer Motion
-- **Icons**: Lucide React + Bespoke SVGs
-- **Typography**: Google Fonts (`Syne`, `Instrument Serif`, `Plus Jakarta Sans`, `JetBrains Mono`)
-- **Audio**: Web Audio API Procedural Synthesizer
+1. **Clean Navigation** ([`Navbar.tsx`](file:///c:/MY%20PROJECTS/vha.lokh/src/components/clean/Navbar.tsx)): Fast, lightweight navbar with Mangalore availability status and quick contact triggers.
+2. **Value-First Hero** ([`Hero.tsx`](file:///c:/MY%20PROJECTS/vha.lokh/src/components/clean/Hero.tsx)):
+   * Plain English headline and subhead.
+   * 4 key client reassurance pillars: *100% Mobile Ready*, *WhatsApp & Call Booking*, *Fast Loading*, *Based in Mangalore*.
+   * Clear action buttons: `See What We've Built` and `Discuss Your Project`.
+3. **Real Client Works Showcase** ([`WorksShowcase.tsx`](file:///c:/MY%20PROJECTS/vha.lokh/src/components/clean/WorksShowcase.tsx)):
+   * **Dimple Beauty Salon**: Luxury ladies salon in Kopar Khairane with 258+ Google reviews and WhatsApp booking.
+   * **VRINDA Makeup Artistry**: Bridal and editorial portfolio with high-resolution photo galleries.
+   * **Lekhak & Anupallavi**: Digital celebration invitation with interactive RSVP and memory archives.
+   * Direct live link buttons to view live deployments.
+4. **Tailored Services** ([`ServicesSection.tsx`](file:///c:/MY%20PROJECTS/vha.lokh/src/components/clean/ServicesSection.tsx)):
+   * Small Business & Salon Websites
+   * Professional & Personal Portfolios
+   * Wedding & Event Websites
+   * Website Redesign & Speed Optimization
+5. **Simple 4-Step Process** ([`HowItWorksSection.tsx`](file:///c:/MY%20PROJECTS/vha.lokh/src/components/clean/HowItWorksSection.tsx)):
+   * Chat & Planning ➔ Design Preview ➔ Build & Testing ➔ Launch & Handoff.
+6. **Friendly Contact Hub** ([`ContactSection.tsx`](file:///c:/MY%20PROJECTS/vha.lokh/src/components/clean/ContactSection.tsx)):
+   * Direct 1-tap WhatsApp consultation button.
+   * Instant email copy with status feedback.
+   * Clean, intuitive message inquiry form.
+7. **Clean Footer** ([`Footer.tsx`](file:///c:/MY%20PROJECTS/vha.lokh/src/components/clean/Footer.tsx)):
+   * Studio location: Mangalore, India.
+   * Direct navigation and copyright.
 
 ---
 
@@ -62,10 +56,3 @@ npm run build
 # Preview production build locally
 npm run preview
 ```
-
----
-
-## Brand Configuration
-All studio content, project data, capabilities, and availability parameters are centrally maintained and editable in:
-`src/config/brand.ts`
-

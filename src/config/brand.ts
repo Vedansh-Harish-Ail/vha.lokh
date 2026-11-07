@@ -1,231 +1,148 @@
-import { StudioConfig, Discipline, Project, PhilosophyTenet, ProcessStage } from '../types';
+import { StudioConfig, Project, Service } from '../types';
 
 export const STUDIO_CONFIG: StudioConfig = {
   name: 'vha.lokh',
-  identityTagline: 'Independent Digital Creative & Technology Studio',
-  metaDescription: 'Engineering high-craft web experiences, bespoke digital brand systems, and creative software architectures with editorial precision and technical rigor.',
-  studioLocation: 'Mangalore / Global Remote',
-  timeZone: 'Asia/Kolkata',
-  established: '2024',
-  status: {
-    availability: 'Accepting Commissions',
-    quarter: 'Q2 / Q3 2025',
-    notice: 'Direct creative direction & engineering commissions available for select engagements.'
-  },
-  contact: {
-    email: 'contact@vhalokh.studio',
-    calendly: 'https://cal.com/vhalokh',
-    locationCity: 'Mangalore',
-    country: 'India'
-  },
-  social: {
-    github: 'https://github.com/vhalokh',
-    twitter: 'https://twitter.com/vhalokh',
-    linkedin: 'https://linkedin.com/company/vhalokh',
-    readcv: 'https://read.cv/vhalokh'
-  }
+  tagline: 'Clean, High-Impact Web Design for Growing Businesses',
+  subheading: 'Based in Mangalore. We build clean, fast, and mobile-friendly websites for small businesses, salons, clinics, professionals, and personal brands.',
+  location: 'Mangalore, India',
+  email: 'contact@vhalokh.studio',
+  whatsappNumber: '+919999999999', // User can update their business WhatsApp
+  whatsappMessage: 'Hi, I would like to discuss building a website for my business.',
+  availability: 'Available for New Projects',
 };
 
-export const DISCIPLINES: Discipline[] = [
+export const PROJECTS: Project[] = [
   {
-    id: 'web-experiences',
-    code: '01',
-    title: 'High-Craft Web Experiences',
-    tagline: 'Defying disposable templates with bespoke editorial interaction.',
-    description: 'We conceive and engineer digital experiences characterized by meticulous art direction, bespoke typography systems, fluid physics-based interactions, and immersive spatial hierarchy.',
-    capabilities: [
-      'Art Directed Brand Websites',
-      'Editorial & Cultural Portals',
-      'Interactive Storytelling Environments',
-      'Micro-interactions & Physics Animation',
-      'Responsive Architectural Layouts'
+    id: 'dimple-beauty-salon',
+    title: 'Dimple Beauty Salon',
+    subtitle: 'Luxury ladies salon in Kopar Khairane, Navi Mumbai',
+    category: 'Local Business & Salon',
+    clientType: 'Beauty & Wellness Flagship',
+    description: 'A clean, welcoming website built for an acclaimed women-owned beauty parlour. Designed to showcase their hair, skin, and bridal services while making it effortless for local visitors to book appointments on WhatsApp or phone.',
+    whatWeDid: [
+      'Clean, luxury design matching salon interiors',
+      'Direct WhatsApp & phone call booking buttons',
+      'Clear service menu with transparent pricing',
+      'Google 4.6★ rating & 258+ reviews integration',
+      'Bilingual interface (English & Hindi)',
+      'Fast loading on mobile phones'
     ],
-    tools: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'WebGL/Canvas', 'Lenis']
-  },
-  {
-    id: 'creative-engineering',
-    code: '02',
-    title: 'Creative Engineering & Systems',
-    tagline: 'Bridging avant-garde aesthetic vision and performant production code.',
-    description: 'We treat code as a physical material. Every animation curve, state machine, and render cycle is measured against 60fps frame budgets and uncompromising accessibility standards.',
-    capabilities: [
-      'Full-Stack Web Architectures',
-      'Secure REST & GraphQL APIs',
-      'Custom Design Systems & Tokens',
-      'High-Performance Database Systems',
-      'State Caching & Client-Side Persistence'
-    ],
-    tools: ['React', 'Next.js', 'Python', 'FastAPI', 'Flask', 'PostgreSQL', 'Tailwind CSS']
-  },
-  {
-    id: 'digital-brand-identity',
-    code: '03',
-    title: 'Digital Brand Architecture',
-    tagline: 'Translating strategic brand intent into systematic digital ecosystems.',
-    description: 'A brand in the digital age is not a static PDF styleguide. It is living typography, motion rhythm, interaction sound, and systematic digital cohesion across every touchpoint.',
-    capabilities: [
-      'Digital Design Direction',
-      'Typographic Pairing & Hierarchy',
-      'Motion Design & Kinetic Guides',
-      'Interactive Design Tokens',
-      'Interactive Design Systems'
-    ],
-    tools: ['Figma', 'Design Systems', 'Typography Engineering', 'Token Orchestration']
-  },
-  {
-    id: 'creative-tooling',
-    code: '04',
-    title: 'Experimental Interfaces & Tools',
-    tagline: 'Designing tomorrow’s interactive instruments and digital artifacts.',
-    description: 'From generative UI interfaces to developer tools and bespoke creative software, we explore the outer boundaries of human-computer interaction with rigor and restraint.',
-    capabilities: [
-      'Generative UI Interfaces',
-      'Creative Coding & Visual Tools',
-      'Interactive Audio-Visual Toys',
-      'Bespoke Micro-APIs & SDKs',
-      'Real-Time Telemetry & Data Visuals'
-    ],
-    tools: ['Web Audio API', 'Canvas 2D', 'Web Workers', 'Dynamic REST APIs']
-  }
-];
-
-export const SELECTED_WORKS: Project[] = [
-  {
-    id: 'lekhak-and-anupallavi',
-    slug: 'lekhak-and-anupallavi',
-    title: 'Lekhak & Anupallavi',
-    subtitle: 'The Wedding Celebration — Editorial digital invitation & interactive guest archive.',
-    category: 'Editorial Luxury',
-    year: '2025',
-    clientOrContext: 'Anupallavi & Lekhak Wedding Commission',
-    description: '"Join us as we begin our next chapter, surrounded by the people we love most." A bespoke digital wedding publication translating sacred tradition and romantic warmth into modern progressive web architecture. Features an interactive photo archive, ceremonial event itinerary, dynamic RSVP workflow, and instant mobile responsiveness.',
-    challenge: 'Translating the emotional intimacy, ceremony timeline, and cultural sanctity of an Indian wedding into a timeless web publication accessible across multi-generational guest cohorts and cellular connections.',
-    solution: 'Designed an editorial typographic layout with Next.js image optimization, progressive asset loading, interactive photo gallery archives, and frictionless real-time RSVP submission handling.',
-    metrics: '100% Mobile Guest RSVP Completion, Sub-1.2s First Contentful Paint.',
-    deliverables: ['Digital Wedding Publication', 'Interactive Photo Archive', 'Real-Time RSVP Portal', 'Mobile-Optimized Interface'],
-    techStack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-    image: '/assets/projects/lekhak-and-anupallavi.jpg',
-    liveUrl: 'https://lekhak-and-anupallavi.vercel.app/',
-    featured: true
+    image: '/assets/projects/dimple-beauty-salon.jpg',
+    liveUrl: 'https://dimple-beauty-salon.vercel.app/',
+    featured: true,
   },
   {
     id: 'vrinda-makeup-artist',
-    slug: 'vrinda-makeup-artist',
-    title: 'VRINDA Artistry',
-    subtitle: 'Bridal & Editorial Artist — Enhancing your natural beauty with elegance.',
-    category: 'Brand Experience',
-    year: '2024',
-    clientOrContext: 'Vrinda Luxury Makeup Studio',
-    description: '"Bridal & Editorial Artist — Enhancing Your Natural Beauty with Elegance." A high-contrast luxury digital identity and portfolio for a premier makeup artist. Emphasizes fine cosmetic textures, bridal collections, and friction-free consultation booking workflows.',
-    challenge: 'Showcasing high-definition bridal photography and fine cosmetic details without degrading mobile loading speed or compromising the brand’s luxury editorial presence.',
-    solution: 'Constructed a moody, high-contrast dark aesthetic with tailored Tailwind container queries, progressive image loading, floating channel access, and instant WhatsApp / calendar consultation scheduling pathways.',
-    metrics: 'Significant surge in direct bridal inquiries and organic appointment bookings.',
-    deliverables: ['Luxury Digital Flagship', 'Curated Editorial Portfolio', 'Direct WhatsApp & Call Dispatch', 'Responsive Motion'],
-    techStack: ['Tailwind CSS', 'JavaScript', 'CSS Grid', 'Micro-Interactions'],
+    title: 'VRINDA Makeup Artistry',
+    subtitle: 'Bridal & editorial makeup artist portfolio',
+    category: 'Creative Portfolio',
+    clientType: 'Bridal & Fashion Artist',
+    description: 'A high-contrast luxury portfolio designed for a premier bridal makeup artist. High-resolution photo galleries showcase real bridal transformations, while floating WhatsApp and call buttons ensure prospective brides can initiate consultations instantly.',
+    whatWeDid: [
+      'High-resolution visual showcase for bridal looks',
+      'Elegant dark aesthetic with smooth mobile pacing',
+      'Floating 1-tap WhatsApp consultation button',
+      'Fast photo loading optimized for mobile data',
+      'Service catalog for bridal, party, and editorial makeup'
+    ],
     image: '/assets/projects/vrinda-makeup-artist.jpg',
     liveUrl: 'https://vrinda-make-up-artist.vercel.app/',
-    featured: true
+    featured: true,
   },
   {
-    id: 'dimple-beauty-salon',
-    slug: 'dimple-beauty-salon',
-    title: 'Dimple Beauty Salon',
-    subtitle: 'Timeless Beauty, Personally Crafted — Luxury ladies salon in Kopar Khairane.',
-    category: 'Digital Flagship',
-    year: '2024',
-    clientOrContext: 'Dimple Beauty Salon, Kopar Khairane, Navi Mumbai',
-    description: '"Timeless Beauty, Personally Crafted." A ladies-only sanctuary in Kopar Khairane, Navi Mumbai — trusted for over a decade for quietly luxurious hair, skin, nail, and bridal care. Features a bilingual interface (English/Hindi), Google 4.6★ reviews social proof with 258+ reviews, live operational status, interactive service catalog, and direct WhatsApp/call booking pathways.',
-    challenge: 'Elevating an established local luxury salon into an authoritative digital destination that builds instant trust and converts visitors into confirmed appointments.',
-    solution: 'Crafted an emerald and gold luxury visual identity pairing classical Cormorant Garamond typography with DM Sans readability, category-filtered treatment accordions, and one-tap appointment triggers.',
-    metrics: 'Rated 4.6★ on Google with 258+ verified client reviews; instant mobile booking conversion.',
-    deliverables: ['Digital Flagship Web Platform', 'Bilingual (EN/HI) Experience', 'Interactive Treatment Menu', 'Google Reviews Integration', 'Direct WhatsApp & Call Dispatch'],
-    techStack: ['React', 'Tailwind CSS', 'Cormorant Garamond', 'DM Sans', 'Local SEO Architecture'],
-    image: '/assets/projects/dimple-beauty-salon.jpg',
-    liveUrl: 'https://dimple-beauty-salon.vercel.app/',
-    featured: true
+    id: 'lekhak-and-anupallavi',
+    title: 'Lekhak & Anupallavi',
+    subtitle: 'Digital wedding invitation & interactive guest portal',
+    category: 'Event & Wedding Experience',
+    clientType: 'Wedding Celebration',
+    description: 'A modern digital celebration portal created to replace paper invites with an interactive experience. Family and friends can read the couple’s story, check ceremony timings, browse photo archives, and submit their attendance through an online RSVP form.',
+    whatWeDid: [
+      'Digital invitation with warm, editorial typography',
+      'Interactive photo gallery archive',
+      'Online guest RSVP form system',
+      'Event schedule and venue directions',
+      'Works seamlessly on all smartphones'
+    ],
+    image: '/assets/projects/lekhak-and-anupallavi.jpg',
+    liveUrl: 'https://lekhak-and-anupallavi.vercel.app/',
+    featured: true,
+  },
+];
+
+export const SERVICES: Service[] = [
+  {
+    id: 'business-websites',
+    title: 'Small Business & Salon Websites',
+    tagline: 'Get found on Google and convert visitors into paying clients.',
+    description: 'A complete, professional website tailored for local businesses—salons, clinics, cafes, boutiques, and service providers. Includes WhatsApp chat buttons, Google Maps location, and your full service list.',
+    benefits: [
+      'Direct 1-tap WhatsApp & phone call buttons',
+      'Google Maps & review integration',
+      'Menu / service list with pricing',
+      'Sub-2-second loading on mobile phones'
+    ],
+    bestFor: 'Salons, clinics, local shops, restaurants, and service businesses.'
   },
   {
-    id: 'monolith-os',
-    slug: 'monolith-os',
-    title: 'Monolith OS',
-    subtitle: 'Experimental brutalist spatial interface and audio-tactile web workspace.',
-    category: 'Creative Engineering',
-    year: '2025',
-    clientOrContext: 'Studio Internal R&D Lab',
-    description: 'A tactile, minimalist desktop web environment built around monolithic geometric containers, instantaneous local state synchronization, and zero-latency keyboard command palettes.',
-    challenge: 'Reinventing spatial desktop navigation in the browser without relying on dated skeuomorphism or bloated legacy desktop window managers.',
-    solution: 'Designed an uncompromised monochrome design system with custom spring physics, micro-feedback audio haptics, and instant client-side state caching.',
-    metrics: 'Sub-30ms interaction latency, 100% lighthouse accessibility score.',
-    deliverables: ['Web Application', 'Custom Spring Physics Engine', 'Design System Spec'],
-    techStack: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Web Audio API'],
-    image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
-    liveUrl: 'https://github.com/vhalokh',
-    sourceUrl: 'https://github.com/vhalokh',
-    featured: false
+    id: 'portfolio-websites',
+    title: 'Professional & Personal Portfolios',
+    tagline: 'Showcase your work with credibility and elegance.',
+    description: 'For makeup artists, photographers, architects, designers, doctors, and independent consultants who need to look established, display their past work, and receive high-value client inquiries.',
+    benefits: [
+      'High-resolution visual galleries that load fast',
+      'About section telling your experience and story',
+      'Client testimonials and project breakdowns',
+      'Frictionless contact & inquiry form'
+    ],
+    bestFor: 'Makeup artists, photographers, doctors, consultants, and creators.'
+  },
+  {
+    id: 'event-wedding-portals',
+    title: 'Wedding & Event Websites',
+    tagline: 'Replace paper invites with an unforgettable digital experience.',
+    description: 'Custom celebration websites for weddings, milestones, and corporate events. Share ceremonial schedules, venue directions, and collected photo galleries with real-time online guest RSVPs.',
+    benefits: [
+      'Interactive online RSVP collection',
+      'Ceremony timeline & venue Google Maps link',
+      'Digital photo album & memory archive',
+      'Accessible to all age groups on any phone'
+    ],
+    bestFor: 'Couples, wedding planners, event organizers, and celebrations.'
+  },
+  {
+    id: 'redesign-speed',
+    title: 'Website Redesign & Upgrades',
+    tagline: 'Turn your slow, outdated website into a modern asset.',
+    description: 'Already have a website that looks dated, loads slowly, or does not work properly on mobile? We rebuild it from the ground up to be lightning-fast, modern, and easy for your customers to use.',
+    benefits: [
+      'Full mobile responsiveness overhaul',
+      'Instant loading speed improvements',
+      'Modern, clean visual design',
+      'No messy plugins or security vulnerabilities'
+    ],
+    bestFor: 'Businesses with existing websites that need a fresh, modern look.'
   }
 ];
 
-export const PHILOSOPHY_TENETS: PhilosophyTenet[] = [
-  {
-    number: '01',
-    title: 'Substance Over Novelty',
-    subtitle: 'Aesthetic presence anchored in functional depth.',
-    elaboration: 'We reject ephemeral visual tricks that degrade usability. True avant-garde design does not conceal weak foundations; it clarifies purpose through radical visual hierarchy and uncompromising structural integrity.'
-  },
-  {
-    number: '02',
-    title: 'Extreme Kinetic Restraint',
-    subtitle: 'Motion is punctuation, never filler.',
-    elaboration: 'Every transition, deceleration curve, and scroll transformation must communicate physical weight and spatial intent. If an animation does not inform the user of spatial orientation or brand texture, it is eliminated.'
-  },
-  {
-    number: '03',
-    title: 'Code as Physical Material',
-    subtitle: 'Craftsmanship down to the single pixel and frame budget.',
-    elaboration: 'We do not view development as mechanical assembly of external libraries. We hand-tune DOM structures, CSS architectures, and state machines like precision instruments, guaranteeing timeless longevity.'
-  },
-  {
-    number: '04',
-    title: 'Enduring Brand Architecture',
-    subtitle: 'Building digital spaces that outlast the trends.',
-    elaboration: 'Generic SaaS templates expire in six months. By grounding our visual language in timeless Swiss typography, asymmetric editorial tension, and monochrome discipline, we build digital homes that remain legendary.'
-  }
-];
-
-export const PROCESS_STAGES: ProcessStage[] = [
+export const HOW_IT_WORKS = [
   {
     step: '01',
-    title: 'Discovery & Strategic Framing',
-    focus: 'Deconstructing brand essence, competitive vacuum, and architectural requirements.',
-    deliverables: ['Brand Thesis', 'Spatial Flow Map', 'Art Direction Moodboard', 'Technical Scope Matrix'],
-    timeline: 'Week 01'
+    title: 'Quick Chat & Planning',
+    description: 'We talk about your business, the pages you need, your brand colors, and the goals you want to achieve.'
   },
   {
     step: '02',
-    title: 'Conceptualization & Art Direction',
-    focus: 'Establishing distinctive typographic voice, color contrast tokens, and interactive compositions.',
-    deliverables: ['Editorial Grid System', 'High-Fidelity Compositions', 'Interactive Design Tokens', 'Motion Grammar'],
-    timeline: 'Week 02'
+    title: 'Design Preview',
+    description: 'We share a visual design preview tailored to your brand. You review it, suggest adjustments, and we refine it.'
   },
   {
     step: '03',
-    title: 'Prototyping & Motion Engineering',
-    focus: 'Validating spring physics, gesture models, audio-visual feedback, and responsive transitions.',
-    deliverables: ['Interactive Code Prototype', 'Animation Curve Tuning', 'Responsive Stress-Tests'],
-    timeline: 'Week 03'
+    title: 'Build & Mobile Testing',
+    description: 'We develop your website, optimize it for phone screens, hook up your WhatsApp buttons, contact forms, and Google links.'
   },
   {
     step: '04',
-    title: 'Production Engineering & Optimization',
-    focus: 'Building the full production system in React, TypeScript, and modern headless infrastructure.',
-    deliverables: ['Production Web System', 'Accessibility Verification (WCAG AAA)', 'Performance Audit (100 Core Web Vitals)'],
-    timeline: 'Weeks 04 — 05'
-  },
-  {
-    step: '05',
-    title: 'Deployment & Living Stewardship',
-    focus: 'Deploying to edge CDN infrastructure, setting up telemetry, and handing off editable architectures.',
-    deliverables: ['Global Edge Deployment', 'Design Token Documentation', 'Living Component Library'],
-    timeline: 'Week 06'
+    title: 'Launch & Handoff',
+    description: 'Your website goes live on your custom domain (.com / .in). We hand it over with clear instructions and ongoing support.'
   }
 ];
