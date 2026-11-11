@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import React, { Component, useEffect, useMemo, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
@@ -88,7 +88,48 @@ const getLerped = (body: LanyardRigidBody) => {
   return body.lerped
 }
 
-const buildTaperedTubeGeometry = (
+// Pre-allocate geometry once: fixed topology, UVs, and indices
+const createTaperedTubeGeometry = (
+  tubularSegments: number,
+  radialSegments: number
+) => {
+  const vertexCount = (tubularSegments + 1) * (radialSegments + 1)
+  const positions = new Float32Array(vertexCount * 3)
+  const normals = new Float32Array(vertexCount * 3)
+  const uvs = new Float32Array(vertexCount * 2)
+  const indices: number[] = []
+
+  for (let j = 1; j <= tubularSegments; j++) {
+    for (let i = 1; i <= radialSegments; i++) {
+      const a = (radialSegments + 1) * (j - 1) + (i - 1)
+      const b = (radialSegments + 1) * j + (i - 1)
+      const c = (radialSegments + 1) * j + i
+      const d = (radialSegments + 1) * (j - 1) + i
+      indices.push(a, b, d)
+      indices.push(b, c, d)
+    }
+  }
+
+  let uvIdx = 0
+  for (let i = 0; i <= tubularSegments; i++) {
+    const t = i / tubularSegments
+    for (let j = 0; j <= radialSegments; j++) {
+      uvs[uvIdx++] = t
+      uvs[uvIdx++] = j / radialSegments
+    }
+  }
+
+  const geometry = new THREE.BufferGeometry()
+  geometry.setIndex(indices)
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3))
+  geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2))
+  return geometry
+}
+
+// In-place buffer update on each frame: ZERO allocations, ZERO WebGL memory churn
+const updateTaperedTubeGeometry = (
+  geometry: THREE.BufferGeometry,
   curve: THREE.CatmullRomCurve3,
   tubularSegments: number,
   radius: number,
@@ -96,13 +137,13 @@ const buildTaperedTubeGeometry = (
   taperFraction: number
 ) => {
   const frames = curve.computeFrenetFrames(tubularSegments, false)
-  const positions: number[] = []
-  const normals: number[] = []
-  const uvs: number[] = []
-  const indices: number[] = []
+  const posAttr = geometry.attributes.position as THREE.BufferAttribute
+  const normAttr = geometry.attributes.normal as THREE.BufferAttribute
+  const positions = posAttr.array as Float32Array
+  const normals = normAttr.array as Float32Array
 
-  const vertex = new THREE.Vector3()
-  const normal = new THREE.Vector3()
+  let pIdx = 0
+  let nIdx = 0
 
   for (let i = 0; i <= tubularSegments; i++) {
     const t = i / tubularSegments
@@ -116,53 +157,49 @@ const buildTaperedTubeGeometry = (
       const sin = Math.sin(angle)
       const cos = -Math.cos(angle)
 
-      normal.x = cos * N.x + sin * B.x
-      normal.y = cos * N.y + sin * B.y
-      normal.z = cos * N.z + sin * B.z
-      normal.normalize()
-      normals.push(normal.x, normal.y, normal.z)
+      const nx = cos * N.x + sin * B.x
+      const ny = cos * N.y + sin * B.y
+      const nz = cos * N.z + sin * B.z
+      const len = Math.hypot(nx, ny, nz) || 1
+      const normX = nx / len
+      const normY = ny / len
+      const normZ = nz / len
 
-      vertex.x = point.x + ringRadius * normal.x
-      vertex.y = point.y + ringRadius * normal.y
-      vertex.z = point.z + ringRadius * normal.z
-      positions.push(vertex.x, vertex.y, vertex.z)
+      normals[nIdx++] = normX
+      normals[nIdx++] = normY
+      normals[nIdx++] = normZ
 
-      uvs.push(t, j / radialSegments)
+      positions[pIdx++] = point.x + ringRadius * normX
+      positions[pIdx++] = point.y + ringRadius * normY
+      positions[pIdx++] = point.z + ringRadius * normZ
     }
   }
 
-  for (let j = 1; j <= tubularSegments; j++) {
-    for (let i = 1; i <= radialSegments; i++) {
-      const a = (radialSegments + 1) * (j - 1) + (i - 1)
-      const b = (radialSegments + 1) * j + (i - 1)
-      const c = (radialSegments + 1) * j + i
-      const d = (radialSegments + 1) * (j - 1) + i
-
-      indices.push(a, b, d)
-      indices.push(b, c, d)
-    }
-  }
-
-  const geometry = new THREE.BufferGeometry()
-  geometry.setIndex(indices)
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
-  geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3))
-  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2))
-
-  return geometry
+  posAttr.needsUpdate = true
+  normAttr.needsUpdate = true
 }
 
-const resolveRgb = (cssColor: string) => {
-  const canvas = document.createElement('canvas')
-  canvas.width = 1
-  canvas.height = 1
-  const ctx = canvas.getContext('2d', { willReadFrequently: true })
-  if (!ctx) return 'rgb(0 0 0)'
-  ctx.clearRect(0, 0, 1, 1)
-  ctx.fillStyle = cssColor
-  ctx.fillRect(0, 0, 1, 1)
-  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
-  return `rgb(${r}, ${g}, ${b})`
+// Resilient React ErrorBoundary to prevent any 3D/WebGL error from crashing the page into a white screen
+class CanvasErrorBoundary extends Component<
+  { children: React.ReactNode; fallback?: React.ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false }
+
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error: unknown) {
+    console.warn('Canvas Error Boundary caught an issue and recovered gracefully:', error)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || null
+    }
+    return this.props.children
+  }
 }
 
 type CardColors = { accent: string; rope: string }
@@ -175,7 +212,7 @@ type BandProps = {
   targetNormalizedX?: number
 }
 
-const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.38 }: BandProps) => {
+const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.56 }: BandProps) => {
   const { viewport } = useThree()
   const isMobile = viewport.width < 10
 
@@ -206,6 +243,11 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.38 }:
   const frontTexture = useTexture(frontImage)
   const pinTexture = useTexture(PIN_IMAGE_URL)
   const cardGeometry = useMemo(() => buildCardFaceGeometry(), [])
+  // Allocate rope BufferGeometry ONCE: fixed memory, zero GPU buffer allocation in useFrame
+  const ropeGeometry = useMemo(
+    () => createTaperedTubeGeometry(32, ROPE_RADIAL_SEGMENTS),
+    []
+  )
 
   const cardMap = useMemo(() => {
     const width = Math.round(CARD_WIDTH * CARD_CANVAS_SCALE)
@@ -331,16 +373,15 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.38 }:
       curve.points[2].copy(getLerped(j1.current))
       curve.points[3].copy(fixed.current.translation())
 
-      const oldRopeGeometry = rope.current.geometry
-
-      rope.current.geometry = buildTaperedTubeGeometry(
+      // In-place buffer update (no dispose(), no new BufferGeometry, ZERO WebGL memory churn)
+      updateTaperedTubeGeometry(
+        ropeGeometry,
         curve,
-        isMobile ? 16 : 32,
+        32,
         ROPE_RADIUS,
         ROPE_RADIAL_SEGMENTS,
         ROPE_TAPER_FRACTION
       )
-      oldRopeGeometry.dispose()
 
       ang.copy(card.current.angvel())
       // Restoring torques to keep card facing forward and upright
@@ -371,7 +412,7 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.38 }:
         <RigidBody position={[0, -2.5, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
           <CuboidCollider args={[1.35, 1.9, 0.018]} />
           <group
-            scale={3.6}
+            scale={3.5}
             position={[0, -2.85, -0.09]}
             onPointerOver={() => onHover(true)}
             onPointerOut={() => {
@@ -406,7 +447,7 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.38 }:
         </RigidBody>
       </group>
 
-      <mesh ref={rope} frustumCulled={false}>
+      <mesh ref={rope} geometry={ropeGeometry} frustumCulled={false}>
         <meshStandardMaterial color={colors.rope} roughness={0.55} metalness={0.15} />
       </mesh>
     </>
@@ -444,78 +485,57 @@ export const IdCard = ({
   const [isDragging, setIsDragging] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const primaryProbeRef = useRef<HTMLSpanElement>(null)
-  const foregroundProbeRef = useRef<HTMLSpanElement>(null)
-  const [colors, setColors] = useState<CardColors>({ accent: '#6366F1', rope: '#0F172A' })
-
-  useEffect(() => {
-    const updateColors = () => {
-      if (!primaryProbeRef.current || !foregroundProbeRef.current) return
-      const accent = resolveRgb(getComputedStyle(primaryProbeRef.current).fill || '#6366F1')
-      const rope = resolveRgb(getComputedStyle(foregroundProbeRef.current).fill || '#0F172A')
-      setColors(prev => (prev.accent === accent && prev.rope === rope ? prev : { accent, rope }))
-    }
-
-    updateColors()
-
-    const observers: MutationObserver[] = []
-    for (let node: HTMLElement | null = primaryProbeRef.current; node; node = node.parentElement) {
-      const observer = new MutationObserver(updateColors)
-      observer.observe(node, { attributes: true, attributeFilter: ['class', 'style'] })
-      observers.push(observer)
-    }
-
-    return () => observers.forEach(observer => observer.disconnect())
-  }, [])
+  // Use clean, stable theme colors without expensive MutationObservers
+  const colors: CardColors = { accent: '#6366F1', rope: '#0F172A' }
 
   return (
     <div
       ref={containerRef}
       className={cn('absolute inset-0 w-full h-full select-none z-20 pointer-events-none', className)}
     >
-      <span ref={primaryProbeRef} className='fill-indigo-600 hidden' />
-      <span ref={foregroundProbeRef} className='fill-slate-900 hidden' />
-      <Canvas
-        key={contextLossKey}
-        eventSource={typeof document !== 'undefined' ? document.body : undefined}
-        camera={{ position: [0, 0, 20], fov: 24 }}
-        dpr={[1, 1.5]}
-        gl={{ alpha: true, antialias: true, powerPreference: 'default' }}
-        style={{
-          pointerEvents: isHovered || isDragging ? 'auto' : 'none',
-          cursor: isDragging ? 'grabbing' : isHovered ? 'grab' : 'default',
-        }}
-        onCreated={state => {
-          state.gl.setClearAlpha(0)
+      <CanvasErrorBoundary>
+        <Canvas
+          key={contextLossKey}
+          eventSource={typeof document !== 'undefined' ? document.body : undefined}
+          camera={{ position: [0, 0, 20], fov: 24 }}
+          dpr={[1, 1.5]}
+          gl={{ alpha: true, antialias: true, powerPreference: 'default' }}
+          style={{
+            pointerEvents: isHovered || isDragging ? 'auto' : 'none',
+            cursor: isDragging ? 'grabbing' : isHovered ? 'grab' : 'default',
+          }}
+          onCreated={state => {
+            state.gl.setClearAlpha(0)
 
-          state.gl.domElement.addEventListener('webglcontextlost', event => {
-            event.preventDefault()
-            setContextLossKey(key => key + 1)
-          })
+            state.gl.domElement.addEventListener('webglcontextlost', event => {
+              event.preventDefault()
+              setContextLossKey(key => key + 1)
+            })
 
-          state.setEvents({
-            compute: (event, s) => {
-              const rect = s.gl.domElement.getBoundingClientRect()
-              const x = event.clientX - rect.left
-              const y = event.clientY - rect.top
-              s.pointer.set((x / (rect.width || 1)) * 2 - 1, -(y / (rect.height || 1)) * 2 + 1)
-              s.raycaster.setFromCamera(s.pointer, s.camera)
-            }
-          })
-        }}
-      >
-        <ambientLight intensity={Math.PI} />
-        <Physics gravity={[0, -36, 0]} timeStep={1 / 60}>
-          <Band
-            frontImage={frontImage}
-            colors={colors}
-            onHover={setIsHovered}
-            onDrag={setIsDragging}
-            targetNormalizedX={targetNormalizedX}
-          />
-        </Physics>
-        <StudioLighting />
-      </Canvas>
+            state.setEvents({
+              compute: (event, s) => {
+                const rect = s.gl.domElement.getBoundingClientRect()
+                const x = event.clientX - rect.left
+                const y = event.clientY - rect.top
+                s.pointer.set((x / (rect.width || 1)) * 2 - 1, -(y / (rect.height || 1)) * 2 + 1)
+                s.raycaster.setFromCamera(s.pointer, s.camera)
+              }
+            })
+          }}
+        >
+          <ambientLight intensity={Math.PI} />
+          <Physics gravity={[0, -36, 0]} timeStep={1 / 60}>
+            <Band
+              frontImage={frontImage}
+              colors={colors}
+              onHover={setIsHovered}
+              onDrag={setIsDragging}
+              targetNormalizedX={targetNormalizedX}
+            />
+          </Physics>
+          <StudioLighting />
+        </Canvas>
+      </CanvasErrorBoundary>
     </div>
   )
 }
@@ -585,7 +605,7 @@ export const HeroSection44 = ({
 }: HeroSection44Props) => {
   const heroRef = useRef<HTMLElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
-  const [normalizedAnchorX, setNormalizedAnchorX] = useState<number>(0.38)
+  const [normalizedAnchorX, setNormalizedAnchorX] = useState<number>(0.56)
 
   useEffect(() => {
     const updateAnchor = () => {
@@ -596,7 +616,9 @@ export const HeroSection44 = ({
         // Calculate center of slot relative to hero container
         const slotCenterX = (slotRect.left + slotRect.width / 2) - heroRect.left
         const norm = (slotCenterX / heroRect.width) * 2 - 1
-        setNormalizedAnchorX(norm)
+        // Clamp to ensure it stays securely within the designated green area
+        const clamped = Math.min(Math.max(norm, 0.52), 0.60)
+        setNormalizedAnchorX(clamped)
       }
     }
 
