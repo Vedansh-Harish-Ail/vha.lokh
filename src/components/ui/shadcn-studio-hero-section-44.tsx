@@ -30,8 +30,7 @@ const PIN_IMAGE_URL = 'https://cdn.21st.dev/assets/mirror/ad/ad5d58b0ab86bd893f0
 
 const ROPE_RADIUS = 0.08
 const ROPE_RADIAL_SEGMENTS = 24
-const ROPE_TAPER_FRACTION = 0.06
-const CARD_ROPE_ANCHOR_Y = 1.35
+const CARD_ROPE_ANCHOR_Y = 1.26
 const ROPE_TOP_EXTENSION = 0
 
 const PIN_IMAGE_ASPECT = 1024 / 1536
@@ -133,8 +132,7 @@ const updateTaperedTubeGeometry = (
   curve: THREE.CatmullRomCurve3,
   tubularSegments: number,
   radius: number,
-  radialSegments: number,
-  taperFraction: number
+  radialSegments: number
 ) => {
   const frames = curve.computeFrenetFrames(tubularSegments, false)
   const posAttr = geometry.attributes.position as THREE.BufferAttribute
@@ -150,7 +148,7 @@ const updateTaperedTubeGeometry = (
     const point = curve.getPointAt(t)
     const N = frames.normals[i]
     const B = frames.binormals[i]
-    const ringRadius = t < taperFraction ? radius * (t / taperFraction) : radius
+    const ringRadius = radius
 
     for (let j = 0; j <= radialSegments; j++) {
       const angle = (j / radialSegments) * Math.PI * 2
@@ -379,8 +377,7 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.56 }:
         curve,
         32,
         ROPE_RADIUS,
-        ROPE_RADIAL_SEGMENTS,
-        ROPE_TAPER_FRACTION
+        ROPE_RADIAL_SEGMENTS
       )
 
       ang.copy(card.current.angvel())
