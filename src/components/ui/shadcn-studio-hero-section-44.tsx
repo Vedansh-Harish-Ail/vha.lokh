@@ -31,8 +31,8 @@ const PIN_IMAGE_URL = 'https://cdn.21st.dev/assets/mirror/ad/ad5d58b0ab86bd893f0
 const ROPE_RADIUS = 0.08
 const ROPE_RADIAL_SEGMENTS = 24
 const ROPE_TAPER_FRACTION = 0.06
-const CARD_ROPE_ANCHOR_Y = 1.1
-const ROPE_TOP_EXTENSION = -0.5
+// The metal eyelet of the pin clip is located at y = 1.35; anchoring here ensures the cord enters directly through the clip
+const CARD_ROPE_ANCHOR_Y = 1.35
 
 const PIN_IMAGE_ASPECT = 1024 / 1536
 const PIN_IMAGE_BOTTOM_PAD_FRACTION = (1536 - 1432) / 1536
@@ -212,7 +212,7 @@ type BandProps = {
   targetNormalizedX?: number
 }
 
-const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.56 }: BandProps) => {
+const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.48 }: BandProps) => {
   const { viewport } = useThree()
   const isMobile = viewport.width < 10
 
@@ -366,7 +366,7 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.56 }:
 
       cardQuat.set(cardRot.x, cardRot.y, cardRot.z, cardRot.w)
       curve.points[0]
-        .set(0, CARD_ROPE_ANCHOR_Y + ROPE_TOP_EXTENSION, 0)
+        .set(0, CARD_ROPE_ANCHOR_Y, 0)
         .applyQuaternion(cardQuat)
         .add(vec.set(cardPos.x, cardPos.y, cardPos.z))
       curve.points[1].copy(getLerped(j2.current))
@@ -384,12 +384,12 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.56 }:
       )
 
       ang.copy(card.current.angvel())
-      // Restoring torques to keep card facing forward and upright
+      // Restoring torques to keep card strictly upright and facing forward (prevents ugly tilt)
       card.current.setAngvel(
         {
-          x: ang.x - cardRot.x * 2.0,
-          y: ang.y - cardRot.y * 1.5,
-          z: ang.z - cardRot.z * 2.0
+          x: ang.x - cardRot.x * 4.0,
+          y: ang.y - cardRot.y * 3.0,
+          z: ang.z - cardRot.z * 5.0
         },
         true
       )
@@ -605,7 +605,7 @@ export const HeroSection44 = ({
 }: HeroSection44Props) => {
   const heroRef = useRef<HTMLElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
-  const [normalizedAnchorX, setNormalizedAnchorX] = useState<number>(0.56)
+  const [normalizedAnchorX, setNormalizedAnchorX] = useState<number>(0.48)
 
   useEffect(() => {
     const updateAnchor = () => {
@@ -616,8 +616,8 @@ export const HeroSection44 = ({
         // Calculate center of slot relative to hero container
         const slotCenterX = (slotRect.left + slotRect.width / 2) - heroRect.left
         const norm = (slotCenterX / heroRect.width) * 2 - 1
-        // Clamp to ensure it stays securely within the designated green area
-        const clamped = Math.min(Math.max(norm, 0.52), 0.60)
+        // Clamp to ensure it stays securely within the designated open column without edge clipping
+        const clamped = Math.min(Math.max(norm, 0.44), 0.52)
         setNormalizedAnchorX(clamped)
       }
     }

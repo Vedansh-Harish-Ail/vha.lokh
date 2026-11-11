@@ -96,54 +96,34 @@ export const SERVICES: Service[] = [
   {
     id: 'small-business-websites',
     title: 'Small Business Websites',
-    tagline: 'Establish an engaging, credible digital presence.',
-    description: 'Designed and deployed responsive, mobile-first websites enabling local businesses, salons, clinics, B2B distributors, and entrepreneurs to showcase their services and convert visitors into paying clients.',
-    benefits: [
-      'Responsive, mobile-first layouts',
-      'Direct WhatsApp chat & 1-tap call buttons',
-      'Google Maps location & Google Reviews integration',
-      'Service catalog, pricing list & contact forms'
-    ],
-    bestFor: 'Salons, clinics, B2B suppliers, local shops, and independent entrepreneurs.'
+    tagline: 'Fast, mobile-first sites that generate inquiries.',
+    description: 'Clean websites engineered with 1-tap WhatsApp booking, Google Maps, and fast loading speeds to turn local visitors into paying customers.',
+    benefits: ['Mobile-First', '1-Tap WhatsApp', 'Google SEO', 'Sub-2s Loading'],
+    bestFor: 'Salons, clinics, suppliers, and local businesses.'
   },
   {
     id: 'wedding-portals-cards',
     title: 'Wedding Portals & Digital Cards',
-    tagline: 'Interactive invitations with live RSVP & ceremony countdowns.',
-    description: 'Bespoke wedding invitation web experiences with live RSVP tracking, ceremony countdowns, interactive location maps, alongside custom digital wedding cards for modern celebrations.',
-    benefits: [
-      'Live online RSVP tracking & guest count',
-      'Ceremony countdowns & interactive Google Maps venue pins',
-      'Captured photo archives & digital memory galleries',
-      'Custom digital wedding cards ready to share on WhatsApp'
-    ],
-    bestFor: 'Couples, families, wedding planners, and celebration organizers.'
+    tagline: 'Modern digital celebration websites & invites.',
+    description: 'Interactive celebration sites with live online RSVP tracking, ceremony countdowns, interactive venue maps, and WhatsApp-ready digital cards.',
+    benefits: ['Live RSVP', 'Venue Maps', 'Countdown Timers', 'WhatsApp-Ready'],
+    bestFor: 'Couples, families, and modern celebrations.'
   },
   {
     id: 'digital-marketing-posters',
     title: 'Posters & Digital Marketing',
-    tagline: 'Visual promotional flyers and social media creative collateral.',
-    description: 'Eye-catching promotional posters, digital marketing flyers, banner creatives, and social media assets tailored for business marketing campaigns, festive offers, and local events.',
-    benefits: [
-      'High-resolution promotional posters & flyers',
-      'Social media creative posts (Instagram, WhatsApp Stories)',
-      'Event announcement & festival discount creatives',
-      'Print-ready and web-ready formats'
-    ],
-    bestFor: 'Campaign promotions, event launches, seasonal business sales, and branding.'
+    tagline: 'High-impact creative promotional collateral.',
+    description: 'Promotional posters, festival marketing flyers, and social media creative assets designed to stand out and drive immediate customer response.',
+    benefits: ['Festival Promos', 'Instagram Stories', 'Print & Digital', 'Fast Turnaround'],
+    bestFor: 'Campaigns, festive offers, and local announcements.'
   },
   {
     id: 'it-support-services',
     title: 'Digital Support & IT Services',
-    tagline: 'Hands-on domain setup, hosting, and technical consultation.',
-    description: 'End-to-end technical support including domain registration, DNS/hosting configuration, website maintenance, troubleshooting, and consultation for students and local businesses.',
-    benefits: [
-      'Custom domain registration & DNS configuration (.com, .in)',
-      'Reliable web hosting setup & SSL certificate security',
-      'Website troubleshooting, bug fixes & speed optimization',
-      'Technical consultation for students & local businesses'
-    ],
-    bestFor: 'Businesses needing tech maintenance, domain setup, or technical assistance.'
+    tagline: 'Hands-on domain setup, hosting & maintenance.',
+    description: 'Direct technical support for custom domain setup, cloud hosting configuration, website bug fixing, speed improvements, and ongoing upkeep.',
+    benefits: ['Custom Domains', 'Cloud Hosting', 'Bug Fixing', 'Direct Support'],
+    bestFor: 'Business owners wanting hassle-free website maintenance.'
   }
 ];
 
