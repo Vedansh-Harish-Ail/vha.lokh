@@ -31,8 +31,8 @@ const PIN_IMAGE_URL = 'https://cdn.21st.dev/assets/mirror/ad/ad5d58b0ab86bd893f0
 const ROPE_RADIUS = 0.08
 const ROPE_RADIAL_SEGMENTS = 24
 const ROPE_TAPER_FRACTION = 0.06
-// The metal eyelet of the pin clip is located at y = 1.35; anchoring here ensures the cord enters directly through the clip
 const CARD_ROPE_ANCHOR_Y = 1.35
+const ROPE_TOP_EXTENSION = 0
 
 const PIN_IMAGE_ASPECT = 1024 / 1536
 const PIN_IMAGE_BOTTOM_PAD_FRACTION = (1536 - 1432) / 1536
@@ -212,7 +212,7 @@ type BandProps = {
   targetNormalizedX?: number
 }
 
-const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.48 }: BandProps) => {
+const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.56 }: BandProps) => {
   const { viewport } = useThree()
   const isMobile = viewport.width < 10
 
@@ -366,7 +366,7 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.48 }:
 
       cardQuat.set(cardRot.x, cardRot.y, cardRot.z, cardRot.w)
       curve.points[0]
-        .set(0, CARD_ROPE_ANCHOR_Y, 0)
+        .set(0, CARD_ROPE_ANCHOR_Y + ROPE_TOP_EXTENSION, 0)
         .applyQuaternion(cardQuat)
         .add(vec.set(cardPos.x, cardPos.y, cardPos.z))
       curve.points[1].copy(getLerped(j2.current))
@@ -384,11 +384,11 @@ const Band = ({ frontImage, colors, onHover, onDrag, targetNormalizedX = 0.48 }:
       )
 
       ang.copy(card.current.angvel())
-      // Restoring torques to keep card strictly upright and facing forward (prevents ugly tilt)
+      // Restoring torques to keep card facing forward and upright without tilting
       card.current.setAngvel(
         {
-          x: ang.x - cardRot.x * 4.0,
-          y: ang.y - cardRot.y * 3.0,
+          x: ang.x - cardRot.x * 2.0,
+          y: ang.y - cardRot.y * 1.5,
           z: ang.z - cardRot.z * 5.0
         },
         true
@@ -606,39 +606,44 @@ export const HeroSection44 = ({
   const heroRef = useRef<HTMLElement>(null)
   const slotRef = useRef<HTMLDivElement>(null)
   const [normalizedAnchorX, setNormalizedAnchorX] = useState<number>(0.48)
+  const [isDesktop, setIsDesktop] = useState(() => typeof window !== 'undefined' && window.innerWidth >= 1024)
 
   useEffect(() => {
-    const updateAnchor = () => {
-      if (!heroRef.current || !slotRef.current) return
+    const handleResize = () => {
+      const desktop = window.innerWidth >= 1024
+      setIsDesktop(desktop)
+      if (!desktop || !heroRef.current || !slotRef.current) return
       const heroRect = heroRef.current.getBoundingClientRect()
       const slotRect = slotRef.current.getBoundingClientRect()
       if (heroRect.width > 0 && slotRect.width > 0) {
         // Calculate center of slot relative to hero container
         const slotCenterX = (slotRect.left + slotRect.width / 2) - heroRect.left
         const norm = (slotCenterX / heroRect.width) * 2 - 1
-        // Clamp to ensure it stays securely within the designated open column without edge clipping
+        // Clamp to ensure it stays securely within the designated right area
         const clamped = Math.min(Math.max(norm, 0.44), 0.52)
         setNormalizedAnchorX(clamped)
       }
     }
 
-    updateAnchor()
-    window.addEventListener('resize', updateAnchor)
-    return () => window.removeEventListener('resize', updateAnchor)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   return (
-    <section ref={heroRef} className={cn('bg-[#F8FAFC] text-slate-900 overflow-hidden border-b border-slate-200 relative pt-12 pb-0 md:pt-16 md:pb-0 min-h-[580px] lg:min-h-[660px]', className)}>
+    <section ref={heroRef} className={cn('bg-[#F8FAFC] text-slate-900 overflow-hidden border-b border-slate-200 relative pt-12 pb-0 md:pt-16 md:pb-0 min-h-[auto] lg:min-h-[660px]', className)}>
       {/* Background subtle ambient glows */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-indigo-100/60 blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 right-1/4 w-80 h-80 rounded-full bg-blue-100/50 blur-3xl pointer-events-none" />
 
-      {/* Free 3D Physics Lanyard Card (NO container box, stretches over whole screen) */}
-      <IdCard
-        frontImage={profileImage}
-        className="absolute inset-0 w-full h-full z-20"
-        targetNormalizedX={normalizedAnchorX}
-      />
+      {/* Free 3D Physics Lanyard Card (Desktop only; 100% unmounted on mobile for zero WebGL overhead) */}
+      {isDesktop && (
+        <IdCard
+          frontImage={profileImage}
+          className="hidden lg:block absolute inset-0 w-full h-full z-20"
+          targetNormalizedX={normalizedAnchorX}
+        />
+      )}
 
       {/* Widen container: max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16 */}
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 pb-16 md:pb-20">
@@ -735,8 +740,8 @@ export const HeroSection44 = ({
             </div>
           </div>
 
-          {/* Right Column: Open area reserved for the 3D free badge hanging directly in slot */}
-          <div ref={slotRef} className="lg:col-span-5 h-[340px] sm:h-[400px] lg:h-[460px] pointer-events-none relative flex items-center justify-center" />
+          {/* Right Column: Open area reserved for the 3D free badge hanging directly in slot (desktop only) */}
+          <div ref={slotRef} className="hidden lg:flex lg:col-span-5 h-[460px] pointer-events-none relative items-center justify-center" />
 
         </div>
 
