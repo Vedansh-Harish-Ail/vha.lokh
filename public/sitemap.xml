@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://vhalokh.vercel.app/</loc>
+    <lastmod>2026-11-12T22:00:00+05:30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://vhalokh.vercel.app/assets/brand/vha-lokh-full-transparent.png</image:loc>
+      <image:title>vha.lokh — Where Ideas Take Shape</image:title>
+      <image:caption>vha.lokh Digital Studio Mangaluru — Web Design and Digital Solutions</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://vhalokh.vercel.app/assets/projects/mata-refrigeration.jpg</image:loc>
+      <image:title>Mata Refrigeration — B2B Industrial Web Portal</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://vhalokh.vercel.app/assets/projects/dimple-beauty-salon.jpg</image:loc>
+      <image:title>Dimple Beauty Salon — Local Business Website</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://vhalokh.vercel.app/assets/projects/vrinda-makeup-artist.jpg</image:loc>
+      <image:title>VRINDA Makeup Artistry — Portfolio Website</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://vhalokh.vercel.app/assets/projects/lekhak-and-anupallavi.jpg</image:loc>
+      <image:title>Lekhak &amp; Anupallavi — Interactive Wedding Portal &amp; RSVP</image:title>
+    </image:image>
+  </url>
+</urlset>

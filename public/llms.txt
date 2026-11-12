@@ -1,0 +1,51 @@
+# vha.lokh
+
+> Where Ideas Take Shape. Digital practice specializing in high-speed, mobile-first websites, interactive celebration & wedding portals, digital marketing collateral, and IT support services.
+
+## Identity & Overview
+- **Name:** vha.lokh
+- **Tagline:** Where Ideas Take Shape.
+- **Practice:** Independent Digital Practice & Web Studio
+- **Founder:** Vedansh Harish Ail
+- **Location:** Mangaluru, Karnataka, India (Operating Worldwide)
+- **Primary Website:** https://vhalokh.vercel.app
+- **Repository:** https://github.com/Vedansh-Harish-Ail/vha.lokh
+- **Primary Contact:** ailvedansh@gmail.com
+- **Direct WhatsApp:** +91 6282277490
+
+## Core Capabilities & Services
+1. **Small Business Websites**
+   - High-speed, responsive, sub-2-second loading pages.
+   - Built-in 1-tap WhatsApp consultation and direct phone dispatch.
+   - Verified Google Maps location pins and 4.6★+ customer review showcases.
+   - 100% client code and asset ownership with zero hidden recurring lock-ins.
+   - Typical delivery turnaround: 4 to 7 business days.
+
+2. **Wedding Portals & Digital Cards**
+   - Interactive couple celebration web applications replacing paper wedding cards.
+   - Live online RSVP tracking and guest management.
+   - Interactive ceremony countdown timers, Google Maps venue pins, and digital photo archives.
+   - High-resolution digital invitation cards optimized for WhatsApp sharing and commercial print.
+   - Typical delivery turnaround: 3 to 5 business days (24 to 48 hours for urgent invites).
+
+3. **Posters & Digital Marketing Collateral**
+   - High-impact promotional posters, festival marketing flyers, and social media banners (Instagram/WhatsApp).
+   - Designed for local business customer conversion and festive campaigns.
+   - Turnaround: 24 to 48 hours.
+
+4. **Digital Support & IT Consultation**
+   - Custom domain registration (.com, .in), DNS management, and SSL certificate setup.
+   - Modern cloud hosting configuration (Vercel, AWS, Cloudflare).
+   - Website troubleshooting, speed optimization, and ongoing maintenance.
+
+## Selected Client Works
+- **Mata Refrigeration:** B2B industrial website for HVAC and refrigerant gas distributor in Kopar Khairane, Navi Mumbai (https://matha-profile.vercel.app/).
+- **Dimple Beauty Salon:** Responsive salon website featuring bilingual menu and WhatsApp booking for luxury salon in Navi Mumbai (https://dimple-beauty-salon.vercel.app/).
+- **VRINDA Makeup Artistry:** Bridal & editorial makeup portfolio with high-resolution visual transformations (https://vrinda-make-up-artist.vercel.app/).
+- **Lekhak & Anupallavi:** Interactive wedding invitation portal with live RSVP tracking, photo memories, and ceremony countdown (https://lekhak-and-anupallavi.vercel.app/).
+
+## Working Process
+1. **Discussion & Scope:** Direct chat on WhatsApp or email to clarify features, design preferences, and timeline.
+2. **Draft Preview:** Interactive mockups and live preview staging links shared for client feedback.
+3. **Refinement & Testing:** Mobile responsiveness, speed optimization, and form verifications.
+4. **Launch & Handover:** Deployment to custom domain with full credentials and asset ownership transferred to client.

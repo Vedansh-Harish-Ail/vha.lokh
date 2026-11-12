@@ -1,0 +1,29 @@
+# robots.txt for https://vhalokh.vercel.app
+# vha.lokh — Web Design & Digital Solutions Studio
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /dist/
+
+# Dedicated Search Bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# AI Search Crawlers (ChatGPT Search / SearchGPT discovery)
+User-agent: OAI-SearchBot
+Allow: /
+
+# Perplexity AI Search Crawler
+User-agent: PerplexityBot
+Allow: /
+
+# Note: GPTBot is kept separate for model-training opt-in/opt-out decisions
+User-agent: GPTBot
+Allow: /
+
+# Sitemap Index
+Sitemap: https://vhalokh.vercel.app/sitemap.xml

@@ -16,7 +16,11 @@ export const Footer: React.FC = () => {
               {/* Pure transparent ribbon mark without flat background box */}
               <img
                 src="/assets/brand/vha-lokh-symbol-transparent.png"
-                alt="vha.lokh logo mark"
+                alt="vha.lokh digital practice emblem"
+                width={32}
+                height={32}
+                loading="lazy"
+                decoding="async"
                 className="h-8 w-auto object-contain"
               />
               <div className="flex flex-col">

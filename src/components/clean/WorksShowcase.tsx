@@ -142,11 +142,14 @@ export const WorksShowcase: React.FC = () => {
                       <div className="relative group/shot overflow-hidden bg-slate-100 aspect-[16/10] flex items-center justify-center">
                         <img
                           src={displayImage}
-                          alt={project.title}
+                          alt={`${project.title} - ${project.subtitle}`}
+                          width={600}
+                          height={375}
                           className={`w-full h-full object-cover transition-transform duration-500 group-hover/shot:scale-105 ${
                             currentMode === 'mobile' ? 'object-top' : 'object-center'
                           }`}
                           loading="lazy"
+                          decoding="async"
                         />
 
                         <div className="absolute inset-0 bg-slate-900/35 opacity-0 group-hover/shot:opacity-100 transition-opacity flex items-center justify-center gap-2">
@@ -264,7 +267,10 @@ export const WorksShowcase: React.FC = () => {
               <div className="p-6 space-y-6 overflow-y-auto">
                 <img
                   src={selectedProject.image}
-                  alt={selectedProject.title}
+                  alt={`${selectedProject.title} project preview`}
+                  width={800}
+                  height={500}
+                  decoding="async"
                   className="w-full rounded-2xl border border-slate-200 object-cover shadow-sm"
                 />
 

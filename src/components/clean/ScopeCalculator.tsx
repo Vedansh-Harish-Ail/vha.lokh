@@ -17,6 +17,7 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
   const services = [
     { id: 'small-business-website', label: 'Small Business Website' },
     { id: 'wedding-portal', label: 'Wedding Portal & Digital Cards' },
+    { id: 'custom-solution', label: 'Custom Requirement' },
     { id: 'posters-marketing', label: 'Posters & Digital Marketing Collateral' },
     { id: 'digital-support', label: 'Digital Support & IT Consultation' },
   ];
