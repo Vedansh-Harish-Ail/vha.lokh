@@ -45,7 +45,7 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
   };
 
   return (
-    <section id="contact" className="relative py-16 md:py-24 bg-[#FBF9F4] text-[#1E1E1E] overflow-hidden border-b border-[#E9E4D8]">
+    <section id="contact" className="relative py-10 md:py-14 bg-[#FBF9F4] text-[#1E1E1E] overflow-hidden border-b border-[#E9E4D8]">
       {/* Background Dot Matrix Texture */}
       <div
         className="absolute inset-0 pointer-events-none opacity-45"
@@ -56,44 +56,44 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
       />
 
       <div className="relative mx-auto max-w-[1240px] px-4 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           
           {/* ================= LEFT COLUMN: Typography & Tactile Cards ================= */}
-          <div className="lg:col-span-5 space-y-7">
+          <div className="lg:col-span-5 space-y-5">
             {/* Header / Sub-badge */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-[#6E6B64]">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-[10.5px] font-bold tracking-[0.14em] uppercase text-[#6E6B64]">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]" />
                 <span>START A PROJECT</span>
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-[42px] font-serif font-normal text-[#1A1A1A] leading-[1.12] tracking-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-[34px] font-serif font-normal text-[#1A1A1A] leading-[1.14] tracking-tight">
                 Let's talk about your project or digital need.
               </h2>
-              <p className="text-sm text-[#5C5952] leading-relaxed max-w-md pt-1">
+              <p className="text-xs sm:text-[13px] text-[#5C5952] leading-relaxed max-w-md pt-0.5">
                 Whether you need a new responsive website for your business, an interactive wedding portal, marketing flyers, or IT assistance, reach out directly.
               </p>
             </div>
 
             {/* Tactile "Instant Dispatch" Card */}
-            <div className="relative pt-3">
-              <span className="absolute top-0 left-6 z-10 px-3 py-0.5 rounded-md bg-[#EDE8DC] border border-[#DDD6C5] text-[10px] font-medium tracking-wide text-[#59554C] shadow-2xs">
+            <div className="relative pt-2.5">
+              <span className="absolute top-0 left-5 z-10 px-2.5 py-0.5 rounded bg-[#EDE8DC] border border-[#DDD6C5] text-[9.5px] font-medium tracking-wide text-[#59554C] shadow-2xs">
                 "Instant Dispatch" Card
               </span>
-              <div className="bg-[#FAF7F0] border border-[#E0D9C8] rounded-2xl p-5 pt-6 shadow-[0_4px_16px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.04)] space-y-4">
+              <div className="bg-[#FAF7F0] border border-[#E0D9C8] rounded-xl p-4 pt-5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full bg-[#E5EFE6] border border-[#BCD4BE] flex items-center justify-center text-[#1E4D2B] shrink-0">
-                    <MessageCircle className="h-4.5 w-4.5" />
+                  <div className="h-8 w-8 rounded-full bg-[#E5EFE6] border border-[#BCD4BE] flex items-center justify-center text-[#1E4D2B] shrink-0">
+                    <MessageCircle className="h-4 w-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-[#1F1E1B]">Direct WhatsApp Chat</h4>
-                    <p className="text-xs text-[#736F66]">Fastest response for estimates & questions.</p>
+                    <h4 className="text-xs sm:text-sm font-bold text-[#1F1E1B]">Direct WhatsApp Chat</h4>
+                    <p className="text-[11px] text-[#736F66]">Fastest response for estimates & questions.</p>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={openWhatsApp}
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#234E35] hover:bg-[#1A3D29] text-white font-medium py-3 text-xs tracking-wide shadow-sm transition-all active:scale-[0.99] cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#234E35] hover:bg-[#1A3D29] text-white font-medium py-2.5 text-xs tracking-wide shadow-xs transition-all active:scale-[0.99] cursor-pointer"
                 >
                   <span>Chat with Us on WhatsApp</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
@@ -102,20 +102,20 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
             </div>
 
             {/* Tactile "Copy & Write" Card */}
-            <div className="relative pt-3">
-              <span className="absolute top-0 left-6 z-10 px-3 py-0.5 rounded-md bg-[#EDE8DC] border border-[#DDD6C5] text-[10px] font-medium tracking-wide text-[#59554C] shadow-2xs">
+            <div className="relative pt-2.5">
+              <span className="absolute top-0 left-5 z-10 px-2.5 py-0.5 rounded bg-[#EDE8DC] border border-[#DDD6C5] text-[9.5px] font-medium tracking-wide text-[#59554C] shadow-2xs">
                 "Copy & Write" Card
               </span>
-              <div className="bg-[#FAF7F0] border border-[#E0D9C8] rounded-2xl p-4.5 pt-5 shadow-[0_4px_16px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="h-9 w-9 rounded-full bg-[#EAE7DC] border border-[#DDD6C5] flex items-center justify-center text-[#55524A] shrink-0">
-                    <Mail className="h-4 w-4" />
+              <div className="bg-[#FAF7F0] border border-[#E0D9C8] rounded-xl p-3.5 pt-4.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="h-8 w-8 rounded-full bg-[#EAE7DC] border border-[#DDD6C5] flex items-center justify-center text-[#55524A] shrink-0">
+                    <Mail className="h-3.5 w-3.5" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] font-bold tracking-wider uppercase text-[#8A857A]">
+                    <span className="block text-[9.5px] font-bold tracking-wider uppercase text-[#8A857A]">
                       DIRECT EMAIL
                     </span>
-                    <span className="block text-sm font-semibold text-[#1F1E1B] truncate">
+                    <span className="block text-xs sm:text-[13px] font-semibold text-[#1F1E1B] truncate">
                       {STUDIO_CONFIG.email}
                     </span>
                   </div>
@@ -124,17 +124,17 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
                 <button
                   type="button"
                   onClick={handleCopyEmail}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D5CEC0] bg-[#F3EFE6] hover:bg-[#EBE5D8] text-xs font-medium text-[#403E38] transition-all active:scale-95 shrink-0 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[#D5CEC0] bg-[#F3EFE6] hover:bg-[#EBE5D8] text-xs font-medium text-[#403E38] transition-all active:scale-95 shrink-0 cursor-pointer"
                 >
                   {copied ? (
                     <>
                       <Check className="h-3.5 w-3.5 text-[#234E35]" />
-                      <span className="text-[#234E35] font-semibold">Copied</span>
+                      <span className="text-[#234E35] font-semibold text-[11px]">Copied</span>
                     </>
                   ) : (
                     <>
                       <Copy className="h-3.5 w-3.5" />
-                      <span>Copy</span>
+                      <span className="text-[11px]">Copy</span>
                     </>
                   )}
                 </button>
@@ -142,7 +142,7 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
             </div>
 
             {/* Location Capsule */}
-            <div className="flex items-center gap-2 text-xs text-[#6B675E] pt-1">
+            <div className="flex items-center gap-2 text-[11px] text-[#6B675E] pt-0.5">
               <MapPin className="h-3.5 w-3.5 text-[#736F66] shrink-0" />
               <span>
                 Independent Freelance Practice based in <strong className="text-[#1F1E1B] font-semibold">Mangaluru, India</strong> (2023 – Present).
@@ -152,41 +152,41 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
 
           {/* ================= RIGHT COLUMN: Warm Editorial Dossier Card ================= */}
           <div className="lg:col-span-7">
-            <div className="bg-[#FAF7F0] rounded-3xl border border-[#DCD5C3] shadow-[0_12px_40px_rgba(0,0,0,0.04),0_2px_6px_rgba(0,0,0,0.03)] overflow-hidden">
+            <div className="bg-[#FAF7F0] rounded-2xl border border-[#DCD5C3] shadow-[0_8px_30px_rgba(0,0,0,0.04),0_2px_4px_rgba(0,0,0,0.03)] overflow-hidden">
               
-              {/* Card Header */}
-              <div className="p-7 sm:p-9 pb-5 border-b border-[#EFE9DC]">
-                <div className="flex items-center gap-2 text-base sm:text-lg font-bold text-[#1A1A1A]">
-                  <Sparkles className="h-4.5 w-4.5 text-[#1A1A1A]" />
+              {/* Card Header (compact) */}
+              <div className="px-5 py-4 sm:px-6 sm:py-4.5 border-b border-[#EFE9DC]">
+                <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#1A1A1A]">
+                  <Sparkles className="h-4 w-4 text-[#1A1A1A]" />
                   <span>Send a Project Message</span>
                 </div>
-                <p className="text-xs text-[#736F66] mt-1">
+                <p className="text-[11px] text-[#736F66] mt-0.5">
                   Share a few details and we’ll respond within 24 hours.
                 </p>
               </div>
 
-              {/* Form Content */}
-              <div className="p-7 sm:p-9 pt-6">
+              {/* Form Content (compacted padding & gaps) */}
+              <div className="px-5 py-4 sm:px-6 sm:py-5">
                 {submitted ? (
-                  <div className="p-8 text-center space-y-3 rounded-2xl bg-[#E8EFE8] border border-[#BCD4BE]">
-                    <Check className="h-8 w-8 text-[#234E35] mx-auto" />
-                    <h4 className="font-bold text-[#1F4129]">Inquiry Dispatched!</h4>
+                  <div className="p-6 text-center space-y-2.5 rounded-xl bg-[#E8EFE8] border border-[#BCD4BE]">
+                    <Check className="h-7 w-7 text-[#234E35] mx-auto" />
+                    <h4 className="font-bold text-[#1F4129] text-sm">Inquiry Dispatched!</h4>
                     <p className="text-xs text-[#2A5237]">
                       Your mail client has been opened with your inquiry details. We will respond promptly.
                     </p>
                     <button
                       type="button"
                       onClick={() => setSubmitted(false)}
-                      className="mt-3 text-xs font-semibold text-[#1F4129] underline hover:text-[#142C1B] cursor-pointer"
+                      className="mt-2 text-xs font-semibold text-[#1F4129] underline hover:text-[#142C1B] cursor-pointer"
                     >
                       Send another inquiry
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleFormSubmit} className="space-y-6">
+                  <form onSubmit={handleFormSubmit} className="space-y-3.5 sm:space-y-4">
                     {/* 01. Name */}
-                    <div className="space-y-1.5">
-                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                    <div className="space-y-1">
+                      <label className="block text-[10px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
                         01. YOUR NAME
                       </label>
                       <input
@@ -195,13 +195,13 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="e.g. Rahul / Ananya"
-                        className="w-full rounded-xl border border-[#D9D2BF] bg-[#FDFBF7] px-4 py-2.5 text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none focus:border-[#736F66] transition-colors shadow-2xs"
+                        className="w-full rounded-lg border border-[#D9D2BF] bg-[#FDFBF7] px-3.5 py-2 text-xs sm:text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none focus:border-[#736F66] transition-colors shadow-2xs"
                       />
                     </div>
 
                     {/* 02. Contact */}
-                    <div className="space-y-1.5">
-                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                    <div className="space-y-1">
+                      <label className="block text-[10px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
                         02. PHONE / WHATSAPP OR EMAIL
                       </label>
                       <input
@@ -210,16 +210,16 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
                         value={contactInfo}
                         onChange={(e) => setContactInfo(e.target.value)}
                         placeholder="e.g. +91 98765 43210 or yourname@gmail.com"
-                        className="w-full rounded-xl border border-[#D9D2BF] bg-[#FDFBF7] px-4 py-2.5 text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none focus:border-[#736F66] transition-colors shadow-2xs"
+                        className="w-full rounded-lg border border-[#D9D2BF] bg-[#FDFBF7] px-3.5 py-2 text-xs sm:text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none focus:border-[#736F66] transition-colors shadow-2xs"
                       />
                     </div>
 
                     {/* 03. Service Selector Pills */}
-                    <div className="space-y-2">
-                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                    <div className="space-y-1.5">
+                      <label className="block text-[10px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
                         03. SERVICE REQUIRED
                       </label>
-                      <div className="flex flex-wrap gap-2 pt-0.5">
+                      <div className="flex flex-wrap gap-1.5 pt-0.5">
                         {services.map((srv) => {
                           const isSelected = selectedService === srv.label;
                           return (
@@ -227,15 +227,15 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
                               key={srv.id}
                               type="button"
                               onClick={() => setSelectedService(srv.label)}
-                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-sans transition-all cursor-pointer ${
+                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-sans transition-all cursor-pointer ${
                                 isSelected
-                                  ? 'bg-[#E3DC handle-selected text-[#222] font-semibold border border-[#B3A992] shadow-2xs'
+                                  ? 'text-[#222] font-semibold border shadow-2xs'
                                   : 'bg-[#F2ECE0]/70 text-[#615D54] border border-[#DBD3C1] hover:bg-[#EAE3D4]'
                               }`}
                               style={isSelected ? { backgroundColor: '#E4DDD0', borderColor: '#B5AC97' } : undefined}
                             >
                               <span
-                                className={`h-3 w-3 rounded-full flex items-center justify-center border text-[9px] ${
+                                className={`h-2.5 w-2.5 rounded-full flex items-center justify-center border text-[8px] ${
                                   isSelected
                                     ? 'border-[#2E2C28] text-[#2E2C28] bg-transparent font-bold'
                                     : 'border-[#948F83] text-transparent'
@@ -251,40 +251,40 @@ export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService
                     </div>
 
                     {/* 04. Ruled Project Overview Area */}
-                    <div className="space-y-1.5">
-                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                    <div className="space-y-1">
+                      <label className="block text-[10px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
                         04. PROJECT OVERVIEW OR QUESTIONS
                       </label>
-                      <div className="relative rounded-xl border border-[#D9D2BF] bg-[#FDFBF7] overflow-hidden shadow-2xs">
+                      <div className="relative rounded-lg border border-[#D9D2BF] bg-[#FDFBF7] overflow-hidden shadow-2xs">
                         <textarea
-                          rows={4}
+                          rows={3}
                           value={message}
                           onChange={(e) => setMessage(e.target.value)}
                           placeholder="Describe your requirements, any reference links, or target deadlines..."
-                          className="w-full p-4 text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none resize-none bg-transparent"
+                          className="w-full p-3 text-xs sm:text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none resize-none bg-transparent"
                           style={{
-                            lineHeight: '26px',
+                            lineHeight: '24px',
                             backgroundImage:
-                              'repeating-linear-gradient(to bottom, transparent 0 25px, rgba(160, 150, 130, 0.22) 25px 26px)',
+                              'repeating-linear-gradient(to bottom, transparent 0 23px, rgba(160, 150, 130, 0.22) 23px 24px)',
                           }}
                         />
                       </div>
                     </div>
 
                     {/* Bottom Status & Dispatch Button Bar */}
-                    <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="pt-1.5 flex flex-col sm:flex-row items-center justify-between gap-3">
                       <div className="text-left w-full sm:w-auto">
-                        <span className="block text-[10px] font-mono uppercase tracking-wider text-[#7A7569]">
+                        <span className="block text-[9px] font-mono uppercase tracking-wider text-[#7A7569]">
                           Dossier Draft
                         </span>
-                        <span className="text-xs font-sans font-semibold text-[#2E2C28]">
+                        <span className="text-[11px] sm:text-xs font-sans font-semibold text-[#2E2C28]">
                           [{selectedService}] <span className="font-normal text-[#57534B]">Ready for dispatch ✈</span>
                         </span>
                       </div>
 
                       <button
                         type="submit"
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#2E2C28] hover:bg-[#1A1917] text-white px-6 py-3 text-xs font-semibold tracking-wide shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#2E2C28] hover:bg-[#1A1917] text-white px-5 py-2.5 text-xs font-semibold tracking-wide shadow-sm transition-all active:scale-[0.98] cursor-pointer"
                       >
                         <Send className="h-3.5 w-3.5" />
                         <span>Seal & Dispatch Inquiry ↗</span>
