@@ -8,7 +8,6 @@ import { ScopeCalculator } from './components/clean/ScopeCalculator';
 import { ComparisonSection } from './components/clean/ComparisonSection';
 import { HowItWorksSection } from './components/clean/HowItWorksSection';
 import { FAQAccordion } from './components/clean/FAQAccordion';
-import { ContactSection } from './components/clean/ContactSection';
 import { Footer } from './components/clean/Footer';
 
 export const App: React.FC = () => {
@@ -47,23 +46,20 @@ export const App: React.FC = () => {
         {/* 4. 21st.dev Feature Bento Grid */}
         <BentoFeatures />
 
-        {/* 5. Services: What We Provide */}
+        {/* 6. Services: What We Provide */}
         <ServicesSection onSelectService={handleSelectService} />
 
-        {/* 6. 21st.dev Interactive Scope & Turnaround Estimator */}
-        <ScopeCalculator />
-
-        {/* 7. 21st.dev Comparison Table */}
+        {/* 7. Comparison Table */}
         <ComparisonSection />
 
         {/* 8. Simple 4-Step Process */}
         <HowItWorksSection />
 
-        {/* 9. 21st.dev Interactive Animated FAQ Accordion */}
+        {/* 9. Interactive Tactile FAQ Drawer */}
         <FAQAccordion />
 
-        {/* 10. Direct Contact & 1-Tap WhatsApp Channel */}
-        <ContactSection initialService={selectedServiceForInquiry} />
+        {/* 10. Tactile Project Intake & Direct Contact Section */}
+        <ScopeCalculator initialService={selectedServiceForInquiry} />
       </main>
 
       {/* 11. Clean Light Footer */}

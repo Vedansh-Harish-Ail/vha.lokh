@@ -1,189 +1,301 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Calculator, Check, MessageCircle, ArrowRight, Clock } from 'lucide-react';
+import { MessageCircle, Mail, MapPin, Copy, Check, Sparkles, ArrowUpRight, Send } from 'lucide-react';
 import { STUDIO_CONFIG } from '../../config/brand';
 
-export const ScopeCalculator: React.FC = () => {
-  const serviceTypes = [
-    { id: 'business-site', label: 'Small Business Website', turnaround: '4–7 Days' },
-    { id: 'wedding-portal', label: 'Wedding Portal & Digital Cards', turnaround: '3–5 Days' },
-    { id: 'marketing-posters', label: 'Posters & Digital Marketing Collateral', turnaround: '1–3 Days' },
-    { id: 'it-support', label: 'Digital Support & IT Consultation', turnaround: '1–2 Days' },
+interface ScopeCalculatorProps {
+  initialService?: string;
+}
+
+export const ScopeCalculator: React.FC<ScopeCalculatorProps> = ({ initialService }) => {
+  const [copied, setCopied] = useState(false);
+  const [name, setName] = useState('');
+  const [contactInfo, setContactInfo] = useState('');
+  const [selectedService, setSelectedService] = useState(initialService || 'Small Business Website');
+  const [message, setMessage] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const services = [
+    { id: 'small-business-website', label: 'Small Business Website' },
+    { id: 'wedding-portal', label: 'Wedding Portal & Digital Cards' },
+    { id: 'posters-marketing', label: 'Posters & Digital Marketing Collateral' },
+    { id: 'digital-support', label: 'Digital Support & IT Consultation' },
   ];
 
-  const featureOptions = [
-    { id: 'mobile', label: 'Responsive, Mobile-First Web Architecture', checkedByDefault: true },
-    { id: 'whatsapp', label: 'Direct WhatsApp Chat & 1-Tap Call Dispatch', checkedByDefault: true },
-    { id: 'rsvp', label: 'Live Online RSVP Tracking & Ceremony Countdowns', checkedByDefault: false },
-    { id: 'posters', label: 'Custom Promotional Posters & Social Media Flyers', checkedByDefault: false },
-    { id: 'domain-dns', label: 'Domain Registration, DNS & Hosting Setup (.com / .in)', checkedByDefault: true },
-    { id: 'reviews-maps', label: 'Google Maps Location & 4.6★ Reviews Integration', checkedByDefault: true },
-  ];
-
-  const [selectedType, setSelectedType] = useState(serviceTypes[0]);
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([
-    'mobile',
-    'whatsapp',
-    'domain-dns',
-    'reviews-maps',
-  ]);
-
-  const toggleFeature = (id: string) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]
-    );
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(STUDIO_CONFIG.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleWhatsAppInquiry = () => {
-    const featureLabels = featureOptions
-      .filter((f) => selectedFeatures.includes(f.id))
-      .map((f) => f.label)
-      .join(', ');
-
-    const message = encodeURIComponent(
-      `Hi vha.lokh, I would like to inquire about: ${selectedType.label}.\n\nDesired Deliverables: ${featureLabels}.\n\nCould we discuss the details and an estimate?`
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`vha.lokh Inquiry: ${selectedService} (${name || 'Client'})`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nPhone/Contact: ${contactInfo}\nService: ${selectedService}\n\nProject Details:\n${message}\n\n--- Sent from vha.lokh website`
     );
-    window.open(`https://wa.me/${STUDIO_CONFIG.whatsappNumber.replace(/[^0-9]/g, '')}?text=${message}`, '_blank');
+    window.location.href = `mailto:${STUDIO_CONFIG.email}?subject=${subject}&body=${body}`;
+    setSubmitted(true);
+  };
+
+  const openWhatsApp = () => {
+    const encoded = encodeURIComponent(
+      `Hi vha.lokh, I would like to discuss a project:\n\nService: ${selectedService}\nName: ${name || 'Prospective Client'}`
+    );
+    window.open(`https://wa.me/${STUDIO_CONFIG.whatsappNumber.replace(/[^0-9]/g, '')}?text=${encoded}`, '_blank');
   };
 
   return (
-    <section id="estimator" className="py-20 md:py-28 bg-[#F8FAFC] border-b border-slate-200">
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="text-center max-w-2xl mx-auto mb-14 space-y-3"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-indigo-700 shadow-2xs">
-            <Calculator className="h-3.5 w-3.5 text-indigo-600" />
-            <span>Interactive Project Estimator</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-            Configure Your Digital Requirement
-          </h2>
-          <p className="text-base text-slate-600 font-normal">
-            Select the service you need and desired features to see estimated turnaround times and initiate a direct conversation.
-          </p>
-        </motion.div>
+    <section id="contact" className="relative py-16 md:py-24 bg-[#FBF9F4] text-[#1E1E1E] overflow-hidden border-b border-[#E9E4D8]">
+      {/* Background Dot Matrix Texture */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-45"
+        style={{
+          backgroundImage: 'radial-gradient(#C8C2B3 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+      />
 
-        {/* The Interactive Estimator Card (21st.dev Component) */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="bg-white rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm"
-        >
-          <div className="space-y-8">
-            {/* Step 1: Service Type */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
-                1. Select Service Category
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {serviceTypes.map((type) => {
-                  const isSelected = selectedType.id === type.id;
-                  return (
-                    <motion.button
-                      key={type.id}
-                      type="button"
-                      onClick={() => setSelectedType(type)}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ type: 'spring', damping: 20, stiffness: 350 }}
-                      className={`p-4 rounded-2xl text-left border transition-all flex items-center justify-between ${
-                        isSelected
-                          ? 'bg-indigo-50/80 border-indigo-600 text-indigo-950 shadow-xs font-semibold'
-                          : 'bg-slate-50/60 border-slate-200 text-slate-700 hover:border-slate-300'
-                      }`}
-                    >
-                      <span className="text-sm font-medium">{type.label}</span>
-                      {isSelected && (
-                        <div className="h-5 w-5 rounded-full bg-indigo-600 flex items-center justify-center text-white shrink-0">
-                          <Check className="h-3.5 w-3.5" />
-                        </div>
-                      )}
-                    </motion.button>
-                  );
-                })}
+      <div className="relative mx-auto max-w-[1240px] px-4 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          
+          {/* ================= LEFT COLUMN: Typography & Tactile Cards ================= */}
+          <div className="lg:col-span-5 space-y-7">
+            {/* Header / Sub-badge */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-[11px] font-bold tracking-[0.14em] uppercase text-[#6E6B64]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#1A1A1A]" />
+                <span>START A PROJECT</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-[42px] font-serif font-normal text-[#1A1A1A] leading-[1.12] tracking-tight">
+                Let's talk about your project or digital need.
+              </h2>
+              <p className="text-sm text-[#5C5952] leading-relaxed max-w-md pt-1">
+                Whether you need a new responsive website for your business, an interactive wedding portal, marketing flyers, or IT assistance, reach out directly.
+              </p>
+            </div>
+
+            {/* Tactile "Instant Dispatch" Card */}
+            <div className="relative pt-3">
+              <span className="absolute top-0 left-6 z-10 px-3 py-0.5 rounded-md bg-[#EDE8DC] border border-[#DDD6C5] text-[10px] font-medium tracking-wide text-[#59554C] shadow-2xs">
+                "Instant Dispatch" Card
+              </span>
+              <div className="bg-[#FAF7F0] border border-[#E0D9C8] rounded-2xl p-5 pt-6 shadow-[0_4px_16px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.04)] space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full bg-[#E5EFE6] border border-[#BCD4BE] flex items-center justify-center text-[#1E4D2B] shrink-0">
+                    <MessageCircle className="h-4.5 w-4.5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-[#1F1E1B]">Direct WhatsApp Chat</h4>
+                    <p className="text-xs text-[#736F66]">Fastest response for estimates & questions.</p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={openWhatsApp}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#234E35] hover:bg-[#1A3D29] text-white font-medium py-3 text-xs tracking-wide shadow-sm transition-all active:scale-[0.99] cursor-pointer"
+                >
+                  <span>Chat with Us on WhatsApp</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </button>
               </div>
             </div>
 
-            {/* Step 2: Features Needed */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-3">
-                2. Key Deliverables Required
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {featureOptions.map((feature) => {
-                  const isChecked = selectedFeatures.includes(feature.id);
-                  return (
-                    <motion.button
-                      key={feature.id}
+            {/* Tactile "Copy & Write" Card */}
+            <div className="relative pt-3">
+              <span className="absolute top-0 left-6 z-10 px-3 py-0.5 rounded-md bg-[#EDE8DC] border border-[#DDD6C5] text-[10px] font-medium tracking-wide text-[#59554C] shadow-2xs">
+                "Copy & Write" Card
+              </span>
+              <div className="bg-[#FAF7F0] border border-[#E0D9C8] rounded-2xl p-4.5 pt-5 shadow-[0_4px_16px_rgba(0,0,0,0.03),0_1px_3px_rgba(0,0,0,0.04)] flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="h-9 w-9 rounded-full bg-[#EAE7DC] border border-[#DDD6C5] flex items-center justify-center text-[#55524A] shrink-0">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="block text-[10px] font-bold tracking-wider uppercase text-[#8A857A]">
+                      DIRECT EMAIL
+                    </span>
+                    <span className="block text-sm font-semibold text-[#1F1E1B] truncate">
+                      {STUDIO_CONFIG.email}
+                    </span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#D5CEC0] bg-[#F3EFE6] hover:bg-[#EBE5D8] text-xs font-medium text-[#403E38] transition-all active:scale-95 shrink-0 cursor-pointer"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="h-3.5 w-3.5 text-[#234E35]" />
+                      <span className="text-[#234E35] font-semibold">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-3.5 w-3.5" />
+                      <span>Copy</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Location Capsule */}
+            <div className="flex items-center gap-2 text-xs text-[#6B675E] pt-1">
+              <MapPin className="h-3.5 w-3.5 text-[#736F66] shrink-0" />
+              <span>
+                Independent Freelance Practice based in <strong className="text-[#1F1E1B] font-semibold">Mangaluru, India</strong> (2023 – Present).
+              </span>
+            </div>
+          </div>
+
+          {/* ================= RIGHT COLUMN: Warm Editorial Dossier Card ================= */}
+          <div className="lg:col-span-7">
+            <div className="bg-[#FAF7F0] rounded-3xl border border-[#DCD5C3] shadow-[0_12px_40px_rgba(0,0,0,0.04),0_2px_6px_rgba(0,0,0,0.03)] overflow-hidden">
+              
+              {/* Card Header */}
+              <div className="p-7 sm:p-9 pb-5 border-b border-[#EFE9DC]">
+                <div className="flex items-center gap-2 text-base sm:text-lg font-bold text-[#1A1A1A]">
+                  <Sparkles className="h-4.5 w-4.5 text-[#1A1A1A]" />
+                  <span>Send a Project Message</span>
+                </div>
+                <p className="text-xs text-[#736F66] mt-1">
+                  Share a few details and we’ll respond within 24 hours.
+                </p>
+              </div>
+
+              {/* Form Content */}
+              <div className="p-7 sm:p-9 pt-6">
+                {submitted ? (
+                  <div className="p-8 text-center space-y-3 rounded-2xl bg-[#E8EFE8] border border-[#BCD4BE]">
+                    <Check className="h-8 w-8 text-[#234E35] mx-auto" />
+                    <h4 className="font-bold text-[#1F4129]">Inquiry Dispatched!</h4>
+                    <p className="text-xs text-[#2A5237]">
+                      Your mail client has been opened with your inquiry details. We will respond promptly.
+                    </p>
+                    <button
                       type="button"
-                      onClick={() => toggleFeature(feature.id)}
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.98 }}
-                      transition={{ type: 'spring', damping: 20, stiffness: 350 }}
-                      className={`p-3.5 rounded-2xl text-left border text-xs font-medium transition-all flex items-center gap-3 ${
-                        isChecked
-                          ? 'bg-emerald-50/70 border-emerald-600 text-emerald-950 font-semibold'
-                          : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
-                      }`}
+                      onClick={() => setSubmitted(false)}
+                      className="mt-3 text-xs font-semibold text-[#1F4129] underline hover:text-[#142C1B] cursor-pointer"
                     >
-                      <div
-                        className={`h-4.5 w-4.5 rounded-md flex items-center justify-center shrink-0 border transition-colors ${
-                          isChecked ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-300'
-                        }`}
-                      >
-                        {isChecked && <Check className="h-3 w-3" />}
+                      Send another inquiry
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleFormSubmit} className="space-y-6">
+                    {/* 01. Name */}
+                    <div className="space-y-1.5">
+                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                        01. YOUR NAME
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="e.g. Rahul / Ananya"
+                        className="w-full rounded-xl border border-[#D9D2BF] bg-[#FDFBF7] px-4 py-2.5 text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none focus:border-[#736F66] transition-colors shadow-2xs"
+                      />
+                    </div>
+
+                    {/* 02. Contact */}
+                    <div className="space-y-1.5">
+                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                        02. PHONE / WHATSAPP OR EMAIL
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={contactInfo}
+                        onChange={(e) => setContactInfo(e.target.value)}
+                        placeholder="e.g. +91 98765 43210 or yourname@gmail.com"
+                        className="w-full rounded-xl border border-[#D9D2BF] bg-[#FDFBF7] px-4 py-2.5 text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none focus:border-[#736F66] transition-colors shadow-2xs"
+                      />
+                    </div>
+
+                    {/* 03. Service Selector Pills */}
+                    <div className="space-y-2">
+                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                        03. SERVICE REQUIRED
+                      </label>
+                      <div className="flex flex-wrap gap-2 pt-0.5">
+                        {services.map((srv) => {
+                          const isSelected = selectedService === srv.label;
+                          return (
+                            <button
+                              key={srv.id}
+                              type="button"
+                              onClick={() => setSelectedService(srv.label)}
+                              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-sans transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-[#E3DC handle-selected text-[#222] font-semibold border border-[#B3A992] shadow-2xs'
+                                  : 'bg-[#F2ECE0]/70 text-[#615D54] border border-[#DBD3C1] hover:bg-[#EAE3D4]'
+                              }`}
+                              style={isSelected ? { backgroundColor: '#E4DDD0', borderColor: '#B5AC97' } : undefined}
+                            >
+                              <span
+                                className={`h-3 w-3 rounded-full flex items-center justify-center border text-[9px] ${
+                                  isSelected
+                                    ? 'border-[#2E2C28] text-[#2E2C28] bg-transparent font-bold'
+                                    : 'border-[#948F83] text-transparent'
+                                }`}
+                              >
+                                {isSelected ? '✓' : ''}
+                              </span>
+                              <span>{srv.label}</span>
+                            </button>
+                          );
+                        })}
                       </div>
-                      <span>{feature.label}</span>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
+                    </div>
 
-            {/* Step 3: Summary Output & Action */}
-            <div className="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-6 bg-[#F8FAFC] p-6 rounded-2xl border border-slate-200/80">
-              <div>
-                <span className="text-xs text-slate-500 font-medium flex items-center gap-1.5">
-                  <Clock className="h-3.5 w-3.5 text-indigo-600" />
-                  <span>Estimated Delivery Turnaround</span>
-                </span>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={selectedType.turnaround}
-                    initial={{ opacity: 0, y: -4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 4 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-baseline gap-2 mt-0.5"
-                  >
-                    <span className="text-2xl font-extrabold text-slate-900">{selectedType.turnaround}</span>
-                    <span className="text-xs text-slate-500 font-medium">typical delivery timeline</span>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+                    {/* 04. Ruled Project Overview Area */}
+                    <div className="space-y-1.5">
+                      <label className="block text-[11px] font-mono tracking-wider uppercase font-semibold text-[#545149]">
+                        04. PROJECT OVERVIEW OR QUESTIONS
+                      </label>
+                      <div className="relative rounded-xl border border-[#D9D2BF] bg-[#FDFBF7] overflow-hidden shadow-2xs">
+                        <textarea
+                          rows={4}
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          placeholder="Describe your requirements, any reference links, or target deadlines..."
+                          className="w-full p-4 text-sm font-sans italic text-[#1A1A1A] placeholder:text-[#9C9688] focus:outline-none resize-none bg-transparent"
+                          style={{
+                            lineHeight: '26px',
+                            backgroundImage:
+                              'repeating-linear-gradient(to bottom, transparent 0 25px, rgba(160, 150, 130, 0.22) 25px 26px)',
+                          }}
+                        />
+                      </div>
+                    </div>
 
-              <motion.button
-                onClick={handleWhatsAppInquiry}
-                whileHover={{ y: -2, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', damping: 15, stiffness: 400 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3.5 text-sm font-bold shadow-md hover:shadow-emerald-600/20 transition-colors"
-              >
-                <MessageCircle className="h-4 w-4" />
-                <span>Discuss This on WhatsApp</span>
-                <ArrowRight className="h-4 w-4" />
-              </motion.button>
+                    {/* Bottom Status & Dispatch Button Bar */}
+                    <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+                      <div className="text-left w-full sm:w-auto">
+                        <span className="block text-[10px] font-mono uppercase tracking-wider text-[#7A7569]">
+                          Dossier Draft
+                        </span>
+                        <span className="text-xs font-sans font-semibold text-[#2E2C28]">
+                          [{selectedService}] <span className="font-normal text-[#57534B]">Ready for dispatch ✈</span>
+                        </span>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-[#2E2C28] hover:bg-[#1A1917] text-white px-6 py-3 text-xs font-semibold tracking-wide shadow-md transition-all active:scale-[0.98] cursor-pointer"
+                      >
+                        <Send className="h-3.5 w-3.5" />
+                        <span>Seal & Dispatch Inquiry ↗</span>
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
