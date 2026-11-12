@@ -59,43 +59,59 @@ const isDark = (host: Element, mq: MediaQueryList | null): boolean => {
  */
 
 /** The questions, written for this block. The product, its prices and its limits are invented. */
-const CARDS = Object.freeze([
+export type FaqCardItem = {
+  id: string;
+  tab: string;
+  q: string;
+  a: string;
+};
+
+export const DEFAULT_VHA_CARDS: readonly FaqCardItem[] = Object.freeze([
   Object.freeze({
-    id: 'billing', tab: 'Pricing',
-    q: 'How is a run billed?',
-    a: 'By the second an agent is awake: $0.000018 per GB-second, with the first 400,000 GB-seconds each month free. Sleeping between tool calls costs nothing, and a stopped run stops billing the second it stops.',
+    id: 'turnaround',
+    tab: 'Timeline',
+    q: 'How long does a website or wedding portal take to build?',
+    a: 'Small business websites and interactive wedding portals take 4 to 7 business days from kickoff to live deployment. Standalone wedding cards, promotional posters, and emergency bug fixes can be delivered within 24 to 48 hours.',
   }),
   Object.freeze({
-    id: 'retention', tab: 'Data',
-    q: 'How long do you keep run traces?',
-    a: '30 days on Team, 365 on Scale, and as long as you like when you host Lode yourself. When the window closes a trace is deleted, not archived; until then you can export it as OpenTelemetry.',
+    id: 'pricing',
+    tab: 'Pricing',
+    q: 'What are your rates, and are there any hidden fees?',
+    a: 'We offer upfront, transparent flat-rate pricing per project. No surprise recurring charges or lock-in contracts. You own 100% of your source code, domain, and web assets upon completion.',
   }),
   Object.freeze({
-    id: 'sso', tab: 'SSO',
-    q: 'Do you support SSO and SCIM?',
-    a: 'Yes, on Scale: SAML 2.0 and OIDC with Okta, Entra ID, Google Workspace or any standard provider, and SCIM 2.0 for provisioning. Roles follow your groups, so leaving the company leaves Lode.',
+    id: 'wedding-portal',
+    tab: 'Weddings',
+    q: 'What is included in the Wedding Portal & Digital Card service?',
+    a: 'You get a complete celebration portal featuring live online RSVP tracking, interactive ceremony countdowns, clickable Google Maps venue pins, and high-res photo archives, plus WhatsApp-ready digital invite cards.',
   }),
   Object.freeze({
-    id: 'uptime', tab: 'Uptime',
-    q: 'What uptime do you commit to?',
-    a: '99.95% a month for the control plane on Team and 99.99% on Scale, with service credits in the contract. Runs already started keep running if the control plane is down; only new starts wait. The last 90 days are on the status page.',
+    id: 'business-sites',
+    tab: 'Websites',
+    q: 'Can our website integrate 1-tap WhatsApp booking and Google Maps?',
+    a: 'Yes, every business site we build is mobile-first and optimized for local customer conversions with instant WhatsApp booking, click-to-call, interactive Google Maps directions, and sub-2-second load times.',
   }),
   Object.freeze({
-    id: 'limits', tab: 'Limits',
-    q: 'What are the rate limits?',
-    a: '1,000 run starts a minute and 50 concurrent runs per project on Team; 10,000 and 2,000 on Scale. Over the limit, a start waits in a queue for up to 30 seconds before it answers 429 with a Retry-After.',
+    id: 'posters-marketing',
+    tab: 'Creative',
+    q: 'Do you design standalone marketing flyers, posters, and invitations?',
+    a: 'Yes. We design high-resolution promotional posters, festive discount banners, social media creatives (Instagram stories/posts), and digital invitations ready for WhatsApp sharing or commercial print.',
   }),
   Object.freeze({
-    id: 'self-host', tab: 'Hosting',
-    q: 'Can we host Lode ourselves?',
-    a: 'Yes. The runtime ships as a Helm chart and as a single binary for bare metal, air-gapped if you need it, licensed per node. The control plane can stay with us or move in with you.',
+    id: 'it-support',
+    tab: 'IT Support',
+    q: 'What digital support & IT services do you provide?',
+    a: 'We handle custom domain registration (.com, .in), DNS records, SSL certification, cloud hosting setup (Vercel, AWS, Cloudflare), site speed optimization, and ongoing technical maintenance.',
   }),
   Object.freeze({
-    id: 'region', tab: 'Security',
-    q: 'Where does our data live?',
-    a: 'In the region you choose when you create a project (Frankfurt, Dublin, Virginia, Oregon or Singapore) and nowhere else. The SOC 2 Type II and ISO 27001 reports are in the trust centre.',
+    id: 'getting-started',
+    tab: 'Process',
+    q: 'How do we get started and review drafts?',
+    a: 'Message us directly on WhatsApp or email with your idea. We confirm scope and timeline, then share live interactive drafts for your feedback until you are completely satisfied before launch.',
   }),
 ]);
+
+const CARDS = DEFAULT_VHA_CARDS;
 
 const FINISHES: readonly string[] = Object.freeze(['auto', 'aluminium', 'graphite']);
 const OPEN_AT = Object.freeze(['none', '1', '2', '3', '4', '5', '6', '7']);
@@ -269,14 +285,14 @@ const CSS = `/* FAQ Index - TACTILE UI block */
 /* ------------------------------------------------------------------ tokens */
 .fq {
   color-scheme: light;
-  --tui-desk: #d8d7d2;
-  --tui-face: #e6e6e2;
-  --tui-face-hi: #f2f2ef;
-  --tui-face-lo: #cbccc8;
-  --tui-well: #d3d4d0;
-  --tui-skirt: #a4a5a1;
-  --tui-ink: #1b1c1e;
-  --tui-ink-2: #4b4d51;
+  --tui-desk: #F8FAFC;
+  --tui-face: #f1f2f5;
+  --tui-face-hi: #ffffff;
+  --tui-face-lo: #e2e4e9;
+  --tui-well: #e5e7eb;
+  --tui-skirt: #cbd5e1;
+  --tui-ink: #0f172a;
+  --tui-ink-2: #64748b;
   --tui-rule: rgb(27 28 30 / 0.16);
   --tui-cap: #1e1f21;
   --tui-cap-hi: #2d2e31;
@@ -324,7 +340,7 @@ const CSS = `/* FAQ Index - TACTILE UI block */
   position: relative;
   container: fq / inline-size;
   interpolate-size: allow-keywords;
-  background: var(--tui-desk);
+  background: transparent;
   color: var(--tui-ink);
   font: 400 15px/1.55 var(--fq-sans);
   -webkit-font-smoothing: antialiased;
