@@ -376,14 +376,14 @@ const CSS = `/* FAQ Index - TACTILE UI block */
 .fq-wrap {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.35fr);
-  gap: 40px clamp(40px, 6cqi, 104px);
+  gap: 32px clamp(28px, 4cqi, 64px);
   align-items: start;
   width: min(100% - 2 * clamp(20px, 5cqi, 64px), 1240px);
   margin-inline: auto;
-  padding-block: clamp(56px, 8cqi, 120px);
+  padding-block: 0;
 }
 /* The head stays in view while cards are pulled on a wide container. */
-.fq-head { position: sticky; top: 24px; padding-top: 34px; }
+.fq-head { position: sticky; top: 24px; padding-top: 6px; }
 .fq-head .fq-label {
   margin-bottom: 16px;
   font: 700 10.5px/1.2 var(--fq-sans);
@@ -396,7 +396,7 @@ const CSS = `/* FAQ Index - TACTILE UI block */
   letter-spacing: -0.035em;
   text-wrap: balance;
 }
-.fq-head .fq-lead { margin-top: 20px; max-width: 36ch; font-size: clamp(15px, 1.3cqi, 17px); color: var(--tui-ink-2); text-wrap: pretty; }
+.fq-head .fq-lead { margin-top: 14px; max-width: 36ch; font-size: clamp(15px, 1.3cqi, 17px); color: var(--tui-ink-2); text-wrap: pretty; }
 
 /* ------------------------------------------------------------------ the drawer */
 /* The drawer's box: its metal sides frame the tray the cards stand in. */
@@ -421,7 +421,7 @@ const CSS = `/* FAQ Index - TACTILE UI block */
 /* The tray: a slim recess, dark under its back wall. */
 .fq-tray {
   display: grid;
-  padding: 40px 12px 16px;
+  padding: 26px 12px 14px;
   border-radius: 9px 9px 4px 4px;
   background: var(--tui-well-fill) var(--tui-well);
   box-shadow: var(--tui-inset);
@@ -576,7 +576,7 @@ const CSS = `/* FAQ Index - TACTILE UI block */
   align-items: center;
   justify-content: space-between;
   gap: 14px 24px;
-  margin-top: 28px;
+  margin-top: 18px;
   padding-inline: 4px;
 }
 .fq-note { font-size: 14.5px; color: var(--tui-ink-2); max-width: 44ch; }
