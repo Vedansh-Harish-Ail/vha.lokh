@@ -5,8 +5,8 @@ export const STUDIO_CONFIG: StudioConfig = {
   tagline: 'Where Ideas Take Shape.',
   subheading: 'Web solutions that work for you. Websites, wedding invitation portals, digital marketing posters, and IT support for businesses and individuals.',
   location: 'Mangaluru, India',
-  email: 'hello@vha.lokh',
-  whatsappNumber: '+919999999999',
+  email: 'ailvedansh@gmail.com',
+  whatsappNumber: '+91 6282277490',
   whatsappMessage: 'Hi vha.lokh, I would like to discuss a custom website / digital solution.',
   availability: 'Accepting Client Engagements',
 };

@@ -74,7 +74,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ initialService }
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-slate-900">Direct WhatsApp Chat</h4>
-                  <p className="text-xs text-slate-500">Fastest response for estimates & questions.</p>
+                  <p className="text-xs text-slate-500">{STUDIO_CONFIG.whatsappNumber}</p>
                 </div>
               </div>
 

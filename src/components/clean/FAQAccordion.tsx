@@ -15,7 +15,7 @@ export const FAQAccordion: React.FC = () => {
           single={true}
           askNote="Have a custom requirement or question not listed in the drawer? We respond within hours."
           askLabel="Chat with Us on WhatsApp"
-          askHref="https://wa.me/918431873138"
+          askHref="https://wa.me/916282277490"
           finish="aluminium"
         />
       </div>
