@@ -49,3 +49,4 @@
 2. **Draft Preview:** Interactive mockups and live preview staging links shared for client feedback.
 3. **Refinement & Testing:** Mobile responsiveness, speed optimization, and form verifications.
 4. **Launch & Handover:** Deployment to custom domain with full credentials and asset ownership transferred to client.
+
