@@ -1,125 +1,23 @@
-import React, { useState } from 'react';
-import { ChevronDown, HelpCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
+import React from 'react';
+import FaqDrawer from '@/components/ui/faq-drawer';
 
 export const FAQAccordion: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
-
-  const faqs: FAQItem[] = [
-    {
-      question: 'How long does a typical website or wedding portal take to build?',
-      answer:
-        'Small business websites and interactive wedding portals typically take between 4 to 7 business days from kickoff to live launch. For urgent wedding cards or promotional posters, turnaround can be as fast as 24 to 48 hours.',
-    },
-    {
-      question: 'Can you design posters, social media flyers, or digital wedding cards standalone?',
-      answer:
-        'Yes, absolutely. We design standalone visual promotional posters, digital marketing flyers, festival discount graphics, and custom digital wedding cards ready to share via WhatsApp or print.',
-    },
-    {
-      question: 'What is included in the Wedding Portal & Digital Card service?',
-      answer:
-        'You receive an interactive celebration web portal with live online RSVP tracking, ceremony countdowns, interactive Google Maps venue pins, and digital photo archives, alongside customized digital wedding invitation cards.',
-    },
-    {
-      question: 'What kind of Digital Support & IT Services do you provide?',
-      answer:
-        'We provide hands-on technical support including custom domain registration (.com, .in), DNS configuration, reliable web hosting setup with SSL security, website maintenance, troubleshooting, and technical consultation for students and local businesses.',
-    },
-    {
-      question: 'How do we communicate and get started?',
-      answer:
-        'You can chat with us directly on WhatsApp or drop us an email. We discuss your requirements, review any reference styles you have in mind, share a clear quote and timeline, and keep you updated with drafts throughout the process.',
-    },
-  ];
-
-  const toggle = (idx: number) => {
-    setOpenIndex(openIndex === idx ? null : idx);
-  };
-
   return (
-    <section className="py-20 md:py-28 bg-[#F8FAFC] border-b border-slate-200">
+    <section className="py-16 md:py-24 bg-slate-50 border-b border-slate-200">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 xl:px-16">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="text-center max-w-2xl mx-auto mb-14 space-y-3"
-        >
-          <div className="inline-flex items-center gap-2 rounded-full bg-slate-100 border border-slate-200 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-indigo-700 shadow-2xs">
-            <HelpCircle className="h-3.5 w-3.5 text-indigo-600" />
-            <span>Common Questions</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-base text-slate-600 font-normal">
-            Everything you need to know about our services, turnaround timelines, and working together.
-          </p>
-        </motion.div>
-
-        {/* 21st.dev Style Smooth Accordion List */}
-        <div className="space-y-3.5">
-          {faqs.map((faq, idx) => {
-            const isOpen = openIndex === idx;
-            return (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.05, duration: 0.3 }}
-                className={`rounded-2xl border transition-all ${
-                  isOpen
-                    ? 'bg-white border-slate-300 shadow-md'
-                    : 'bg-white/80 border-slate-200 hover:border-slate-300'
-                }`}
-              >
-                <button
-                  type="button"
-                  onClick={() => toggle(idx)}
-                  className="w-full flex items-center justify-between p-6 text-left group"
-                >
-                  <span className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition-colors">
-                    {faq.question}
-                  </span>
-                  <div
-                    className={`h-8 w-8 rounded-full border flex items-center justify-center shrink-0 ml-4 transition-transform duration-200 ${
-                      isOpen
-                        ? 'rotate-180 bg-indigo-600 border-indigo-600 text-white'
-                        : 'border-slate-200 text-slate-500 bg-white group-hover:border-slate-400'
-                    }`}
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                  </div>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: 'easeInOut' }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-6 pb-6 pt-1 text-sm text-slate-600 leading-relaxed border-t border-slate-100">
-                        {faq.answer}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            );
-          })}
-        </div>
+        <FaqDrawer
+          label="FAQ"
+          title="Questions & Answers."
+          lead="Everything you need to know about our web design, wedding portals, and IT solutions. Pull a card to inspect details."
+          drawer="vha.lokh · FAQ"
+          count={7}
+          open="1"
+          single={true}
+          askNote="Have a unique requirement or question not listed? Chat directly with us."
+          askLabel="Chat with Us"
+          askHref="https://wa.me/918431873138"
+          finish="graphite"
+        />
       </div>
     </section>
   );
